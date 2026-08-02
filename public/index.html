@@ -1353,6 +1353,7 @@
         }
     };
 
+const LOCAL_STORAGE_KEY = 'sasfa-tournament-data';
 let tournamentData = JSON.parse(JSON.stringify(DEFAULT_TOURNAMENT_DATA));
 let activeTournament = sessionStorage.getItem('activeTournament') || null;
 let activeRegion = sessionStorage.getItem('activeRegion') || Object.keys(tournamentData)[0];
@@ -1447,63 +1448,52 @@ function updateLiveStatus() {
 }
 
 // --- DATA LOADING ---
-async function loadData(showLoading = false) {
+function applySavedData(savedData) {
+    if (!savedData || typeof savedData !== 'object') return;
+
+    const sanitizedData = JSON.parse(JSON.stringify(DEFAULT_TOURNAMENT_DATA));
+    Object.keys(savedData).forEach(region => {
+        if (sanitizedData[region]) {
+            if (Array.isArray(savedData[region].matches)) {
+                sanitizedData[region].matches = savedData[region].matches.map(match => ({ ...match }));
+            }
+            if (Array.isArray(savedData[region].playoffs)) {
+                sanitizedData[region].playoffs = savedData[region].playoffs.map(match => ({ ...match }));
+            }
+        }
+    });
+
+    tournamentData = sanitizedData;
+}
+
+function loadData(showLoading = false) {
     if (showLoading) document.body.classList.add('is-loading');
     const lastUpdatedEl = document.getElementById('lastUpdated');
+
     try {
-        const response = await fetch('/api/get-data', { cache: 'no-store' });
-        const liveData = await response.json();
-
-        // Only update the view if the fetched data is valid and contains content
-        if (liveData && Object.keys(liveData).length > 0) {
-            // Smart Merge: Enforce correct predefined pools, only ingest matches
-            const sanitizedData = JSON.parse(JSON.stringify(DEFAULT_TOURNAMENT_DATA));
-            Object.keys(liveData).forEach(region => {
-                if (sanitizedData[region] && liveData[region].matches) {
-                    sanitizedData[region].matches = liveData[region].matches;
-                    // Auto-migrate legacy names to fix standing breaks
-                    sanitizedData[region].matches.forEach(m => {
-                        if (m.t1 === "Paul Roos Gimnasium" || m.t1 === "Reddam Constantia") m.t1 = "Reddam House Constantia";
-                        if (m.t2 === "Paul Roos Gimnasium" || m.t2 === "Reddam Constantia") m.t2 = "Reddam House Constantia";
-                        if (m.t1 === "Pinetown Boy's High School" || m.t1 === "Pinetown Boys' High School") m.t1 = "Pinetown Boys High School";
-                        if (m.t2 === "Pinetown Boy's High School" || m.t2 === "Pinetown Boys' High School") m.t2 = "Pinetown Boys High School";
-                        if (m.t1 === "Saint Annes Technical") m.t1 = "Saint Annes Technical High School";
-                        if (m.t2 === "Saint Annes Technical") m.t2 = "Saint Annes Technical High School";
-                    });
-                }
-                if (sanitizedData[region] && Array.isArray(liveData[region].playoffs)) {
-                    sanitizedData[region].playoffs = liveData[region].playoffs;
-                }
-            });
-
-            const newDataString = JSON.stringify(sanitizedData);
-            const currentDataString = JSON.stringify(tournamentData);
-
-            // Only update and re-render if data actually changed from what is currently cached
-            if (newDataString !== currentDataString) {
-                tournamentData = sanitizedData;
-                
-                if (!activeRegion || !tournamentData[activeRegion]) {
-                    activeRegion = Object.keys(tournamentData)[0];
-                }
-                if (activeTournament === 'halala') {
-                    updateView();
-                    updateLiveStatus();
-                } else {
-                    renderHomePreviews();
-                    updateLiveStatus();
-                }
+        const cachedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (cachedData) {
+            const savedData = JSON.parse(cachedData);
+            applySavedData(savedData);
+            if (!activeRegion || !tournamentData[activeRegion]) {
+                activeRegion = Object.keys(tournamentData)[0];
             }
-            if (lastUpdatedEl) lastUpdatedEl.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
+            if (activeTournament === 'halala') {
+                updateView();
+                updateLiveStatus();
+            } else {
+                renderHomePreviews();
+                updateLiveStatus();
+            }
+            if (lastUpdatedEl) lastUpdatedEl.textContent = `Last loaded: ${new Date().toLocaleTimeString()}`;
         } else {
-            console.warn("API returned no data. Displaying default/stale data.");
-            if (lastUpdatedEl && !localStorage.getItem('sasfa-tournament-data')) {
-                lastUpdatedEl.textContent = 'Awaiting live data...';
+            if (lastUpdatedEl) {
+                lastUpdatedEl.textContent = 'No saved fixtures found in browser storage.';
             }
         }
     } catch (error) {
-        console.error('Error loading data:', error);
-        if (lastUpdatedEl) lastUpdatedEl.textContent = `Failed to update. Retrying automatically...`;
+        console.error('Error loading local fixture data:', error);
+        if (lastUpdatedEl) lastUpdatedEl.textContent = 'Unable to load saved fixtures.';
     } finally {
         if (showLoading) document.body.classList.remove('is-loading');
     }

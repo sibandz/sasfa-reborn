@@ -769,62 +769,47 @@
     const deleteNationalButton = document.getElementById('deleteNationalButton');
     const nationalSaveStatus = document.getElementById('nationalSaveStatus');
 
-    async function loadSavedData() {
-        try {
-            // Fetch data from a central server instead of localStorage
-            const response = await fetch('/api/get-data', { cache: 'no-store' });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const saved = await response.json();
-            
-            // Merge fetched data with default data structure
-            Object.keys(saved).forEach(region => {
-                if (tournamentData[region]) {
-                    if (saved[region].matches) {
-                        tournamentData[region].matches = saved[region].matches;
-                        tournamentData[region].matches.forEach(m => {
-                            if (m.t1 === "Paul Roos Gimnasium" || m.t1 === "Reddam Constantia") m.t1 = "Reddam House Constantia";
-                            if (m.t2 === "Paul Roos Gimnasium" || m.t2 === "Reddam Constantia") m.t2 = "Reddam House Constantia";
-                            if (m.t1 === "Pinetown Boy's High School" || m.t1 === "Pinetown Boys' High School") m.t1 = "Pinetown Boys High School";
-                            if (m.t2 === "Pinetown Boy's High School" || m.t2 === "Pinetown Boys' High School") m.t2 = "Pinetown Boys High School";
-                            if (m.t1 === "Saint Annes Technical") m.t1 = "Saint Annes Technical High School";
-                            if (m.t2 === "Saint Annes Technical") m.t2 = "Saint Annes Technical High School";
-                        });
-                    }
-                    if (saved[region].playoffs) {
-                        tournamentData[region].playoffs = saved[region].playoffs;
-                    } else if (tournamentData[region].pools && tournamentData[region].matches) {
-                        tournamentData[region].playoffs = generateDefaultPlayoffFixtures(tournamentData[region]);
-                    }
-                    updatePlayoffsFromStandings(tournamentData[region]);
+    const LOCAL_STORAGE_KEY = 'sasfa-tournament-data';
+
+    function applySavedData(savedData) {
+        if (!savedData || typeof savedData !== 'object') return;
+
+        Object.keys(savedData).forEach(region => {
+            if (tournamentData[region]) {
+                if (Array.isArray(savedData[region].matches)) {
+                    tournamentData[region].matches = savedData[region].matches.map(match => ({ ...match }));
                 }
-            });
-            saveData().catch(e => console.error("Initial auto-save failed", e));
+                if (Array.isArray(savedData[region].playoffs)) {
+                    tournamentData[region].playoffs = savedData[region].playoffs.map(match => ({ ...match }));
+                }
+                if (tournamentData[region].pools && tournamentData[region].matches) {
+                    tournamentData[region].playoffs = tournamentData[region].playoffs || generateDefaultPlayoffFixtures(tournamentData[region]);
+                }
+                updatePlayoffsFromStandings(tournamentData[region]);
+            }
+        });
+    }
+
+    function loadSavedData() {
+        try {
+            const cachedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+            if (cachedData) {
+                const saved = JSON.parse(cachedData);
+                applySavedData(saved);
+                saveData().catch(e => console.error('Initial auto-save failed', e));
+            }
         } catch (err) {
-            console.error('Unable to load tournament data from server. Using default data.', err);
-            // Fallback to default data if server is unavailable
+            console.error('Unable to load tournament data from localStorage. Using default data.', err);
         }
     }
 
-    async function saveData() {
+    function saveData() {
         try {
-            const response = await fetch('/api/save-data', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(tournamentData),
-            });
-            if (!response.ok) {
-                let errorMsg = `HTTP error! status: ${response.status}`;
-                try {
-                    const errJson = await response.json();
-                    if (errJson && errJson.message) errorMsg += ' - ' + errJson.message;
-                } catch {}
-                throw new Error(errorMsg);
-            }
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tournamentData));
+            return Promise.resolve();
         } catch (error) {
-            console.error('Error saving data to server:', error);
-            throw error;
+            console.error('Error saving data to localStorage:', error);
+            return Promise.reject(error);
         }
     }
 
