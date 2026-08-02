@@ -1768,53 +1768,25 @@ function renderDashboard() {
     let fixturesHtml = buildScheduleTable([...liveMatches, ...upcomingMatches], 'Fixtures');
     const feedFixturesEl = document.getElementById('feed-fixtures');
     if (feedFixturesEl) {
-        if (regionData.playoffs && regionData.playoffs.length > 0) {
-            feedFixturesEl.innerHTML = '';
-            feedFixturesEl.style.display = 'none';
-        } else {
-            feedFixturesEl.style.display = 'block';
-            feedFixturesEl.innerHTML = fixturesHtml;
-        }
+        feedFixturesEl.style.display = 'block';
+        feedFixturesEl.innerHTML = fixturesHtml;
     }
 
     // 3. Results Feed
     let resultsHtml = buildScheduleTable(finalMatches, 'Results');
     const feedResultsEl = document.getElementById('feed-results');
-    if(feedResultsEl) feedResultsEl.innerHTML = resultsHtml;
+    if (feedResultsEl) feedResultsEl.innerHTML = resultsHtml;
 
     // 4. Playoffs
-    let playoffsHtml = `<div class="section-title">Playoffs</div>`;
+    let playoffsHtml = '';
     if (regionData.playoffs && Array.isArray(regionData.playoffs) && regionData.playoffs.length > 0) {
         const displayPlayoffs = resolvePlayoffPlaceholders(regionData.playoffs);
-        playoffsHtml += `<div class="league-section">`;
-        displayPlayoffs.forEach(match => {
-            const statusLabel = match.st === 'LIVE'
-                ? `<div style="color: var(--live); font-weight: 700;">LIVE</div>`
-                : `<div style="font-size: 0.5rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-top: 4px;">${match.st || 'UPCOMING'}</div>`;
-            const score1 = match.s1 != null ? match.s1 : '-';
-            const score2 = match.s2 != null ? match.s2 : '-';
-            playoffsHtml += `
-                <div class="match-item">
-                    <div class="match-time">
-                        ${match.t || 'TBD'}
-                        <div style="font-size: 0.55rem; margin-top: 2px;">${match.d || 'TBD'}</div>
-                        ${statusLabel}
-                    </div>
-                    <div class="match-team"><div class="team-crest">${(match.t1 || '?').charAt(0)}</div><div>${match.t1 || 'Team 1'}</div></div>
-                    <div class="match-score">
-                        <div class="score-value">${score1}</div>
-                        <div class="score-value" style="color: var(--text-muted); font-size: 0.675rem;">-</div>
-                        <div class="score-value">${score2}</div>
-                    </div>
-                    <div class="match-team"><div class="team-crest">${(match.t2 || '?').charAt(0)}</div><div>${match.t2 || 'Team 2'}</div></div>
-                </div>`;
-        });
-        playoffsHtml += `</div>`;
+        playoffsHtml = buildScheduleTable(displayPlayoffs, 'Playoffs');
 
         const advancement = getPlayoffAdvancementSummary(displayPlayoffs);
         if (advancement) {
             playoffsHtml += `
-                <div style="margin-top: 18px; padding: 16px; border-radius: 2px; border-top: 3px solid var(--lime); background: var(--card-bg); border-left: 1px solid var(--frosted-border); border-right: 1px solid var(--frosted-border); border-bottom: 1px solid var(--frosted-border);">
+                <div style="margin-top: 18px; padding: 16px; border-radius: 12px; border-top: 3px solid var(--lime); background: var(--card-bg); border-left: 1px solid var(--frosted-border); border-right: 1px solid var(--frosted-border); border-bottom: 1px solid var(--frosted-border);">
                     <div style="font-weight: 700; margin-bottom: 10px;">Playoff advancement summary</div>
                     <div style="display: grid; gap: 8px; font-size: 0.92rem; color: var(--text-main);">
                         <div><strong>${advancement.winners.length}</strong> winning teams have advanced toward the finals: ${advancement.winners.join(', ')}</div>
