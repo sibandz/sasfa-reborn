@@ -581,10 +581,10 @@
         }
         .schedule-table th,
         .schedule-table td {
-            padding: 18px 20px;
+            padding: 16px 18px;
             border-bottom: 1px solid rgba(255,255,255,0.08);
             color: rgba(255,255,255,0.82);
-            font-size: 0.92rem;
+            font-size: 0.9rem;
             line-height: 1.4;
             vertical-align: middle;
             text-align: left;
@@ -594,28 +594,54 @@
             font-weight: 800;
             letter-spacing: 0.14em;
             text-transform: uppercase;
-            font-size: 0.78rem;
+            font-size: 0.75rem;
         }
         .schedule-table tbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }
         .schedule-table tbody tr:hover { background: rgba(255,255,255,0.08); }
-        .schedule-table .match-column { min-width: 320px; font-weight: 700; }
-        .schedule-table .ball-column { width: 65px; text-align: center; }
+        .schedule-table .date-column,
+        .schedule-table .datetime-column { width: 130px; text-align: center; }
+        .schedule-table .ball-column { width: 78px; text-align: center; }
+        .schedule-table .match-column { min-width: 340px; }
         .schedule-table .ball-cell {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            background: rgba(198,255,51,0.12);
+            background: rgba(198,255,51,0.16);
             color: #dcff3f;
-            font-size: 0.95rem;
+            font-size: 1rem;
+            font-weight: 800;
         }
         .schedule-table .match-vs {
             display: inline-block;
-            margin: 0 0.65rem;
+            margin: 0 0.5rem;
             color: #ff4848;
             font-weight: 800;
+        }
+        .schedule-table .team-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+        .schedule-table .team-name {
+            font-weight: 700;
+            color: #fff;
+        }
+        .schedule-table .team-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.08);
+            color: #f0f0e8;
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
         }
         .schedule-table .smaller-note { color: rgba(255,255,255,0.66); font-size: 0.78rem; letter-spacing: 0.06em; }
 
@@ -1928,12 +1954,19 @@ function renderMatchRow(match) {
     const ballIcon = match.ball || '⚽';
     const referee = match.ref || '-';
     const broadcaster = match.broadcast || '-';
+    const team1 = match.t1 || 'Team 1';
+    const team2 = match.t2 || 'Team 2';
+    const badge1 = team1.charAt(0) || '?';
+    const badge2 = team2.charAt(0) || '?';
     return `
         <tr>
-            <td>${matchDate}</td>
-            <td>${matchTime}</td>
+            <td class="date-column">${matchDate}</td>
+            <td class="datetime-column">${matchTime}</td>
             <td class="ball-column"><span class="ball-cell">${ballIcon}</span></td>
-            <td class="match-column">${match.t1 || 'Team 1'} <span class="match-vs">VS</span> ${match.t2 || 'Team 2'}</td>
+            <td class="match-column">
+                <div class="team-line"><span class="team-badge">${badge1}</span><span class="team-name">${team1}</span></div>
+                <div class="team-line"><span class="team-badge">${badge2}</span><span class="team-name">${team2}</span></div>
+            </td>
             <td>${referee}</td>
             <td>${broadcaster}</td>
         </tr>`;
