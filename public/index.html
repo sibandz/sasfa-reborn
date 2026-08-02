@@ -570,33 +570,33 @@
             width: 100%;
             border-collapse: collapse;
             min-width: 860px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.12);
+            background: var(--card-bg);
+            border: 1px solid var(--border);
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
         }
         .schedule-table thead {
-            background: rgba(255,255,255,0.06);
+            background: color-mix(in srgb, var(--card-bg), rgba(255,255,255,0.15));
         }
         .schedule-table th,
         .schedule-table td {
             padding: 16px 18px;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            color: rgba(255,255,255,0.82);
+            border-bottom: 1px solid var(--border);
+            color: var(--text-main);
             font-size: 0.9rem;
             line-height: 1.4;
             vertical-align: middle;
             text-align: left;
         }
         .schedule-table th {
-            color: #fff;
+            color: var(--text-main);
             font-weight: 800;
             letter-spacing: 0.14em;
             text-transform: uppercase;
             font-size: 0.75rem;
         }
-        .schedule-table tbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+        .schedule-table tbody tr:nth-child(even) { background: rgba(255,255,255,0.04); }
         .schedule-table tbody tr:hover { background: rgba(255,255,255,0.08); }
         .schedule-table .date-column,
         .schedule-table .datetime-column { width: 130px; text-align: center; }
