@@ -77,16 +77,16 @@
             --lime: #C6FF33;
             --violet: #7D39EB;
             --text-main: #FFFFFF;
-            --text-muted: #DCE1FF;
-            --border: rgba(198, 255, 51, 0.16);
+            --text-muted: rgba(255, 255, 255, 0.72);
+            --border: rgba(198, 255, 51, 0.18);
             --bg: #000000;
             --white: #FFFFFF;
             --live: #C6FF33;
-            --card-bg-solid: rgba(255, 255, 255, 0.06);
-            --card-bg: rgba(255, 255, 255, 0.08);
+            --card-bg-solid: rgba(255, 255, 255, 0.08);
+            --card-bg: rgba(255, 255, 255, 0.06);
             --frosted-border: rgba(198, 255, 51, 0.12);
-            --bg-grad-start: rgba(198, 255, 51, 0.06);
-            --bg-grad-end: rgba(125, 57, 235, 0.05);
+            --bg-grad-start: rgba(125, 57, 235, 0.08);
+            --bg-grad-end: rgba(198, 255, 51, 0.04);
         }
 
         html { scroll-behavior: smooth; scroll-padding-top: 140px; }
@@ -111,36 +111,56 @@
 
         /* --- HALALA (sub-tournament) — Light --- */
         body[data-site="halala"] {
-            --navy: #0A0A0C;
-            --navy-light: #22252E;
-            --lime: #34E0FF;             /* electric cyan for the sub-brand */
-            --text-main: #0A0A0C;
-            --text-muted: #666B76;
-            --border: rgba(10, 10, 12, 0.14);
-            --bg: #F4F4F1;
-            --card-bg-solid: #ffffff;
-            --card-bg: #ffffff;
-            --frosted-border: rgba(10, 10, 12, 0.13);
-            --live: #FF2E3C;
-            --bg-grad-start: rgba(10, 10, 12, 0.05);
-            --bg-grad-end: rgba(10, 10, 12, 0.02);
+            --navy: #000000;
+            --navy-light: #1F0F48;
+            --lime: #C6FF33;
+            --violet: #7D39EB;
+            --text-main: #FFFFFF;
+            --text-muted: rgba(255, 255, 255, 0.75);
+            --border: rgba(198, 255, 51, 0.18);
+            --bg: #000000;
+            --card-bg-solid: rgba(255, 255, 255, 0.08);
+            --card-bg: rgba(255, 255, 255, 0.06);
+            --frosted-border: rgba(198, 255, 51, 0.12);
+            --live: #C6FF33;
+            --bg-grad-start: rgba(125, 57, 235, 0.08);
+            --bg-grad-end: rgba(198, 255, 51, 0.04);
         }
 
         /* --- HALALA — Dark --- */
         body[data-theme="dark"][data-site="halala"] {
-            --text-main: #EAF6FA;
-            --text-muted: #8B95A0;
-            --border: rgba(234, 246, 250, 0.14);
-            --bg: #06090C;
-            --navy: #EAF6FA;
-            --navy-light: #C4D9E0;
-            --lime: #5CEBFF;
-            --card-bg-solid: #101418;
-            --card-bg: #101418;
-            --frosted-border: rgba(234, 246, 250, 0.1);
-            --live: #FF2E3C;
-            --bg-grad-start: rgba(234, 246, 250, 0.05);
-            --bg-grad-end: rgba(234, 246, 250, 0.02);
+            --text-main: #FFFFFF;
+            --text-muted: rgba(255, 255, 255, 0.75);
+            --border: rgba(198, 255, 51, 0.18);
+            --bg: #000000;
+            --navy: #000000;
+            --navy-light: #1F0F48;
+            --lime: #C6FF33;
+            --card-bg-solid: rgba(255, 255, 255, 0.08);
+            --card-bg: rgba(255, 255, 255, 0.06);
+            --frosted-border: rgba(198, 255, 51, 0.12);
+            --live: #C6FF33;
+            --bg-grad-start: rgba(125, 57, 235, 0.08);
+            --bg-grad-end: rgba(198, 255, 51, 0.04);
+        }
+
+        body[data-theme="light"] {
+            --ink: #111214;
+            --navy: #060818;
+            --navy-light: #2C1A66;
+            --lime: #C6FF33;
+            --violet: #7D39EB;
+            --text-main: #111214;
+            --text-muted: rgba(17, 18, 20, 0.68);
+            --border: rgba(17, 18, 20, 0.08);
+            --bg: #F7F7F9;
+            --white: #FFFFFF;
+            --live: #C6FF33;
+            --card-bg-solid: rgba(255, 255, 255, 0.95);
+            --card-bg: rgba(255, 255, 255, 0.88);
+            --frosted-border: rgba(125, 57, 235, 0.14);
+            --bg-grad-start: rgba(198, 255, 51, 0.06);
+            --bg-grad-end: rgba(125, 57, 235, 0.04);
         }
 
         * {
@@ -285,7 +305,7 @@
         .jump-nav a {
             display: inline-block;
             padding: 13px 18px;
-            font-family: "Anton", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
             font-size: 0.78rem;
             letter-spacing: 0.05em;
             text-transform: uppercase;
@@ -317,7 +337,7 @@
             border: 2px solid var(--border);
             padding: 6px 14px;
             border-radius: 0;
-            font-family: "Anton", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
             font-size: 0.76rem;
             letter-spacing: 0.03em;
             text-transform: uppercase;
@@ -412,13 +432,13 @@
             background: var(--lime);
             margin: 14px auto 0;
         }
-        .tournament-hero p { font-size: 0.95rem; opacity: 0.7; margin: 14px 0 20px; color: #fff; font-family: "Inter", sans-serif; text-transform: none; letter-spacing: normal; }
+        .tournament-hero p { font-size: 0.95rem; opacity: 0.7; margin: 14px 0 20px; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif; text-transform: none; letter-spacing: normal; }
         .hero-tags { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; position: relative; }
         .hero-tags .tag {
             border: 2px solid rgba(255,255,255,0.25);
             padding: 5px 13px;
             border-radius: 0;
-            font-family: "Anton", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
             font-size: 0.7rem;
             letter-spacing: 0.06em;
             text-transform: uppercase;
@@ -442,7 +462,7 @@
         }
         .stat-box { text-align: center; border-right: 1px solid rgba(255,255,255,0.16); flex: 1; }
         .stat-box:last-child { border-right: none; }
-        .stat-value { font-family: "JetBrains Mono", monospace; font-size: 1.7rem; font-weight: 700; color: var(--lime); font-variant-numeric: tabular-nums; }
+        .stat-value { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 1.7rem; font-weight: 700; color: var(--lime); font-variant-numeric: tabular-nums; }
         .stat-label { font-size: 0.62rem; color: #fff; opacity: 0.6; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
 
         /* --- LEAGUE SECTION (fixture card group) --- */
@@ -479,7 +499,7 @@
         .league-info { flex: 1; }
 
         .league-name {
-            font-family: "Anton", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
             font-size: 0.95rem;
             text-transform: uppercase;
             letter-spacing: 0.02em;
@@ -526,7 +546,7 @@
             overflow-x: auto;
         }
         .standings-title {
-            font-family: "Anton", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
             color: #fff;
             background: var(--ink);
             font-size: 0.85rem;
@@ -553,19 +573,19 @@
         td {
             padding: 11px 10px;
             border-bottom: 1px solid var(--border);
-            font-family: "Inter", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
         }
         tr:last-child td {
             border-bottom: none;
         }
         .col-team { font-weight: 700; color: var(--text-main); }
-        .col-data { text-align: center; font-weight: 700; width: 40px; font-family: "JetBrains Mono", monospace; font-variant-numeric: tabular-nums; }
+        .col-data { text-align: center; font-weight: 700; width: 40px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-variant-numeric: tabular-nums; }
         .team-seed {
             font-weight: 500;
             color: var(--text-muted);
             font-size: 0.8em;
             margin-left: 6px;
-            font-family: "JetBrains Mono", monospace;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
         }
         .col-pts {
             font-weight: 800;
@@ -588,7 +608,7 @@
             border-radius: 0;
             background-color: var(--lime);
             color: var(--ink);
-            font-family: "JetBrains Mono", monospace;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
             font-weight: 700;
             font-size: 0.65rem;
             margin-left: 8px;
@@ -639,7 +659,7 @@
             grid-column: 1;
             justify-self: start;
             text-align: left;
-            font-family: "JetBrains Mono", monospace;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
             font-size: 0.62rem;
             font-weight: 700;
             color: var(--text-muted);
@@ -679,7 +699,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: "Anton", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
             font-size: 0.75rem;
             color: var(--lime);
             flex-shrink: 0;
@@ -699,7 +719,7 @@
         }
 
         .score-value {
-            font-family: "JetBrains Mono", monospace;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
             font-variant-numeric: tabular-nums;
             font-weight: 700;
             font-size: 0.85rem;
@@ -725,7 +745,7 @@
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.06em;
-            font-family: "Anton", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
         }
 
         .score-status.live {
@@ -767,7 +787,7 @@
             color: var(--text-muted);
             font-size: 0.85rem;
             line-height: 1.5;
-            font-family: "Inter", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
         }
         .tournament-card.add-tournament {
             background: transparent;
@@ -825,7 +845,7 @@
             line-height: 1.6;
             opacity: 0.72;
             color: #fff;
-            font-family: "Inter", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
             text-transform: none;
             letter-spacing: normal;
             margin-top: 18px;
@@ -852,7 +872,7 @@
             color: var(--text-muted);
             line-height: 1.6;
             font-size: 0.93rem;
-            font-family: "Inter", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
         }
         @media (max-width: 600px) {
             .sasfa-hero h1 { font-size: 2.1rem; }
