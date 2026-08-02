@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manager Login - Halala Cup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0A0A0C;
+            --navy: #0A0A0C;
+            --navy-med: #201F14;
+            --text-main: #0A0A0C;
+            --text-muted: #66666E;
+            --white: #ffffff;
+            --card-border: rgba(10, 10, 12, 0.14);
+            --lime: #34E0FF;
+            --bg: #F4F4F1;
+            --danger: #FF2E3C;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
+        body {
+            background: var(--bg);
+            background-image: repeating-linear-gradient(115deg, rgba(10,10,12,0.04) 0px, rgba(10,10,12,0.04) 2px, transparent 2px, transparent 64px);
+            color: var(--text-main);
+        }
+        h1, h2, .card-title, .logo-area {
+            font-family: "Anton", sans-serif;
+        }
+        header {
+            padding: 14px 20px;
+            background: var(--ink);
+            box-shadow: 0 3px 0 var(--lime);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            width: 100%;
+        }
+        @media (max-width: 768px) {
+            header {
+                padding: 14px 16px;
+            }
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        .logo-container { display: flex; align-items: center; gap: 15px; }
+        @media (max-width: 768px) {
+            .header-top {
+                gap: 8px;
+            }
+            .logo-area {
+                font-size: 0.85rem;
+            }
+            .watch-live-btn {
+                padding: 8px 10px;
+                font-size: 0.6rem;
+            }
+        }
+        .sasfa-logo { height: 28px; width: auto; }
+        .logo-area {
+            font-size: 1.1rem;
+            letter-spacing: 0.03em;
+            color: #fff;
+        }
+        .logo-area span { color: var(--lime); }
+        .watch-live-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #fff;
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.25);
+            padding: 9px 14px;
+            border-radius: 0;
+            font-family: "Anton", sans-serif;
+            font-size: 0.74rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: 0.15s;
+        }
+        .watch-live-btn svg { width: 15px; height: 15px; fill: #fff; }
+        .watch-live-btn:hover { border-color: var(--lime); background: rgba(52, 224, 255, 0.12); }
+        .page-title { padding: 28px 20px 0; max-width: 1300px; margin: 0 auto; }
+        .page-title h1 {
+            margin: 0;
+            font-size: 1.6rem;
+            letter-spacing: 0.02em;
+            color: var(--text-main);
+        }
+        .page-title p { margin: 8px 0 0; color: var(--text-muted); font-size: 0.9rem; }
+        .main-container { max-width: 1300px; margin: 0 auto; padding: 20px 20px 40px; width: 100%; }
+        @media (max-width: 768px) {
+            .page-title {
+                padding: 20px 16px 0;
+            }
+            .page-title h1 {
+                font-size: 1.15rem;
+            }
+            .page-title p {
+                font-size: 0.72rem;
+            }
+            .main-container {
+                padding: 16px 16px 40px;
+            }
+        }
+        .page-card {
+            background: var(--white);
+            border: 1px solid var(--card-border);
+            border-radius: 0;
+            padding: 24px;
+        }
+        .card-title {
+            margin: 0 0 20px;
+            font-size: 1.05rem;
+            letter-spacing: 0.02em;
+            color: var(--text-main);
+            padding-left: 12px;
+            border-left: 5px solid var(--lime);
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+        @media (max-width: 720px) {
+            .form-row { grid-template-columns: 1fr; }
+            label { font-size: 0.68rem; }
+            input, select { font-size: 0.72rem; }
+            button { font-size: 0.7rem; }
+            .hint { font-size: 0.68rem; }
+            .status-pill { font-size: 0.62rem; }
+            .card-title { font-size: 0.9rem; }
+            .note-box { font-size: 0.68rem; }
+            .small-copy { font-size: 0.64rem; }
+        }
+        label {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-family: "Anton", sans-serif;
+        }
+        input, select {
+            width: 100%;
+            margin-top: 8px;
+            border-radius: 0;
+            border: 2px solid var(--card-border);
+            background: var(--bg);
+            padding: 12px 14px;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            font-family: "Inter", sans-serif;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--lime);
+        }
+        button {
+            cursor: pointer;
+            border: 2px solid var(--ink);
+            border-radius: 0;
+            padding: 12px 18px;
+            color: #fff;
+            background: var(--ink);
+            font-family: "Anton", sans-serif;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: 0.15s;
+        }
+        button:hover { background: var(--navy-med); }
+        .hint { color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin-top: 14px; }
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 14px;
+            border-radius: 0;
+            background: var(--bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            font-family: "JetBrains Mono", monospace;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+        .hidden { display: none; }
+        .form-footer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px; margin-top: 12px; }
+        .note-box {
+            margin-top: 24px;
+            padding: 16px 18px;
+            border-radius: 0;
+            border-left: 4px solid var(--lime);
+            background: var(--bg);
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 0.85rem;
+        }
+        .small-copy { font-size: 0.8rem; color: var(--text-muted); }
+        footer {
+            padding: 30px 20px;
+            background: var(--ink);
+            border-top: 3px solid var(--lime);
+            text-align: center;
+            color: #fff;
+            margin-top: 40px;
+            width: 100%;
+        }
+        @media (max-width: 768px) {
+            footer {
+                padding: 24px 16px;
+            }
+        }
+    </style>
+    </head>
+<body>
+
+<header>
+    <div class="header-top">
+        <div class="logo-container">
+            <img src="images/sasfa_logo-removebg-preview.png" alt="SASFA Logo" class="sasfa-logo">
+            <div class="logo-area">HALALA<span>Cup</span></div>
+        </div>
+        <div>
+            <a href="index.html" class="watch-live-btn">
+                <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-2-9.5l4.5 4.5-1.41 1.41-4.5-4.5-1.09 1.09L12 16.01l4.5-4.51-1.41-1.41-4.5 4.5-2.5-2.5L12 8.01l4.5 4.5-1.41 1.41-4.5-4.5z" opacity=".3"></path><path d="M12 4c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"></path></svg>
+                <span>Public Fixtures</span>
+            </a>
+            <a href="https://supersportschools.com/" class="watch-live-btn" target="_blank">
+                <svg viewBox="0 0 24 24"><path d="M10 16.5v-9l6 4.5-6 4.5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path></svg>
+                <span>Watch Live</span>
+            </a>
+        </div>
+    </div>
+</header>
+
+<div class="page-title">
+    <h1>Manager Login</h1>
+    <p>Only authorized staff can update fixtures and results.<br>pty @sasfa ltd</p>
+</div>
+
+<div class="main-container">
+    <div class="page-card">
+        <div id="authSection">
+            <h2 class="card-title">Sign in to edit</h2>
+            <form id="loginForm">
+                <div style="margin-bottom: 18px;">
+                    <label for="password">Manager password</label>
+                    <input id="password" type="password" autocomplete="current-password" placeholder="Enter password" required />
+                </div>
+                <button type="submit">Login</button>
+                <div id="loginError" style="color: #8f1a1a; font-size: 0.9rem; margin-top: 10px; display: none;"></div>
+                <p class="hint">This is a local browser-side editor. Updates are saved in your browser storage and reflected on the public fixtures page.</p>
+            </form>
+        </div>
+
+        <div id="editorSection" class="hidden">
+            <h2 class="card-title">Editor Panel</h2>
+            <div class="form-row">
+                <label>Region
+                    <select id="regionSelect"></select>
+                </label>
+                <label>Match
+                    <select id="matchSelect"></select>
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Status
+                    <select id="editStatus">
+                        <option value="UPCOMING">UPCOMING</option>
+                        <option value="LIVE">LIVE</option>
+                        <option value="FINAL">FINAL</option>
+                    </select>
+                </label>
+                <label>Time
+                    <input id="editTime" type="text" placeholder="HH:MM" />
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Home score
+                    <input id="editScore1" type="number" min="0" />
+                </label>
+                <label>Away score
+                    <input id="editScore2" type="number" min="0" />
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Home team
+                    <input id="editTeam1" type="text" placeholder="Team 1 name" />
+                </label>
+                <label>Away team
+                    <input id="editTeam2" type="text" placeholder="Team 2 name" />
+                </label>
+            </div>
+            <div class="form-footer">
+                <button id="saveButton" type="button">Save update</button>
+                <button id="resetButton" type="button" style="background: #FF2E3C; border-color: #FF2E3C;">Reset to Defaults</button>
+                <button id="recoverButton" type="button" style="background: #E0A526; border-color: #E0A526; color: #0A0A0C;">Recover Local Data</button>
+                <div class="status-pill" id="saveStatus">Not saved</div>
+            </div>
+            <p class="hint">After saving, refresh the public fixtures page to see the latest results.</p>
+
+            <div class="page-card" style="margin-top: 24px;">
+            <h2 class="card-title">Regional Playoff Fixtures</h2>
+            <div class="form-row">
+                <label>Province/Region
+                    <select id="playoffRegionSelect"></select>
+                </label>
+                <label>Fixture
+                    <select id="playoffSelect"></select>
+                </label>
+            </div>
+            <div class="form-row">
+                <div style="display: flex; gap: 10px; align-items: flex-end;">
+                    <button id="addPlayoffButton" type="button">Add fixture</button>
+                    <button id="deletePlayoffButton" type="button" style="background: #FF2E3C; border-color: #FF2E3C;">Delete fixture</button>
+                </div>
+                <div></div>
+            </div>
+            <div class="form-row">
+                <label>Date
+                    <input id="playoffDate" type="text" placeholder="Saturday 23 May" />
+                </label>
+                <label>Time
+                    <input id="playoffTime" type="text" placeholder="HH:MM" />
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Status
+                    <select id="playoffStatus">
+                        <option value="UPCOMING">UPCOMING</option>
+                        <option value="LIVE">LIVE</option>
+                        <option value="FINAL">FINAL</option>
+                    </select>
+                </label>
+                <label>Match Type
+                    <input id="playoffType" type="text" list="playoffTypeOptions" placeholder="e.g. Semi-Final" />
+                    <datalist id="playoffTypeOptions">
+                        <option value="Semi-Final 1"></option>
+                        <option value="Semi-Final 2"></option>
+                        <option value="3rd Place (Losers)"></option>
+                        <option value="Final (Winners)"></option>
+                    </datalist>
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Home team
+                    <select id="playoffTeam1"></select>
+                </label>
+                <label>Away team
+                    <select id="playoffTeam2"></select>
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Home score
+                    <input id="playoffScore1" type="number" min="0" />
+                </label>
+                <label>Away score
+                    <input id="playoffScore2" type="number" min="0" />
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Home Penalties (if draw)
+                    <input id="playoffPenalties1" type="number" min="0" placeholder="0" />
+                </label>
+                <label>Away Penalties (if draw)
+                    <input id="playoffPenalties2" type="number" min="0" placeholder="0" />
+                </label>
+            </div>
+            <div class="form-footer">
+                <button id="savePlayoffButton" type="button">Save playoff fixture</button>
+                <div class="status-pill" id="playoffSaveStatus">Not saved</div>
+            </div>
+            <p class="hint">Use this section to manage playoff matchups and results separately from pool matches.</p>
+            </div>
+
+        <div class="page-card" style="margin-top: 24px;">
+            <h2 class="card-title">National Finals (August)</h2>
+            <div class="form-row">
+                <label>Fixture
+                    <select id="nationalSelect"></select>
+                </label>
+                <div style="display: flex; gap: 10px; align-items: flex-end;">
+                    <button id="addNationalButton" type="button">Add fixture</button>
+                    <button id="deleteNationalButton" type="button" style="background: #FF2E3C; border-color: #FF2E3C;">Delete fixture</button>
+                </div>
+            </div>
+            <div class="form-row">
+                <label>Date
+                    <input id="nationalDate" type="text" placeholder="Saturday 8 August" />
+                </label>
+                <label>Time
+                    <input id="nationalTime" type="text" placeholder="HH:MM" />
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Status
+                    <select id="nationalStatus">
+                        <option value="UPCOMING">UPCOMING</option>
+                        <option value="LIVE">LIVE</option>
+                        <option value="FINAL">FINAL</option>
+                    </select>
+                </label>
+                <datalist id="qualifiedTeamsList"></datalist>
+            </div>
+            <div class="form-row">
+                <label>Home team
+                    <select id="nationalTeam1"></select>
+                </label>
+                <label>Away team
+                    <select id="nationalTeam2"></select>
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Home score
+                    <input id="nationalScore1" type="number" min="0" />
+                </label>
+                <label>Away score
+                    <input id="nationalScore2" type="number" min="0" />
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Home Penalties (if draw)
+                    <input id="nationalPenalties1" type="number" min="0" placeholder="0" />
+                </label>
+                <label>Away Penalties (if draw)
+                    <input id="nationalPenalties2" type="number" min="0" placeholder="0" />
+                </label>
+            </div>
+            <div class="form-footer">
+                <button id="saveNationalButton" type="button">Save national fixture</button>
+                <div class="status-pill" id="nationalSaveStatus">Not saved</div>
+            </div>
+            <p class="hint">Use this section to manage the ultimate National Finals knockout stages taking place in August.</p>
+        </div>
+        </div>
+
+        <div class="note-box">
+            <p class="small-copy">Password is stored only in this page for demonstration. For real deployments, use a secure backend authentication system.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const STORAGE_KEY = 'halala-cup-data';
+    const AUTH_FLAG = 'halalacup-auth';
+    const EDIT_PASSWORD = 'NationalHalalaCup';
+
+    const DEFAULT_TOURNAMENT_DATA = {
+        "Gauteng 1": {
+            pools: {
+                "Pool A": [
+                    {name: "Clapham High School", seed: 1},
+                    {name: "Curro Cosmo City", seed: 12},
+                    {name: "The King's Linbro Park", seed: 13},
+                    {name: "Curro Parkdene", seed: 24}
+                ],
+                "Pool B": [
+                    {name: "Curro Thatchfield", seed: 4},
+                    {name: "Queens High School", seed: 9},
+                    {name: "HeronBridge College", seed: 16},
+                    {name: "Curro Clayville", seed: 21}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Curro Cosmo City", t2: "Curro Parkdene", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "Clapham High School", t2: "The King's Linbro Park", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "Queens High School", t2: "Curro Clayville", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Curro Thatchfield", t2: "HeronBridge College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "Clapham High School", t2: "Curro Cosmo City", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "The King's Linbro Park", t2: "Curro Parkdene", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Curro Thatchfield", t2: "Queens High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "HeronBridge College", t2: "Curro Clayville", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "Clapham High School", t2: "Curro Parkdene", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Curro Cosmo City", t2: "The King's Linbro Park", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Curro Thatchfield", t2: "Curro Clayville", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "Queens High School", t2: "HeronBridge College", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "Gauteng 2": {
+            pools: {
+                "Pool A": [
+                    {name: "Rosina Sedibane Sport School", seed: 2},
+                    {name: "Curro Protea Glen", seed: 11},
+                    {name: "Curro Pretoria", seed: 14},
+                    {name: "Curro Hazeldean", seed: 23}
+                ],
+                "Pool B": [
+                    {name: "Mondeor High School", seed: 5},
+                    {name: "Curro Aurora", seed: 8},
+                    {name: "Curro Midrand", seed: 17},
+                    {name: "Vaal High School", seed: 20}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Curro Protea Glen", t2: "Curro Hazeldean", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "Rosina Sedibane Sport School", t2: "Curro Pretoria", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "Curro Aurora", t2: "Vaal High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Mondeor High School", t2: "Curro Midrand", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "Rosina Sedibane Sport School", t2: "Curro Protea Glen", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "Curro Pretoria", t2: "Curro Hazeldean", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Mondeor High School", t2: "Curro Aurora", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "Curro Midrand", t2: "Vaal High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "Rosina Sedibane Sport School", t2: "Curro Hazeldean", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Curro Protea Glen", t2: "Curro Pretoria", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Mondeor High School", t2: "Vaal High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "Curro Aurora", t2: "Curro Midrand", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "Western Cape": {
+            pools: {
+                "Pool A": [
+                    {name: "Reddam House Constantia", seed: 1},
+                    {name: "Milnerton High School", seed: 4},
+                    {name: "Curro Century City", seed: 5},
+                    {name: "Curro Somerset West", seed: 8}
+                ],
+                "Pool B": [
+                    {name: "Camps Bay High School", seed: 2},
+                    {name: "Meridian Pinehurst", seed: 3},
+                    {name: "Curro Sandown", seed: 6},
+                    {name: "Somerset College", seed: 7}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Milnerton High School", t2: "Curro Somerset West", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "Reddam House Constantia", t2: "Curro Century City", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "Meridian Pinehurst", t2: "Somerset College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Camps Bay High School", t2: "Curro Sandown", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "Reddam House Constantia", t2: "Milnerton High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "Curro Century City", t2: "Curro Somerset West", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Camps Bay High School", t2: "Meridian Pinehurst", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "Curro Sandown", t2: "Somerset College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "Reddam House Constantia", t2: "Curro Somerset West", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Milnerton High School", t2: "Curro Century City", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Camps Bay High School", t2: "Somerset College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "Meridian Pinehurst", t2: "Curro Sandown", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "KZN": {
+            pools: {
+                "Pool A": [
+                    {name: "Hillcrest High School", seed: 1},
+                    {name: "Durban High School", seed: 4},
+                    {name: "Kloof High School", seed: 5},
+                    {name: "Grantleigh College", seed: 8}
+                ],
+                "Pool B": [
+                    {name: "Glenwood High School", seed: 2},
+                    {name: "Pinetown Boys High School", seed: 3},
+                    {name: "Curro Hillcrest", seed: 6},
+                    {name: "Creston College", seed: 7}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Durban High School", t2: "Grantleigh College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "Hillcrest High School", t2: "Kloof High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "Pinetown Boys High School", t2: "Creston College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Glenwood High School", t2: "Curro Hillcrest", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "Hillcrest High School", t2: "Durban High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "Kloof High School", t2: "Grantleigh College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Glenwood High School", t2: "Pinetown Boys High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "Curro Hillcrest", t2: "Creston College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "Hillcrest High School", t2: "Grantleigh College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Durban High School", t2: "Kloof High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Glenwood High School", t2: "Creston College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "Pinetown Boys High School", t2: "Curro Hillcrest", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "Free State": {
+            pools: {
+                "Pool A": [
+                    {name: "Saint Annes Technical High School", seed: 1},
+                    {name: "Brebner High School", seed: 4},
+                    {name: "Moroka High School", seed: 5},
+                    {name: "Bloemfontein High School", seed: 8}
+                ],
+                "Pool B": [
+                    {name: "Virginia High School", seed: 2},
+                    {name: "HTS Louis Botha", seed: 3},
+                    {name: "Hodisa Secondary School", seed: 6},
+                    {name: "Curro Bloemfontein", seed: 7}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Brebner High School", t2: "Bloemfontein High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "Saint Annes Technical High School", t2: "Moroka High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "HTS Louis Botha", t2: "Curro Bloemfontein", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Virginia High School", t2: "Hodisa Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "Saint Annes Technical High School", t2: "Brebner High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "Moroka High School", t2: "Bloemfontein High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Virginia High School", t2: "HTS Louis Botha", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "Hodisa Secondary School", t2: "Curro Bloemfontein", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "Saint Annes Technical High School", t2: "Bloemfontein High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Brebner High School", t2: "Moroka High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Virginia High School", t2: "Curro Bloemfontein", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "HTS Louis Botha", t2: "Hodisa Secondary School", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "Limpopo": {
+            pools: {
+                "Pool A": [
+                    {name: "Flora Park High School", seed: 1},
+                    {name: "Capricorn High School", seed: 4},
+                    {name: "Sebitja Secondary School", seed: 5},
+                    {name: "Louis Trichardt High School", seed: 8}
+                ],
+                "Pool B": [
+                    {name: "Westenburg High School", seed: 2},
+                    {name: "Taxila Secondary School", seed: 3},
+                    {name: "The Future Comprehensive School", seed: 6},
+                    {name: "HTS Tom Naude", seed: 7}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Capricorn High School", t2: "Louis Trichardt High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "Flora Park High School", t2: "Sebitja Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "Taxila Secondary School", t2: "HTS Tom Naude", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Westenburg High School", t2: "The Future Comprehensive School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "Flora Park High School", t2: "Capricorn High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "Sebitja Secondary School", t2: "Louis Trichardt High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Westenburg High School", t2: "Taxila Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "The Future Comprehensive School", t2: "HTS Tom Naude", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "Flora Park High School", t2: "Louis Trichardt High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Capricorn High School", t2: "Sebitja Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Westenburg High School", t2: "HTS Tom Naude", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "Taxila Secondary School", t2: "The Future Comprehensive School", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "Mpumalanga": {
+            pools: {
+                "Pool A": [
+                    {name: "St Mark's International School", seed: 1},
+                    {name: "Meridian Karino", seed: 4},
+                    {name: "Beacon College", seed: 5},
+                    {name: "Curro Nelspruit", seed: 8}
+                ],
+                "Pool B": [
+                    {name: "Barberton High School", seed: 2},
+                    {name: "Lowveld High School", seed: 3},
+                    {name: "Curro Mbombela", seed: 6},
+                    {name: "Portia Shabangu Secondary School", seed: 7}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Meridian Karino", t2: "Curro Nelspruit", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "St Mark's International School", t2: "Beacon College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "Lowveld High School", t2: "Portia Shabangu Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Barberton High School", t2: "Curro Mbombela", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "St Mark's International School", t2: "Meridian Karino", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "Beacon College", t2: "Curro Nelspruit", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Barberton High School", t2: "Lowveld High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "Curro Mbombela", t2: "Portia Shabangu Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "St Mark's International School", t2: "Curro Nelspruit", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Meridian Karino", t2: "Beacon College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Barberton High School", t2: "Portia Shabangu Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "Lowveld High School", t2: "Curro Mbombela", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "Gauteng 3": {
+            pools: {
+                "Pool A": [
+                    {name: "Curro Soshanguve", seed: 3},
+                    {name: "Randfontein High", seed: 10},
+                    {name: "CBC Mount Edmund", seed: 15},
+                    {name: "Curro Serengeti", seed: 22}
+                ],
+                "Pool B": [
+                    {name: "Curro Wilgeheuwel", seed: 6},
+                    {name: "Waterstone College", seed: 7},
+                    {name: "Steyn City School", seed: 18},
+                    {name: "Woodhill College", seed: 19}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Randfontein High", t2: "Curro Serengeti", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "Curro Soshanguve", t2: "CBC Mount Edmund", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "Waterstone College", t2: "Woodhill College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Curro Wilgeheuwel", t2: "Steyn City School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "Curro Soshanguve", t2: "Randfontein High", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "CBC Mount Edmund", t2: "Curro Serengeti", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Curro Wilgeheuwel", t2: "Waterstone College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "Steyn City School", t2: "Woodhill College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "Curro Soshanguve", t2: "Curro Serengeti", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Randfontein High", t2: "CBC Mount Edmund", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Curro Wilgeheuwel", t2: "Woodhill College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "Waterstone College", t2: "Steyn City School", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "National Finals": {
+            pools: {},
+            matches: [
+                { d: "Saturday 8 August", t: "09:00", t1: "TBD", t2: "TBD", s1: 0, s2: 0, st: "UPCOMING", type: "Quarter-Final 1" },
+                { d: "Saturday 8 August", t: "10:30", t1: "TBD", t2: "TBD", s1: 0, s2: 0, st: "UPCOMING", type: "Quarter-Final 2" },
+                { d: "Saturday 8 August", t: "12:00", t1: "TBD", t2: "TBD", s1: 0, s2: 0, st: "UPCOMING", type: "Quarter-Final 3" },
+                { d: "Saturday 8 August", t: "13:30", t1: "TBD", t2: "TBD", s1: 0, s2: 0, st: "UPCOMING", type: "Quarter-Final 4" },
+                { d: "Sunday 9 August", t: "10:00", t1: "TBD", t2: "TBD", s1: 0, s2: 0, st: "UPCOMING", type: "Semi-Final 1" },
+                { d: "Sunday 9 August", t: "11:30", t1: "TBD", t2: "TBD", s1: 0, s2: 0, st: "UPCOMING", type: "Semi-Final 2" },
+                { d: "Sunday 9 August", t: "15:00", t1: "TBD", t2: "TBD", s1: 0, s2: 0, st: "UPCOMING", type: "Grand Final" }
+            ],
+            playoffs: []
+        }
+    };
+
+    let tournamentData = JSON.parse(JSON.stringify(DEFAULT_TOURNAMENT_DATA));
+    let activeRegion = Object.keys(tournamentData).filter(r => r !== "National Finals")[0];
+    let activePlayoffRegion = activeRegion;
+    let activeMatchIndex = 0;
+    let activePlayoffIndex = 0;
+    let activeNationalIndex = 0;
+
+    const authSection = document.getElementById('authSection');
+    const editorSection = document.getElementById('editorSection');
+    const passwordInput = document.getElementById('password');
+    const regionSelect = document.getElementById('regionSelect');
+    const matchSelect = document.getElementById('matchSelect');
+    const editStatus = document.getElementById('editStatus');
+    const editTime = document.getElementById('editTime');
+    const editScore1 = document.getElementById('editScore1');
+    const editScore2 = document.getElementById('editScore2');
+    const editTeam1 = document.getElementById('editTeam1');
+    const editTeam2 = document.getElementById('editTeam2');
+    const saveStatus = document.getElementById('saveStatus');
+    const loginForm = document.getElementById('loginForm');
+    const saveButton = document.getElementById('saveButton');
+    const resetButton = document.getElementById('resetButton');
+    const recoverButton = document.getElementById('recoverButton');
+    const playoffRegionSelect = document.getElementById('playoffRegionSelect');
+    const playoffSelect = document.getElementById('playoffSelect');
+    const playoffStatus = document.getElementById('playoffStatus');
+    const playoffType = document.getElementById('playoffType');
+    const playoffDate = document.getElementById('playoffDate');
+    const playoffTime = document.getElementById('playoffTime');
+    const playoffTeam1 = document.getElementById('playoffTeam1');
+    const playoffTeam2 = document.getElementById('playoffTeam2');
+    const playoffScore1 = document.getElementById('playoffScore1');
+    const playoffScore2 = document.getElementById('playoffScore2');
+    const savePlayoffButton = document.getElementById('savePlayoffButton');
+    const addPlayoffButton = document.getElementById('addPlayoffButton');
+    const deletePlayoffButton = document.getElementById('deletePlayoffButton');
+    const playoffSaveStatus = document.getElementById('playoffSaveStatus');
+    
+    const nationalSelect = document.getElementById('nationalSelect');
+    const nationalStatus = document.getElementById('nationalStatus');
+    const nationalDate = document.getElementById('nationalDate');
+    const nationalTime = document.getElementById('nationalTime');
+    const nationalTeam1 = document.getElementById('nationalTeam1');
+    const nationalTeam2 = document.getElementById('nationalTeam2');
+    const nationalScore1 = document.getElementById('nationalScore1');
+    const nationalScore2 = document.getElementById('nationalScore2');
+    const saveNationalButton = document.getElementById('saveNationalButton');
+    const addNationalButton = document.getElementById('addNationalButton');
+    const deleteNationalButton = document.getElementById('deleteNationalButton');
+    const nationalSaveStatus = document.getElementById('nationalSaveStatus');
+
+    async function loadSavedData() {
+        try {
+            // Fetch data from a central server instead of localStorage
+            const response = await fetch('/api/get-data', { cache: 'no-store' });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const saved = await response.json();
+            
+            // Merge fetched data with default data structure
+            Object.keys(saved).forEach(region => {
+                if (tournamentData[region]) {
+                    if (saved[region].matches) {
+                        tournamentData[region].matches = saved[region].matches;
+                        tournamentData[region].matches.forEach(m => {
+                            if (m.t1 === "Paul Roos Gimnasium" || m.t1 === "Reddam Constantia") m.t1 = "Reddam House Constantia";
+                            if (m.t2 === "Paul Roos Gimnasium" || m.t2 === "Reddam Constantia") m.t2 = "Reddam House Constantia";
+                            if (m.t1 === "Pinetown Boy's High School" || m.t1 === "Pinetown Boys' High School") m.t1 = "Pinetown Boys High School";
+                            if (m.t2 === "Pinetown Boy's High School" || m.t2 === "Pinetown Boys' High School") m.t2 = "Pinetown Boys High School";
+                            if (m.t1 === "Saint Annes Technical") m.t1 = "Saint Annes Technical High School";
+                            if (m.t2 === "Saint Annes Technical") m.t2 = "Saint Annes Technical High School";
+                        });
+                    }
+                    if (saved[region].playoffs) {
+                        tournamentData[region].playoffs = saved[region].playoffs;
+                    } else if (tournamentData[region].pools && tournamentData[region].matches) {
+                        tournamentData[region].playoffs = generateDefaultPlayoffFixtures(tournamentData[region]);
+                    }
+                    updatePlayoffsFromStandings(tournamentData[region]);
+                }
+            });
+            saveData().catch(e => console.error("Initial auto-save failed", e));
+        } catch (err) {
+            console.error('Unable to load tournament data from server. Using default data.', err);
+            // Fallback to default data if server is unavailable
+        }
+    }
+
+    async function saveData() {
+        try {
+            const response = await fetch('/api/save-data', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(tournamentData),
+            });
+            if (!response.ok) {
+                let errorMsg = `HTTP error! status: ${response.status}`;
+                try {
+                    const errJson = await response.json();
+                    if (errJson && errJson.message) errorMsg += ' - ' + errJson.message;
+                } catch {}
+                throw new Error(errorMsg);
+            }
+        } catch (error) {
+            console.error('Error saving data to server:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Calculates official standings (points and GD) for a region based on FINAL match results.
+     * This function modifies the regionData object directly.
+     * @param {object} regionData - The full data object for a single region.
+     */
+    function calculateStandings(regionData) {
+        const pools = regionData.pools;
+        const matches = regionData.matches;
+
+        // 1. Reset all pool stats
+        for (const poolName in pools) {
+            pools[poolName].forEach(team => {
+                team.points = 0;
+                team.gd = 0;
+            });
+        }
+
+        // 2. Create a quick-lookup map of all teams
+        const allTeams = {};
+        for (const poolName in pools) {
+            pools[poolName].forEach(team => {
+                allTeams[team.name] = team;
+            });
+        }
+
+        // 3. Iterate through FINAL matches only to calculate official points
+        const finishedMatches = matches.filter(m => m.st === 'FINAL');
+
+        finishedMatches.forEach(match => {
+            const score1 = match.s1;
+            const score2 = match.s2;
+            const team1 = allTeams[match.t1];
+            const team2 = allTeams[match.t2];
+
+            if (team1 && team2) {
+                team1.gd += score1 - score2;
+                team2.gd += score2 - score1;
+
+                if (score1 > score2) { team1.points += 3; } // Corrected: 3 points for a win
+                else if (score2 > score1) { team2.points += 3; } // Corrected: 3 points for a win
+                else { team1.points += 1; team2.points += 1; }
+            }
+        });
+    }
+
+    function updatePlayoffsFromStandings(regionData) {
+        if (!regionData || !regionData.pools || !regionData.pools["Pool A"] || !regionData.pools["Pool B"]) return;
+
+        const poolsCopy = JSON.parse(JSON.stringify(regionData.pools));
+        calculateStandings({ pools: poolsCopy, matches: regionData.matches || [] });
+
+        const poolA = (poolsCopy['Pool A'] || []).slice().sort((a, b) => (b.points - a.points) || (b.gd - a.gd) || a.name.localeCompare(b.name));
+        const poolB = (poolsCopy['Pool B'] || []).slice().sort((a, b) => (b.points - a.points) || (b.gd - a.gd) || a.name.localeCompare(b.name));
+        if (poolA.length < 2 || poolB.length < 2) return [];
+
+        return [
+            { d: 'Saturday 23 May', t: '09:00', t1: poolA[0].name, t2: poolB[1].name, s1: null, s2: null, st: 'UPCOMING', type: 'Semi-Final 1' },
+            { d: 'Saturday 23 May', t: '10:30', t1: poolB[0].name, t2: poolA[1].name, s1: null, s2: null, st: 'UPCOMING', type: 'Semi-Final 2' },
+            { d: 'Saturday 23 May', t: '14:00', t1: 'Loser Match 13', t2: 'Loser Match 14', s1: null, s2: null, st: 'UPCOMING', type: '3rd Place' },
+            { d: 'Saturday 23 May', t: '15:30', t1: 'Winner Match 13', t2: 'Winner Match 14', s1: null, s2: null, st: 'UPCOMING', type: 'Final' }
+        ];
+    }
+
+    function generateDefaultPlayoffFixtures(regionData) {
+        if (!regionData || !regionData.pools || !regionData.matches) return [];
+
+        const poolsCopy = JSON.parse(JSON.stringify(regionData.pools));
+        const standingsData = { pools: poolsCopy, matches: regionData.matches || [] };
+        calculateStandings(standingsData);
+
+        const poolA = (poolsCopy['Pool A'] || []).slice().sort((a, b) => (b.points - a.points) || (b.gd - a.gd) || a.name.localeCompare(b.name));
+        const poolB = (poolsCopy['Pool B'] || []).slice().sort((a, b) => (b.points - a.points) || (b.gd - a.gd) || a.name.localeCompare(b.name));
+        if (poolA.length < 2 || poolB.length < 2) return [];
+
+        return [
+            { d: 'Saturday 23 May', t: '09:00', t1: poolA[0].name, t2: poolB[1].name, s1: null, s2: null, st: 'UPCOMING', type: 'Semi-Final 1' },
+            { d: 'Saturday 23 May', t: '10:30', t1: poolB[0].name, t2: poolA[1].name, s1: null, s2: null, st: 'UPCOMING', type: 'Semi-Final 2' },
+            { d: 'Saturday 23 May', t: '14:00', t1: 'Loser Match 13', t2: 'Loser Match 14', s1: null, s2: null, st: 'UPCOMING', type: '3rd Place' },
+            { d: 'Saturday 23 May', t: '15:30', t1: 'Winner Match 13', t2: 'Winner Match 14', s1: null, s2: null, st: 'UPCOMING', type: 'Final' }
+        ];
+    }
+
+    function setSaveStatus(message, success = true) {
+        saveStatus.textContent = message;
+        saveStatus.style.background = success ? '#eef8f4' : '#ffe8e8';
+        saveStatus.style.color = success ? '#0f5a30' : '#8f1a1a';
+    }
+
+    function populateRegionOptions() {
+        const regions = Object.keys(tournamentData).filter(r => r !== "National Finals");
+        regionSelect.innerHTML = regions.map(region =>
+            `<option value="${region}">${region}</option>`
+        ).join('');
+        regionSelect.value = activeRegion;
+        
+        playoffRegionSelect.innerHTML = regions.map(region =>
+            `<option value="${region}">${region}</option>`
+        ).join('');
+        playoffRegionSelect.value = activePlayoffRegion;
+        
+        populateMatchOptions();
+        populatePlayoffOptions();
+        populateNationalOptions();
+    }
+
+    function populateMatchOptions() {
+        const matches = tournamentData[activeRegion].matches;
+        matchSelect.innerHTML = matches.map((match, index) =>
+            `<option value="${index}">${match.d} ${match.t} — ${match.t1} vs ${match.t2}</option>`
+        ).join('');
+        if (activeMatchIndex >= matches.length) {
+            activeMatchIndex = 0;
+        }
+        matchSelect.value = activeMatchIndex;
+        fillEditorForm();
+    }
+
+    function fillEditorForm() {
+        const match = tournamentData[activeRegion].matches[activeMatchIndex];
+        editStatus.value = match.st || 'UPCOMING';
+        editTime.value = match.t || '';
+        editScore1.value = match.s1 != null ? match.s1 : '';
+        editScore2.value = match.s2 != null ? match.s2 : '';
+        editTeam1.value = match.t1 || '';
+        editTeam2.value = match.t2 || '';
+        setSaveStatus('Loaded current match details.');
+    }
+
+    function populatePlayoffOptions() {
+        const regionData = tournamentData[activePlayoffRegion];
+        regionData.playoffs = regionData.playoffs || generateDefaultPlayoffFixtures(regionData);
+        playoffSelect.innerHTML = regionData.playoffs.length > 0
+            ? regionData.playoffs.map((fixture, index) =>
+                `<option value="${index}">${fixture.d || 'TBD'} ${fixture.t || 'TBD'} — ${fixture.t1 || 'TBD'} vs ${fixture.t2 || 'TBD'}</option>`
+            ).join('')
+            : `<option value="0">No playoff fixtures yet</option>`;
+        if (activePlayoffIndex >= regionData.playoffs.length) {
+            activePlayoffIndex = 0;
+        }
+        playoffSelect.value = activePlayoffIndex;
+        fillPlayoffForm();
+    }
+
+    function fillPlayoffForm() {
+        const regionData = tournamentData[activePlayoffRegion];
+        const fixture = (regionData.playoffs || [])[activePlayoffIndex];
+        if (fixture) {
+            playoffStatus.value = fixture.st || 'UPCOMING';
+            playoffType.value = fixture.type || '';
+            playoffDate.value = fixture.d || '';
+            playoffTime.value = fixture.t || '';
+
+            // Build smart dropdown list based on current region's QUALIFIED teams
+            let options = [];
+            if (regionData && regionData.pools) {
+                const poolsCopy = JSON.parse(JSON.stringify(regionData.pools));
+                calculateStandings({ pools: poolsCopy, matches: regionData.matches || [] });
+                
+                const poolA = (poolsCopy['Pool A'] || []).slice().sort((a, b) => (b.points - a.points) || (b.gd - a.gd) || a.name.localeCompare(b.name));
+                const poolB = (poolsCopy['Pool B'] || []).slice().sort((a, b) => (b.points - a.points) || (b.gd - a.gd) || a.name.localeCompare(b.name));
+                
+                if (poolA[0]) options.push(poolA[0].name);
+                if (poolA[1]) options.push(poolA[1].name);
+                if (poolB[0]) options.push(poolB[0].name);
+                if (poolB[1]) options.push(poolB[1].name);
+            }
+            
+            if (regionData && regionData.playoffs) {
+                regionData.playoffs.forEach(m => {
+                    const outcome = getMatchOutcome(m);
+                    if (outcome) {
+                        options.push(outcome.winner);
+                        options.push(outcome.loser);
+                    }
+                });
+            }
+            options.push("TBD", "1st Pool A", "2nd Pool B", "1st Pool B", "2nd Pool A", "Winner Match 13", "Winner Match 14", "Loser Match 13", "Loser Match 14");
+            options = [...new Set(options)];
+
+            function populateSelect(selectId, currentValue) {
+                const el = document.getElementById(selectId);
+                let hasValue = false;
+                el.innerHTML = options.map(opt => {
+                    const selected = (opt === currentValue) ? 'selected' : '';
+                    if (selected) hasValue = true;
+                    return `<option value="${opt}" ${selected}>${opt}</option>`;
+                }).join('');
+                if (!hasValue && currentValue) el.innerHTML += `<option value="${currentValue}" selected>${currentValue}</option>`;
+            }
+            
+            populateSelect('playoffTeam1', fixture.t1 || '');
+            populateSelect('playoffTeam2', fixture.t2 || '');
+            playoffScore1.value = fixture.s1 != null ? fixture.s1 : '';
+            playoffScore2.value = fixture.s2 != null ? fixture.s2 : '';
+            document.getElementById('playoffPenalties1').value = fixture.ps1 != null ? fixture.ps1 : '';
+            document.getElementById('playoffPenalties2').value = fixture.ps2 != null ? fixture.ps2 : '';
+            setPlayoffStatus('Loaded current playoff fixture.');
+        } else {
+            playoffStatus.value = 'UPCOMING';
+            playoffType.value = '';
+            playoffDate.value = '';
+            playoffTime.value = '';
+            document.getElementById('playoffTeam1').innerHTML = '';
+            document.getElementById('playoffTeam2').innerHTML = '';
+            playoffScore1.value = '';
+            playoffScore2.value = '';
+            document.getElementById('playoffPenalties1').value = '';
+            document.getElementById('playoffPenalties2').value = '';
+            setPlayoffStatus('No playoff fixture selected yet.', false);
+        }
+    }
+
+    function changePlayoffRegion() {
+        activePlayoffRegion = playoffRegionSelect.value;
+        activePlayoffIndex = 0;
+        populatePlayoffOptions();
+    }
+
+    function changePlayoff() {
+        activePlayoffIndex = parseInt(playoffSelect.value, 10) || 0;
+        fillPlayoffForm();
+    }
+
+    function setPlayoffStatus(message, success = true) {
+        playoffSaveStatus.textContent = message;
+        playoffSaveStatus.style.background = success ? '#eef8f4' : '#ffe8e8';
+        playoffSaveStatus.style.color = success ? '#0f5a30' : '#8f1a1a';
+    }
+
+    function getMatchOutcome(match) {
+        if (!match || match.st !== 'FINAL' || match.s1 == null || match.s2 == null) return null;
+        if (match.s1 === match.s2) {
+            if (match.ps1 != null && match.ps2 != null && match.ps1 !== match.ps2) {
+                return match.ps1 > match.ps2
+                    ? { winner: match.t1, loser: match.t2 }
+                    : { winner: match.t2, loser: match.t1 };
+            }
+            return null; // No clear winner/loser in a draw
+        }
+        return match.s1 > match.s2
+            ? { winner: match.t1, loser: match.t2 }
+            : { winner: match.t2, loser: match.t1 };
+    }
+
+    function normalizeTeamName(name) {
+        return (name || '').replace(/['\s]/g, '').toLowerCase();
+    }
+
+    function isPlayoffPlaceholder(teamName) {
+        const normalized = normalizeTeamName(teamName);
+        return normalized.startsWith('winnerm') || normalized.startsWith('loserm');
+    }
+
+    async function handlePlayoffSave() {
+        try {
+            const regionData = tournamentData[activePlayoffRegion];
+            regionData.playoffs = regionData.playoffs || [];
+            let fixture = regionData.playoffs[activePlayoffIndex];
+            if (!fixture) {
+                fixture = { d: '', t: '', t1: '', t2: '', s1: 0, s2: 0, st: 'UPCOMING' };
+                regionData.playoffs.push(fixture);
+                activePlayoffIndex = regionData.playoffs.length - 1;
+            }
+            fixture.st = playoffStatus.value;
+            fixture.type = playoffType.value.trim();
+            fixture.d = playoffDate.value.trim();
+            fixture.t = playoffTime.value.trim();
+            fixture.t1 = document.getElementById('playoffTeam1').value.trim();
+            fixture.t2 = document.getElementById('playoffTeam2').value.trim();
+            fixture.s1 = playoffScore1.value !== '' ? Number(playoffScore1.value) : null;
+            fixture.s2 = playoffScore2.value !== '' ? Number(playoffScore2.value) : null;
+
+            const pPen1 = document.getElementById('playoffPenalties1').value;
+            const pPen2 = document.getElementById('playoffPenalties2').value;
+            fixture.ps1 = pPen1 !== '' ? Number(pPen1) : null;
+            fixture.ps2 = pPen2 !== '' ? Number(pPen2) : null;
+
+            // Auto-update subsequent playoff matches if this one is final and has an outcome
+            if (fixture.st === 'FINAL' && fixture.s1 != null && fixture.s2 != null && regionData.playoffs) {
+                const currentMatchId = activePlayoffIndex + 13; // Playoff matches start from 13
+                const outcome = getMatchOutcome(fixture);
+
+                if (outcome) {
+                    for (let i = 0; i < regionData.playoffs.length; i++) {
+                        if (i === activePlayoffIndex) continue; // Don't update self
+
+                        const subsequentMatch = regionData.playoffs[i];
+
+                        // Check home team for placeholder
+                        const t1Placeholder = `Winner Match ${currentMatchId}`;
+                        const t1LoserPlaceholder = `Loser Match ${currentMatchId}`;
+                        if (normalizeTeamName(subsequentMatch.t1) === normalizeTeamName(t1Placeholder)) {
+                            subsequentMatch.t1 = outcome.winner;
+                            console.log(`Updated T1 of Match ${i+13} to winner: ${outcome.winner}`);
+                        } else if (normalizeTeamName(subsequentMatch.t1) === normalizeTeamName(t1LoserPlaceholder)) {
+                            subsequentMatch.t1 = outcome.loser;
+                            console.log(`Updated T1 of Match ${i+13} to loser: ${outcome.loser}`);
+                        }
+
+                        // Check away team for placeholder
+                        const t2Placeholder = `Winner Match ${currentMatchId}`;
+                        const t2LoserPlaceholder = `Loser Match ${currentMatchId}`;
+                        if (normalizeTeamName(subsequentMatch.t2) === normalizeTeamName(t2Placeholder)) {
+                            subsequentMatch.t2 = outcome.winner;
+                            console.log(`Updated T2 of Match ${i+13} to winner: ${outcome.winner}`);
+                        } else if (normalizeTeamName(subsequentMatch.t2) === normalizeTeamName(t2LoserPlaceholder)) {
+                            subsequentMatch.t2 = outcome.loser;
+                            console.log(`Updated T2 of Match ${i+13} to loser: ${outcome.loser}`);
+                        }
+                    }
+                }
+            }
+            await saveData();
+            populatePlayoffOptions();
+            populateNationalOptions();
+            setPlayoffStatus('Playoff fixture saved successfully. Refresh public page.');
+        } catch (error) {
+            setPlayoffStatus('Error saving playoff fixture.', false);
+        }
+    }
+
+    function handlePlayoffAdd() {
+        const regionData = tournamentData[activePlayoffRegion];
+        regionData.playoffs = regionData.playoffs || [];
+        regionData.playoffs.push({ d: 'TBD', t: '00:00', t1: '', t2: '', s1: 0, s2: 0, st: 'UPCOMING' });
+        activePlayoffIndex = regionData.playoffs.length - 1;
+        populatePlayoffOptions();
+        setPlayoffStatus('New playoff fixture added. Edit details and save.');
+    }
+
+    async function handlePlayoffDelete() {
+        const regionData = tournamentData[activePlayoffRegion];
+        if (!regionData.playoffs || !regionData.playoffs.length) {
+            return setPlayoffStatus('No playoff fixture to delete.', false);
+        }
+        if (!confirm('Delete this playoff fixture?')) return;
+        regionData.playoffs.splice(activePlayoffIndex, 1);
+        if (activePlayoffIndex >= regionData.playoffs.length) {
+            activePlayoffIndex = Math.max(0, regionData.playoffs.length - 1);
+        }
+        try {
+            await saveData();
+            populatePlayoffOptions();
+            setPlayoffStatus('Playoff fixture deleted.');
+        } catch (error) {
+            setPlayoffStatus('Error deleting playoff fixture.', false);
+        }
+    }
+
+    function populateQualifiedTeamsList() {
+        const list = document.getElementById('qualifiedTeamsList');
+        if (!list) return;
+        let options = [];
+        Object.keys(tournamentData).forEach(region => {
+            if (region === 'National Finals') return;
+            const rData = tournamentData[region];
+            if (rData && rData.playoffs && rData.playoffs.length >= 4) {
+                const finalMatch = rData.playoffs[3];
+                const outcome = getMatchOutcome(finalMatch);
+                if (outcome) {
+                    options.push(outcome.winner);
+                    options.push(outcome.loser);
+                }
+            }
+        });
+        options = [...new Set(options)];
+        list.innerHTML = options.map(o => `<option value="${o}"></option>`).join('');
+    }
+
+    // --- National Finals Logic ---
+    function populateNationalOptions() {
+        populateQualifiedTeamsList();
+        const nationalData = tournamentData["National Finals"];
+        if (!nationalData) return;
+        const matches = nationalData.matches || [];
+        nationalSelect.innerHTML = matches.length > 0
+            ? matches.map((match, index) =>
+                `<option value="${index}">${match.d || 'TBD'} ${match.t || 'TBD'} — ${match.t1 || 'TBD'} vs ${match.t2 || 'TBD'}</option>`
+            ).join('')
+            : `<option value="0">No National fixtures yet</option>`;
+        if (activeNationalIndex >= matches.length) {
+            activeNationalIndex = 0;
+        }
+        nationalSelect.value = activeNationalIndex;
+        fillNationalForm();
+    }
+
+    function fillNationalForm() {
+        const nationalData = tournamentData["National Finals"];
+        const fixture = (nationalData.matches || [])[activeNationalIndex];
+        if (fixture) {
+            nationalStatus.value = fixture.st || 'UPCOMING';
+            nationalDate.value = fixture.d || '';
+            nationalTime.value = fixture.t || '';
+
+            let options = [];
+            const qList = document.getElementById('qualifiedTeamsList');
+            if (qList) {
+                options = Array.from(qList.options).map(o => o.value);
+            }
+            options.push("TBD", "Winner SF1", "Winner SF2", "Loser SF1", "Loser SF2");
+            options = [...new Set(options)];
+
+            function popSel(id, val) {
+                const el = document.getElementById(id);
+                let hasVal = false;
+                el.innerHTML = options.map(opt => { const sel = opt === val ? 'selected' : ''; if(sel) hasVal = true; return `<option value="${opt}" ${sel}>${opt}</option>`; }).join('');
+                if (!hasVal && val) el.innerHTML += `<option value="${val}" selected>${val}</option>`;
+            }
+            popSel('nationalTeam1', fixture.t1 || '');
+            popSel('nationalTeam2', fixture.t2 || '');
+
+            nationalScore1.value = fixture.s1 != null ? fixture.s1 : '';
+            nationalScore2.value = fixture.s2 != null ? fixture.s2 : '';
+            document.getElementById('nationalPenalties1').value = fixture.ps1 != null ? fixture.ps1 : '';
+            document.getElementById('nationalPenalties2').value = fixture.ps2 != null ? fixture.ps2 : '';
+            setNationalStatus('Loaded current National fixture.');
+        } else {
+            nationalStatus.value = 'UPCOMING';
+            nationalDate.value = '';
+            nationalTime.value = '';
+            document.getElementById('nationalTeam1').innerHTML = '';
+            document.getElementById('nationalTeam2').innerHTML = '';
+            nationalScore1.value = '';
+            nationalScore2.value = '';
+            document.getElementById('nationalPenalties1').value = '';
+            document.getElementById('nationalPenalties2').value = '';
+            setNationalStatus('No National fixture selected.', false);
+        }
+    }
+
+    function changeNational() {
+        activeNationalIndex = parseInt(nationalSelect.value, 10) || 0;
+        fillNationalForm();
+    }
+
+    function setNationalStatus(message, success = true) {
+        nationalSaveStatus.textContent = message;
+        nationalSaveStatus.style.background = success ? '#eef8f4' : '#ffe8e8';
+        nationalSaveStatus.style.color = success ? '#0f5a30' : '#8f1a1a';
+    }
+
+    async function handleNationalSave() {
+        try {
+            const nationalData = tournamentData["National Finals"];
+            nationalData.matches = nationalData.matches || [];
+            let fixture = nationalData.matches[activeNationalIndex];
+            if (!fixture) {
+                fixture = { d: '', t: '', t1: '', t2: '', s1: 0, s2: 0, st: 'UPCOMING' };
+                nationalData.matches.push(fixture);
+                activeNationalIndex = nationalData.matches.length - 1;
+            }
+            fixture.st = nationalStatus.value;
+            fixture.d = nationalDate.value.trim();
+            fixture.t = nationalTime.value.trim();
+            fixture.t1 = document.getElementById('nationalTeam1').value.trim();
+            fixture.t2 = document.getElementById('nationalTeam2').value.trim();
+            fixture.s1 = nationalScore1.value !== '' ? Number(nationalScore1.value) : null;
+            fixture.s2 = nationalScore2.value !== '' ? Number(nationalScore2.value) : null;
+
+            const nPen1 = document.getElementById('nationalPenalties1').value;
+            const nPen2 = document.getElementById('nationalPenalties2').value;
+            fixture.ps1 = nPen1 !== '' ? Number(nPen1) : null;
+            fixture.ps2 = nPen2 !== '' ? Number(nPen2) : null;
+
+            await saveData();
+            populateNationalOptions();
+            setNationalStatus('National fixture saved successfully. Refresh public page.');
+        } catch (error) {
+            setNationalStatus('Error saving National fixture.', false);
+        }
+    }
+
+    function handleNationalAdd() {
+        const nationalData = tournamentData["National Finals"];
+        nationalData.matches = nationalData.matches || [];
+        nationalData.matches.push({ d: 'TBD', t: '00:00', t1: '', t2: '', s1: 0, s2: 0, st: 'UPCOMING' });
+        activeNationalIndex = nationalData.matches.length - 1;
+        populateNationalOptions();
+        setNationalStatus('New National fixture added. Edit details and save.');
+    }
+
+    async function handleNationalDelete() {
+        const nationalData = tournamentData["National Finals"];
+        if (!nationalData.matches || !nationalData.matches.length) return;
+        if (!confirm('Delete this National fixture?')) return;
+        nationalData.matches.splice(activeNationalIndex, 1);
+        if (activeNationalIndex >= nationalData.matches.length) {
+            activeNationalIndex = Math.max(0, nationalData.matches.length - 1);
+        }
+        try {
+            await saveData();
+            populateNationalOptions();
+            setNationalStatus('National fixture deleted.');
+        } catch (error) {
+            setNationalStatus('Error deleting National fixture.', false);
+        }
+    }
+
+    function changeRegion() {
+        activeRegion = regionSelect.value;
+        activeMatchIndex = 0;
+        populateMatchOptions();
+    }
+
+    function changeMatch() {
+        activeMatchIndex = parseInt(matchSelect.value, 10) || 0;
+        fillEditorForm();
+    }
+
+    function showLogin() {
+        authSection.classList.remove('hidden');
+        editorSection.classList.add('hidden');
+    }
+
+    function showEditor() {
+        authSection.classList.add('hidden');
+        editorSection.classList.remove('hidden');
+        regionSelect.value = activeRegion;
+        populateMatchOptions();
+    }
+
+    function handleLogin(event) {
+        event.preventDefault();
+        const value = passwordInput.value.trim();
+        const loginError = document.getElementById('loginError');
+        if (value === EDIT_PASSWORD) {
+            loginError.style.display = 'none';
+            sessionStorage.setItem(AUTH_FLAG, 'true');
+            passwordInput.value = '';
+            showEditor();
+        } else {
+            loginError.textContent = 'Incorrect password. Please try again.';
+            loginError.style.display = 'block';
+            passwordInput.focus();
+        }
+    }
+
+    async function handleSave() {
+        try {
+            const match = tournamentData[activeRegion].matches[activeMatchIndex];
+            match.st = editStatus.value;
+            match.t = editTime.value.trim() || match.t;
+            match.s1 = Number(editScore1.value || 0);
+            match.s2 = Number(editScore2.value || 0);
+            
+            const editPenalties1 = document.getElementById('editPenalties1');
+            const editPenalties2 = document.getElementById('editPenalties2');
+            match.ps1 = (editPenalties1 && editPenalties1.value !== '') ? Number(editPenalties1.value) : null;
+            match.ps2 = (editPenalties2 && editPenalties2.value !== '') ? Number(editPenalties2.value) : null;
+            match.t1 = editTeam1.value.trim() || match.t1;
+            match.t2 = editTeam2.value.trim() || match.t2;
+
+            // Recalculate official standings for the entire region before saving
+            calculateStandings(tournamentData[activeRegion]);
+            updatePlayoffsFromStandings(tournamentData[activeRegion]);
+
+            await saveData();
+            populateMatchOptions(); // Repopulate to reflect any potential name changes
+            populatePlayoffOptions(); // Refresh playoff selections based on new standings
+            populateNationalOptions(); // Refresh national options
+            setSaveStatus('Saved to server successfully. Refresh public page.');
+        } catch (error) {
+            let msg = 'Error saving to server!';
+            if (error && error.message) {
+                msg += ' ' + error.message;
+            }
+            setSaveStatus(msg, false);
+            alert(msg);
+        }
+    }
+
+    async function handleReset() {
+        if (confirm("Are you sure you want to reset ALL tournament data back to defaults? This will overwrite the live database and cannot be undone.")) {
+            tournamentData = JSON.parse(JSON.stringify(DEFAULT_TOURNAMENT_DATA));
+            try {
+                await saveData();
+                populateRegionOptions(); // Reloads the UI with the fresh defaults
+                setSaveStatus('Database reset to defaults successfully.');
+            } catch (error) {
+                setSaveStatus('Error resetting database to server!', false);
+            }
+        }
+    }
+
+    async function handleRecover() {
+        if (!confirm("This will scan your browser's local storage for missing results and merge them into the server. Proceed?")) return;
+        
+        try {
+            let recoveredCount = 0;
+            const keys = ['sasfa-tournament-data', 'halala-cup-data'];
+            
+            keys.forEach(key => {
+                const localStr = localStorage.getItem(key);
+                if (localStr) {
+                    const localData = JSON.parse(localStr);
+                    Object.keys(localData).forEach(region => {
+                        if (tournamentData[region] && localData[region].matches) {
+                            localData[region].matches.forEach((localMatch, idx) => {
+                                if ((localMatch.st === 'FINAL' || localMatch.st === 'LIVE') && tournamentData[region].matches[idx]) {
+                                    if (tournamentData[region].matches[idx].st === 'UPCOMING') {
+                                        tournamentData[region].matches[idx] = { ...localMatch };
+                                        recoveredCount++;
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+
+            if (recoveredCount > 0) {
+                await saveData();
+                populateMatchOptions();
+                setSaveStatus(`Recovered ${recoveredCount} matches! Refresh public page.`);
+                alert(`Successfully recovered ${recoveredCount} missing matches from your browser's cache!`);
+            } else {
+                setSaveStatus('No new results found in local cache.', false);
+                alert("No missing results were found in your browser's local storage.");
+            }
+        } catch (error) {
+            console.error(error);
+            setSaveStatus('Error recovering data.', false);
+        }
+    }
+
+    loginForm.addEventListener('submit', handleLogin);
+    saveButton.addEventListener('click', handleSave);
+    savePlayoffButton.addEventListener('click', handlePlayoffSave);
+    addPlayoffButton.addEventListener('click', handlePlayoffAdd);
+    deletePlayoffButton.addEventListener('click', handlePlayoffDelete);
+    resetButton.addEventListener('click', handleReset);
+    recoverButton.addEventListener('click', handleRecover);
+    regionSelect.addEventListener('change', changeRegion);
+    matchSelect.addEventListener('change', changeMatch);
+    playoffRegionSelect.addEventListener('change', changePlayoffRegion);
+    playoffSelect.addEventListener('change', changePlayoff);
+    nationalSelect.addEventListener('change', changeNational);
+    saveNationalButton.addEventListener('click', handleNationalSave);
+    addNationalButton.addEventListener('click', handleNationalAdd);
+    deleteNationalButton.addEventListener('click', handleNationalDelete);
+    (async () => {
+        await loadSavedData();
+        if (sessionStorage.getItem(AUTH_FLAG) === 'true') {
+            showEditor();
+        } else {
+            showLogin();
+        }
+        populateRegionOptions();
+    })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "sasfa",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1",
+    "express": "^4.21.2"
+  }
+}

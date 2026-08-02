@@ -1,0 +1,2117 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SASFA | School Tournaments</title>
+    <meta name="description" content="The official home of South African Schools Football. Discover tournaments, track live results, and support the next generation of football stars.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.sasfa.co.za/">
+    <meta property="og:title" content="SASFA | School Tournaments">
+    <meta property="og:description" content="The official home of South African Schools Football. Discover tournaments, track live results, and support the next generation of football stars.">
+    <meta property="og:image" content="https://www.sasfa.co.za/images/sasfa_logo-removebg-preview.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.sasfa.co.za/">
+    <meta property="twitter:title" content="SASFA | School Tournaments">
+    <meta property="twitter:description" content="The official home of South African Schools Football. Discover tournaments, track live results, and support the next generation of football stars.">
+    <meta property="twitter:image" content="https://www.sasfa.co.za/images/sasfa_logo-removebg-preview.png">
+
+    <link rel="canonical" href="https://www.sasfa.co.za/">
+    <link rel="icon" href="/images/sasfa_logo-removebg-preview.png">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SportsOrganization",
+      "name": "South African Schools Football Association (SASFA)",
+      "url": "https://www.sasfa.co.za/",
+      "logo": "https://www.sasfa.co.za/images/sasfa_logo-removebg-preview.png",
+      "description": "The official home of South African Schools Football. Discover tournaments, track live results, and support the next generation of football stars."
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SportsEvent",
+      "name": "Halala Cup 2026",
+      "startDate": "2026-04-17T09:00:00+02:00",
+      "endDate": "2026-05-23T18:00:00+02:00",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "location": {
+        "@type": "Place",
+        "name": "Various Regions, South Africa",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "ZA"
+        }
+      },
+      "organizer": {
+        "@type": "SportsOrganization",
+        "name": "SASFA"
+      }
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+           SASFA — "Broadcast Graphics" design system
+           Black chrome bars that never flip with theme (like a TV
+           lower-third), one loud neon accent, angled clip-path cuts,
+           Anton display type, mono scoreboard digits.
+           ============================================================ */
+
+        /* --- SASFA (parent org) — Brand palette --- */
+        :root {
+            --ink: #000000;
+            --navy: #000000;
+            --navy-light: #1F0F48;
+            --lime: #C6FF33;
+            --violet: #7D39EB;
+            --text-main: #FFFFFF;
+            --text-muted: #DCE1FF;
+            --border: rgba(198, 255, 51, 0.16);
+            --bg: #000000;
+            --white: #FFFFFF;
+            --live: #C6FF33;
+            --card-bg-solid: rgba(255, 255, 255, 0.06);
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --frosted-border: rgba(198, 255, 51, 0.12);
+            --bg-grad-start: rgba(198, 255, 51, 0.06);
+            --bg-grad-end: rgba(125, 57, 235, 0.05);
+        }
+
+        html { scroll-behavior: smooth; scroll-padding-top: 140px; }
+
+        /* --- SASFA — Dark content (keeps the same palette) --- */
+        body[data-theme="dark"] {
+            --ink: #000000;
+            --navy: #000000;
+            --navy-light: #1F0F48;
+            --lime: #C6FF33;
+            --violet: #7D39EB;
+            --text-main: #FFFFFF;
+            --text-muted: #DCE1FF;
+            --border: rgba(198, 255, 51, 0.16);
+            --bg: #000000;
+            --card-bg-solid: rgba(255, 255, 255, 0.06);
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --frosted-border: rgba(198, 255, 51, 0.12);
+            --bg-grad-start: rgba(198, 255, 51, 0.06);
+            --bg-grad-end: rgba(125, 57, 235, 0.05);
+        }
+
+        /* --- HALALA (sub-tournament) — Light --- */
+        body[data-site="halala"] {
+            --navy: #0A0A0C;
+            --navy-light: #22252E;
+            --lime: #34E0FF;             /* electric cyan for the sub-brand */
+            --text-main: #0A0A0C;
+            --text-muted: #666B76;
+            --border: rgba(10, 10, 12, 0.14);
+            --bg: #F4F4F1;
+            --card-bg-solid: #ffffff;
+            --card-bg: #ffffff;
+            --frosted-border: rgba(10, 10, 12, 0.13);
+            --live: #FF2E3C;
+            --bg-grad-start: rgba(10, 10, 12, 0.05);
+            --bg-grad-end: rgba(10, 10, 12, 0.02);
+        }
+
+        /* --- HALALA — Dark --- */
+        body[data-theme="dark"][data-site="halala"] {
+            --text-main: #EAF6FA;
+            --text-muted: #8B95A0;
+            --border: rgba(234, 246, 250, 0.14);
+            --bg: #06090C;
+            --navy: #EAF6FA;
+            --navy-light: #C4D9E0;
+            --lime: #5CEBFF;
+            --card-bg-solid: #101418;
+            --card-bg: #101418;
+            --frosted-border: rgba(234, 246, 250, 0.1);
+            --live: #FF2E3C;
+            --bg-grad-start: rgba(234, 246, 250, 0.05);
+            --bg-grad-end: rgba(234, 246, 250, 0.02);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            background-image:
+                repeating-linear-gradient(
+                    115deg,
+                    var(--bg-grad-start) 0px,
+                    var(--bg-grad-start) 2px,
+                    transparent 2px,
+                    transparent 64px
+                );
+            color: var(--text-main);
+            transition: background-color 0.3s, color 0.3s;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .display {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.01em;
+            font-weight: 700;
+        }
+
+        /* --- HEADER (fixed broadcast black, never flips) --- */
+        header {
+            background: linear-gradient(90deg, #000000 0%, #1B0030 100%);
+            border-bottom: none;
+            box-shadow: 0 0 0 2px rgba(198,255,51,0.16) inset, 0 3px 0 rgba(125,57,235,0.24);
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            font-size: 1.15rem;
+            letter-spacing: 0.04em;
+            color: #fff;
+        }
+
+        .logo-area img {
+            height: 30px;
+            width: auto;
+        }
+
+        .theme-btn {
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.3);
+            width: 34px;
+            height: 34px;
+            border-radius: 0;
+            clip-path: polygon(0 0, 100% 0, 100% 75%, 75% 100%, 0 100%);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.15s;
+        }
+
+        .theme-btn:hover {
+            border-color: var(--lime);
+            background-color: rgba(203, 255, 61, 0.12);
+        }
+
+        .theme-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: #fff;
+        }
+
+        .theme-btn .sun-icon { display: none; }
+        body[data-theme="dark"] .theme-btn .moon-icon { display: none; }
+        body[data-theme="dark"] .theme-btn .sun-icon { display: block; }
+
+        .watch-live-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background-color: var(--lime);
+            color: var(--ink);
+            text-decoration: none;
+            padding: 9px 16px 9px 14px;
+            clip-path: polygon(10px 0, 100% 0, 100% 100%, 0 100%, 0 10px);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            font-weight: 700;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            transition: filter 0.15s, transform 0.15s;
+        }
+        .watch-live-btn svg { width: 14px; height: 14px; fill: var(--ink); }
+        .watch-live-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+        .live-pulse-dot {
+            width: 7px;
+            height: 7px;
+            background-color: var(--ink);
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+
+        body.is-loading #refresh-btn svg {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- JUMP NAV --- */
+        .jump-nav {
+            background: var(--ink);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            gap: 4px;
+            padding: 0 20px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            justify-content: center;
+            position: sticky;
+            top: 65px;
+            z-index: 90;
+        }
+
+        .jump-nav a {
+            display: inline-block;
+            padding: 13px 18px;
+            font-family: "Anton", sans-serif;
+            font-size: 0.78rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.55);
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            transition: 0.15s;
+            text-decoration: none;
+        }
+
+        .jump-nav a:hover, .jump-nav a:active {
+            color: #fff;
+            border-bottom-color: var(--lime);
+        }
+
+        /* --- FILTER BUTTONS --- */
+        .filters {
+            background: var(--card-bg-solid);
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 2px solid var(--border);
+            padding: 6px 14px;
+            border-radius: 0;
+            font-family: "Anton", sans-serif;
+            font-size: 0.76rem;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--navy);
+        }
+
+        .filter-btn.active {
+            background: var(--navy);
+            color: var(--bg);
+            border-color: var(--navy);
+        }
+
+        .filter-btn.live {
+            background: transparent;
+            color: var(--live);
+            border-color: var(--live);
+        }
+
+        .filter-btn.live.active {
+            background: var(--live);
+            color: #fff;
+            border-color: var(--live);
+        }
+
+        /* --- MAIN CONTAINER --- */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px 16px 60px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 32px;
+            align-items: start;
+        }
+
+        .standings-column {
+            position: sticky;
+            top: 118px;
+        }
+
+        @media (max-width: 820px) {
+            .main-container {
+                max-width: 600px;
+                padding: 16px 16px 60px;
+            }
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            .standings-column {
+                position: static;
+            }
+        }
+
+        /* --- HERO & STATS STRIP --- */
+        .tournament-hero {
+            background: var(--ink);
+            color: #fff;
+            padding: 50px 20px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .tournament-hero::before {
+            content: "";
+            position: absolute;
+            top: -40%; right: -10%;
+            width: 60%; height: 180%;
+            background: var(--lime);
+            opacity: 0.08;
+            transform: skewX(-12deg);
+        }
+        .tournament-hero h1 {
+            font-size: 2.6rem;
+            margin-bottom: 10px;
+            color: #fff;
+            position: relative;
+        }
+        .tournament-hero h1::after {
+            content: "";
+            display: block;
+            width: 64px;
+            height: 5px;
+            background: var(--lime);
+            margin: 14px auto 0;
+        }
+        .tournament-hero p { font-size: 0.95rem; opacity: 0.7; margin: 14px 0 20px; color: #fff; font-family: "Inter", sans-serif; text-transform: none; letter-spacing: normal; }
+        .hero-tags { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; position: relative; }
+        .hero-tags .tag {
+            border: 2px solid rgba(255,255,255,0.25);
+            padding: 5px 13px;
+            border-radius: 0;
+            font-family: "Anton", sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #fff;
+        }
+
+        .stats-strip {
+            display: flex;
+            justify-content: space-around;
+            background: transparent;
+            padding: 26px 12px 24px;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+        @media (max-width: 600px) {
+            .stats-strip { flex-wrap: wrap; gap: 16px; padding: 20px 16px; }
+            .stat-box { width: 40%; }
+            .tournament-hero h1 { font-size: 1.9rem; }
+        }
+        .stat-box { text-align: center; border-right: 1px solid rgba(255,255,255,0.16); flex: 1; }
+        .stat-box:last-child { border-right: none; }
+        .stat-value { font-family: "JetBrains Mono", monospace; font-size: 1.7rem; font-weight: 700; color: var(--lime); font-variant-numeric: tabular-nums; }
+        .stat-label { font-size: 0.62rem; color: #fff; opacity: 0.6; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
+
+        /* --- LEAGUE SECTION (fixture card group) --- */
+        .league-section {
+            margin-bottom: 16px;
+            background: var(--card-bg);
+            border-radius: 0;
+            overflow: hidden;
+            border: 1px solid var(--frosted-border);
+        }
+
+        .league-header {
+            padding: 14px 16px;
+            background: var(--card-bg);
+            border-bottom: 3px solid var(--navy);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .league-header:hover {
+            background: color-mix(in srgb, var(--lime) 8%, var(--card-bg));
+        }
+
+        .league-flag {
+            font-size: 1.5rem;
+            width: 30px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .league-info { flex: 1; }
+
+        .league-name {
+            font-family: "Anton", sans-serif;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            color: var(--text-main);
+        }
+
+        .league-country {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .league-toggle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+
+        .league-section.collapsed .league-toggle {
+            transform: rotate(-90deg);
+        }
+
+        /* --- SECTION TITLES --- */
+        .section-title {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            font-size: 1.15rem;
+            letter-spacing: 0.03em;
+            color: var(--text-main);
+            margin: 24px 0 14px 0;
+            padding: 8px 0 8px 14px;
+            border-left: 6px solid var(--lime);
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+        }
+
+        /* --- STANDINGS --- */
+        .standings-card {
+            background: var(--card-bg);
+            border: 1px solid var(--frosted-border);
+            border-radius: 0;
+            padding: 0;
+            margin-bottom: 16px;
+            overflow-x: auto;
+        }
+        .standings-title {
+            font-family: "Anton", sans-serif;
+            color: #fff;
+            background: var(--ink);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 11px 14px;
+            border-bottom: 3px solid var(--lime);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        th {
+            text-align: left;
+            color: var(--text-muted);
+            padding: 10px 10px;
+            border-bottom: 2px solid var(--border);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.66rem;
+            letter-spacing: 0.06em;
+        }
+        td {
+            padding: 11px 10px;
+            border-bottom: 1px solid var(--border);
+            font-family: "Inter", sans-serif;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .col-team { font-weight: 700; color: var(--text-main); }
+        .col-data { text-align: center; font-weight: 700; width: 40px; font-family: "JetBrains Mono", monospace; font-variant-numeric: tabular-nums; }
+        .team-seed {
+            font-weight: 500;
+            color: var(--text-muted);
+            font-size: 0.8em;
+            margin-left: 6px;
+            font-family: "JetBrains Mono", monospace;
+        }
+        .col-pts {
+            font-weight: 800;
+            background-color: var(--lime);
+            color: var(--ink);
+            border-radius: 0;
+            padding: 2px 7px;
+            display: inline-block;
+            min-width: 18px;
+        }
+        .placeholder-text {
+            padding: 36px 20px; text-align: center; color: var(--text-muted); background: var(--card-bg); border: 1px dashed var(--border); border-radius: 0; font-size: 0.9rem;
+        }
+        .qualified-marker {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 15px;
+            height: 15px;
+            border-radius: 0;
+            background-color: var(--lime);
+            color: var(--ink);
+            font-family: "JetBrains Mono", monospace;
+            font-weight: 700;
+            font-size: 0.65rem;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        tr.qualified td {
+            background-color: color-mix(in srgb, var(--lime) 10%, transparent);
+        }
+        tr.qualified td:first-child {
+            border-left: 4px solid var(--lime);
+            padding-left: 6px;
+        }
+        body[data-theme="dark"] tr.qualified td {
+            background-color: color-mix(in srgb, var(--lime) 14%, transparent);
+        }
+
+        /* --- TEAMS GRID --- */
+        .teams-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+        }
+        .team-card {
+            display: flex; align-items: center; gap: 10px;
+            background: var(--card-bg); padding: 11px;
+            border-radius: 0; border: 1px solid var(--frosted-border);
+            border-left: 3px solid var(--navy);
+            font-size: 0.82rem; font-weight: 700; color: var(--text-main);
+        }
+
+        /* --- MATCH ITEM (broadcast score bug) --- */
+        .match-item {
+            padding: 15px 16px;
+            border-top: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 70px minmax(0, 1fr) auto minmax(0, 1fr);
+            gap: 16px;
+            align-items: center;
+            transition: background-color 0.15s;
+        }
+        .league-section .match-item:first-of-type { border-top: none; }
+
+        .match-item:hover {
+            background: var(--bg);
+        }
+
+        .match-time {
+            grid-column: 1;
+            justify-self: start;
+            text-align: left;
+            font-family: "JetBrains Mono", monospace;
+            font-size: 0.62rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            line-height: 1.5;
+            letter-spacing: 0.02em;
+        }
+
+        .match-team {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-main);
+            word-break: break-word;
+        }
+
+        .match-team:first-of-type {
+            grid-column: 2;
+            justify-self: flex-end;
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+
+        .match-team:last-of-type {
+            grid-column: 4;
+            justify-self: flex-start;
+            text-align: left;
+        }
+
+        .team-crest {
+            width: 30px;
+            height: 30px;
+            background: var(--ink);
+            border-radius: 0;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 15% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Anton", sans-serif;
+            font-size: 0.75rem;
+            color: var(--lime);
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .match-score {
+            grid-column: 3;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            text-align: center;
+            background: var(--ink);
+            border-radius: 0;
+            padding: 5px 11px;
+        }
+
+        .score-value {
+            font-family: "JetBrains Mono", monospace;
+            font-variant-numeric: tabular-nums;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--lime);
+        }
+
+        .match-team.winner {
+            font-weight: 800;
+        }
+
+        .match-team.loser {
+            font-weight: 500;
+            opacity: 0.5;
+        }
+
+        .score-value.loser {
+            opacity: 0.45;
+        }
+
+        .score-status {
+            font-size: 0.6rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-family: "Anton", sans-serif;
+        }
+
+        .score-status.live {
+            color: var(--live);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* --- TOURNAMENT SELECTION --- */
+        .tournament-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .tournament-card {
+            background: var(--card-bg);
+            border: 1px solid var(--frosted-border);
+            border-left: 5px solid var(--ink);
+            border-radius: 0;
+            padding: 22px;
+            cursor: pointer;
+            transition: border-color 0.15s, transform 0.15s;
+        }
+        .tournament-card:hover {
+            border-left-color: var(--lime);
+            transform: translateX(3px);
+        }
+        .tournament-card h3 {
+            color: var(--text-main);
+            margin-bottom: 8px;
+            font-size: 1.15rem;
+        }
+        .tournament-card p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            font-family: "Inter", sans-serif;
+        }
+        .tournament-card.add-tournament {
+            background: transparent;
+            border: 2px dashed var(--border);
+            border-left: 2px dashed var(--border);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .tournament-card.add-tournament:hover {
+            border-color: var(--lime);
+            transform: none;
+        }
+
+        /* --- SASFA HOMEPAGE COMPONENTS --- */
+        .sasfa-hero {
+            background: var(--ink);
+            padding: 60px 20px 52px;
+            text-align: center;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .sasfa-hero::before {
+            content: "";
+            position: absolute;
+            top: -30%; left: -10%;
+            width: 55%; height: 170%;
+            background: var(--lime);
+            opacity: 0.07;
+            transform: skewX(-12deg);
+        }
+        .sasfa-hero-content {
+            max-width: 760px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .sasfa-hero h1 {
+            font-size: 2.9rem;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        .sasfa-hero h1::after {
+            content: "";
+            display: block;
+            width: 70px;
+            height: 5px;
+            background: var(--lime);
+            margin: 16px auto 0;
+        }
+        .sasfa-hero p {
+            font-size: 1.02rem;
+            line-height: 1.6;
+            opacity: 0.72;
+            color: #fff;
+            font-family: "Inter", sans-serif;
+            text-transform: none;
+            letter-spacing: normal;
+            margin-top: 18px;
+        }
+        .sasfa-about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .about-card {
+            background: var(--card-bg);
+            border: 1px solid var(--frosted-border);
+            border-top: 4px solid var(--lime);
+            border-radius: 0;
+            padding: 26px;
+        }
+        .about-card h3 {
+            color: var(--text-main);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        .about-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 0.93rem;
+            font-family: "Inter", sans-serif;
+        }
+        @media (max-width: 600px) {
+            .sasfa-hero h1 { font-size: 2.1rem; }
+            .sasfa-hero { padding: 44px 20px; }
+        }
+
+        /* --- FOOTER (fixed broadcast black) --- */
+        footer {
+            background: var(--ink);
+            border-top: 3px solid var(--lime);
+            padding: 34px 20px 28px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #fff;
+            margin-top: 40px;
+        }
+
+        footer img {
+            height: 36px;
+            margin-bottom: 16px;
+            opacity: 0.95;
+        }
+
+        footer p, footer strong {
+            color: #fff;
+            opacity: 0.75;
+        }
+
+        .footer-link {
+            margin-top: 20px;
+        }
+
+        .footer-link a {
+            color: #fff;
+            opacity: 0.7;
+            text-decoration: none;
+            font-family: "Anton", sans-serif;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: 0.15s;
+        }
+
+        .footer-link a:hover {
+            opacity: 1;
+            color: var(--lime);
+        }
+
+        /* --- MOBILE OPTIMIZED --- */
+        @media (max-width: 775px) {
+            header {
+                padding: 12px 16px;
+            }
+
+            .jump-nav {
+                position: static;
+                border-bottom: none;
+            }
+
+            .logo-area {
+                font-size: 0.95rem;
+            }
+
+            .filters {
+                padding: 10px 16px;
+            }
+
+            .league-section {
+                margin-bottom: 12px;
+            }
+
+            .match-item {
+                padding: 12px 14px;
+                grid-template-columns: 56px minmax(0, 1fr) auto minmax(0, 1fr);
+                gap: 10px;
+            }
+
+            .match-team {
+                font-size: 0.64rem;
+                gap: 7px;
+            }
+
+            .team-crest {
+                width: 26px;
+                height: 26px;
+                font-size: 0.62rem;
+            }
+
+            .watch-live-btn {
+                padding: 6px 10px 6px 9px;
+                font-size: 0.62rem;
+                gap: 4px;
+            }
+
+            .watch-live-btn svg {
+                width: 12px;
+                height: 12px;
+            }
+
+            .live-pulse-dot {
+                width: 6px;
+                height: 6px;
+            }
+
+            .match-time {
+                font-size: 0.55rem;
+            }
+
+            .score-value {
+                font-size: 0.75rem;
+            }
+            .hide-mobile {
+                display: none;
+            }
+        }
+    </style>
+    </head>
+<body>
+
+<header>
+    <div class="logo-area" onclick="selectTournament(null)" style="cursor: pointer;" title="Back to Tournaments">
+        <img src="/images/sasfa_logo-removebg-preview.png" alt="SASFA">
+        <span>SASFA</span>
+    </div>
+    <div style="display: flex; gap: 8px; align-items: center;">
+        <a href="edit.html" class="watch-live-btn manager-btn" style="background-color: var(--card-bg-solid); border: 1px solid var(--border); color: var(--text-muted); display: inline-flex;" aria-label="Manager Login">
+            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            <span class="hide-mobile">Manager Login</span>
+        </a>
+        <a href="https://live.supersportschools.com/category/606f65f91eea03755e56797c/sub-category/67ff624559d9be83280028c6/" class="watch-live-btn" id="watchLiveBtn" target="_blank" aria-label="Watch Live">
+            <svg viewBox="0 0 24 24"><path d="M10 16.5v-9l6 4.5-6 4.5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path></svg>
+            <span>Watch Live</span>
+            <span class="live-pulse-dot"></span>
+        </a>
+        <button id="refresh-btn" class="theme-btn" title="Refresh scores" aria-label="Refresh scores">
+            <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"></path></svg>
+        </button>
+        <button id="theme-toggle" class="theme-btn" title="Toggle theme" aria-label="Toggle theme">
+            <svg class="moon-icon" viewBox="0 0 24 24"><path d="M10 2c-1.82 0-3.53.5-5 1.35C7.99 5.08 10 8.3 10 12s-2.01 6.92-5 8.65C6.47 21.5 8.18 22 10 22c5.52 0 10-4.48 10-10S15.52 2 10 2z"></path></svg>
+            <svg class="sun-icon" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.02-.39-1.41 0L3.17 5.99c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.41-1.41c.39-.39.39-1.03 0-1.41zm14.83 14.83c-.39-.39-1.02-.39-1.41 0l-1.41 1.41c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.41-1.41c.39-.39.39-1.03 0-1.41zM20.83 5.99c.39-.39.39-1.02 0-1.41l-1.41-1.41c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l1.41 1.41c.39.39 1.03.39 1.41 0zM4.58 19.41c.39-.39.39-1.02 0-1.41l-1.41-1.41c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l1.41 1.41c.39.39 1.03.39 1.41 0z"></path></svg>
+        </button>
+    </div>
+</header>
+
+<div id="tournamentList">
+    <div class="sasfa-hero">
+        <div class="sasfa-hero-content">
+            <h1>Welcome to SASFA</h1>
+            <p>The official home of South African Schools Football. Discover tournaments, track live results, and support the next generation of football stars.</p>
+        </div>
+    </div>
+    <div class="main-container">
+        <div class="section-title" style="margin-top: 0;">Active Tournaments</div>
+        <div class="tournament-grid">
+            <div class="tournament-card" onclick="selectTournament('halala')">
+                <h3>Halala Cup 2026</h3>
+                <p>Regional Qualification Tournament for the 2026 Grand Finale.</p>
+                <div style="margin-top: 16px;">
+                    <span style="background: var(--lime); color: var(--navy); padding: 4px 10px; border-radius: 2px; font-family: 'Anton', sans-serif; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase;">U19 Boys</span>
+                </div>
+            </div>
+            <div class="tournament-card add-tournament" onclick="requestTournament()">
+                <h3>+ Add Your Tournament</h3>
+                <p>Request permission to host your school tournament on this platform.</p>
+            </div>
+        </div>
+
+        <div class="section-title" style="margin-top: 48px;">Latest Highlights (Halala Cup)</div>
+        <div id="homepageHighlightsGrid" style="margin-top: 20px;">
+            <div class="placeholder-text" style="padding: 20px;">Loading highlights...</div>
+        </div>
+
+        <div class="section-title" style="margin-top: 48px;">Playoff Matchups (Halala Cup)</div>
+        <div id="playoffsPreviewGrid" class="tournament-grid"></div>
+
+        <div class="section-title" style="margin-top: 48px;">About SASFA</div>
+        <div class="sasfa-about-grid">
+            <div class="about-card">
+                <h3>Our Mission</h3>
+                <p>To foster football development at the grassroots level, providing a professional platform for schools to compete and showcase their talent across South Africa.</p>
+            </div>
+            <div class="about-card">
+                <h3>Get Involved</h3>
+                <p>Whether you are a coach, player, or fan, SASFA offers tools to manage leagues, follow live scores, and engage with the schools football community.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="tournamentView" style="display: none;">
+    <!-- Hero -->
+    <div class="tournament-hero">
+        <h1>Halala Cup 2026</h1>
+        <p>Regional Qualification Tournament for the 2026 Grand Finale.</p>
+        <div class="hero-tags">
+            <span class="tag">U19 Boys</span>
+            <span class="tag">Regional</span>
+            <span class="tag">11v11</span>
+        </div>
+    </div>
+
+    <!-- Stats Strip -->
+    <div class="stats-strip" id="statsStrip">
+        <div class="stat-box"><div class="stat-value" id="statTeams">--</div><div class="stat-label">Teams</div></div>
+        <div class="stat-box"><div class="stat-value" id="statMatches">--</div><div class="stat-label">Matches</div></div>
+        <div class="stat-box"><div class="stat-value" id="statGoals">--</div><div class="stat-label">Goals</div></div>
+        <div class="stat-box"><div class="stat-value" id="statNextMatch" style="font-size: 1.1rem; display: flex; align-items: center; justify-content: center; height: 100%; min-height: 34px;">--</div><div class="stat-label">Next Match</div></div>
+    </div>
+
+    <!-- Jump Nav -->
+    <div class="jump-nav">
+        <a href="#feed-fixtures">Fixtures</a>
+        <a href="#standings-section">Standings</a>
+        <a href="#playoffs-section">Playoffs</a>
+        <a href="#teams-section">Teams</a>
+        <a href="#feed-results">Results</a>
+    </div>
+
+    <div class="filters" id="regionFilters" style="display: flex; flex-wrap: wrap; justify-content: center; padding: 16px 20px; border-bottom: 1px solid var(--border); background: var(--card-bg-solid);">
+        <div style="color: var(--text-muted); font-size: 0.85rem; font-weight: 600;">Loading regions...</div>
+    </div>
+
+    <div class="main-container" style="padding-top: 20px;">
+        <div class="content-grid">
+            <div class="main-content-column">
+                <section id="qualifying-summary-section"><div class="placeholder-text">Loading qualifying summary...</div></section>
+                <section id="feed-fixtures"><div class="placeholder-text">Loading fixtures...</div></section>
+                <section id="playoffs-section" style="margin-top: 40px;"><div class="placeholder-text">Loading playoffs...</div></section>
+                <section id="feed-results" style="margin-top: 40px;"><div class="placeholder-text">Loading results...</div></section>
+                <section id="teams-section" style="margin-top: 40px;"><div class="placeholder-text">Loading teams...</div></section>
+            </div>
+            <div class="standings-column">
+                <section id="standings-section"><div class="placeholder-text">Loading standings...</div></section>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<footer>
+    <img src="/images/sasfa_logo-removebg-preview.png" alt="SASFA">
+    <div id="halalaFooterRules" style="display: none;">
+        <p><strong>Halala Cup Regional Rules:</strong><br>
+        2 x 30 min halves | 10 min break<br>
+        Points: Win (3), Draw (1), Loss (0)<br>
+        Top 2 teams per region qualify for National Finals.</p>
+    </div>
+    <div class="footer-links" style="margin-top: 20px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+        <a href="mailto:admin@sasfa.co.za" style="color: var(--text-muted); text-decoration: none;">Contact Us</a>
+        <a href="https://instagram.com/sasfa" style="color: var(--text-muted); text-decoration: none;" target="_blank">Instagram</a>
+        <a href="https://facebook.com/sasfa" style="color: var(--text-muted); text-decoration: none;" target="_blank">Facebook</a>
+        <a href="https://twitter.com/sasfa" style="color: var(--text-muted); text-decoration: none;" target="_blank">X (Twitter)</a>
+    </div>
+    <div id="lastUpdated" style="margin-top: 15px; font-size: 0.8rem; opacity: 0.7;"></div>
+</footer>
+
+<script>
+    const DEFAULT_TOURNAMENT_DATA = {
+        "Gauteng 1": {
+            pools: {
+                "Pool A": [
+                    {name: "Clapham High School", seed: 1},
+                    {name: "Curro Cosmo City", seed: 12},
+                    {name: "The King's Linbro Park", seed: 13},
+                    {name: "Curro Parkdene", seed: 24}
+                ],
+                "Pool B": [
+                    {name: "Curro Thatchfield", seed: 4},
+                    {name: "Queens High School", seed: 9},
+                    {name: "HeronBridge College", seed: 16},
+                    {name: "Curro Clayville", seed: 21}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Curro Cosmo City", t2: "Curro Parkdene", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "Clapham High School", t2: "The King's Linbro Park", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "Queens High School", t2: "Curro Clayville", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Curro Thatchfield", t2: "HeronBridge College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "Clapham High School", t2: "Curro Cosmo City", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "The King's Linbro Park", t2: "Curro Parkdene", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Curro Thatchfield", t2: "Queens High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "HeronBridge College", t2: "Curro Clayville", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "Clapham High School", t2: "Curro Parkdene", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Curro Cosmo City", t2: "The King's Linbro Park", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Curro Thatchfield", t2: "Curro Clayville", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "Queens High School", t2: "HeronBridge College", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "Gauteng 2": {
+            pools: {
+                "Pool A": [
+                    {name: "Rosina Sedibane Sport School", seed: 2},
+                    {name: "Curro Protea Glen", seed: 11},
+                    {name: "Curro Pretoria", seed: 14},
+                    {name: "Curro Hazeldean", seed: 23}
+                ],
+                "Pool B": [
+                    {name: "Mondeor High School", seed: 5},
+                    {name: "Curro Aurora", seed: 8},
+                    {name: "Curro Midrand", seed: 17},
+                    {name: "Vaal High School", seed: 20}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Curro Protea Glen", t2: "Curro Hazeldean", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "Rosina Sedibane Sport School", t2: "Curro Pretoria", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "Curro Aurora", t2: "Vaal High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Mondeor High School", t2: "Curro Midrand", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "Rosina Sedibane Sport School", t2: "Curro Protea Glen", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "Curro Pretoria", t2: "Curro Hazeldean", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Mondeor High School", t2: "Curro Aurora", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "Curro Midrand", t2: "Vaal High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "Rosina Sedibane Sport School", t2: "Curro Hazeldean", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Curro Protea Glen", t2: "Curro Pretoria", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Mondeor High School", t2: "Vaal High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "Curro Aurora", t2: "Curro Midrand", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "Western Cape": {
+            pools: {
+                "Pool A": [
+                    {name: "Reddam House Constantia", seed: 1},
+                    {name: "Milnerton High School", seed: 4},
+                    {name: "Curro Century City", seed: 5},
+                    {name: "Curro Somerset West", seed: 8}
+                ],
+                "Pool B": [
+                    {name: "Camps Bay High School", seed: 2},
+                    {name: "Meridian Pinehurst", seed: 3},
+                    {name: "Curro Sandown", seed: 6},
+                    {name: "Somerset College", seed: 7}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Milnerton High School", t2: "Curro Somerset West", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "Reddam House Constantia", t2: "Curro Century City", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "Meridian Pinehurst", t2: "Somerset College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Camps Bay High School", t2: "Curro Sandown", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "Reddam House Constantia", t2: "Milnerton High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "Curro Century City", t2: "Curro Somerset West", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Camps Bay High School", t2: "Meridian Pinehurst", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "Curro Sandown", t2: "Somerset College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "Reddam House Constantia", t2: "Curro Somerset West", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Milnerton High School", t2: "Curro Century City", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Camps Bay High School", t2: "Somerset College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "Meridian Pinehurst", t2: "Curro Sandown", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "KZN": {
+            pools: {
+                "Pool A": [
+                    {name: "Hillcrest High School", seed: 1},
+                    {name: "Durban High School", seed: 4},
+                    {name: "Kloof High School", seed: 5},
+                    {name: "Grantleigh College", seed: 8}
+                ],
+                "Pool B": [
+                    {name: "Glenwood High School", seed: 2},
+                    {name: "Pinetown Boys High School", seed: 3},
+                    {name: "Curro Hillcrest", seed: 6},
+                    {name: "Creston College", seed: 7}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Durban High School", t2: "Grantleigh College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "Hillcrest High School", t2: "Kloof High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "Pinetown Boys High School", t2: "Creston College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Glenwood High School", t2: "Curro Hillcrest", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "Hillcrest High School", t2: "Durban High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "Kloof High School", t2: "Grantleigh College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Glenwood High School", t2: "Pinetown Boys High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "Curro Hillcrest", t2: "Creston College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "Hillcrest High School", t2: "Grantleigh College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Durban High School", t2: "Kloof High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Glenwood High School", t2: "Creston College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "Pinetown Boys High School", t2: "Curro Hillcrest", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "Free State": {
+            pools: {
+                "Pool A": [
+                    {name: "Saint Annes Technical High School", seed: 1},
+                    {name: "Brebner High School", seed: 4},
+                    {name: "Moroka High School", seed: 5},
+                    {name: "Bloemfontein High School", seed: 8}
+                ],
+                "Pool B": [
+                    {name: "Virginia High School", seed: 2},
+                    {name: "HTS Louis Botha", seed: 3},
+                    {name: "Hodisa Secondary School", seed: 6},
+                    {name: "Curro Bloemfontein", seed: 7}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Brebner High School", t2: "Bloemfontein High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "Saint Annes Technical High School", t2: "Moroka High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "HTS Louis Botha", t2: "Curro Bloemfontein", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Virginia High School", t2: "Hodisa Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "Saint Annes Technical High School", t2: "Brebner High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "Moroka High School", t2: "Bloemfontein High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Virginia High School", t2: "HTS Louis Botha", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "Hodisa Secondary School", t2: "Curro Bloemfontein", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "Saint Annes Technical High School", t2: "Bloemfontein High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Brebner High School", t2: "Moroka High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Virginia High School", t2: "Curro Bloemfontein", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "HTS Louis Botha", t2: "Hodisa Secondary School", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "Limpopo": {
+            pools: {
+                "Pool A": [
+                    {name: "Flora Park High School", seed: 1},
+                    {name: "Capricorn High School", seed: 4},
+                    {name: "Sebitja Secondary School", seed: 5},
+                    {name: "Louis Trichardt High School", seed: 8}
+                ],
+                "Pool B": [
+                    {name: "Westenburg High School", seed: 2},
+                    {name: "Taxila Secondary School", seed: 3},
+                    {name: "The Future Comprehensive School", seed: 6},
+                    {name: "HTS Tom Naude", seed: 7}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Capricorn High School", t2: "Louis Trichardt High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "Flora Park High School", t2: "Sebitja Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "Taxila Secondary School", t2: "HTS Tom Naude", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Westenburg High School", t2: "The Future Comprehensive School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "Flora Park High School", t2: "Capricorn High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "Sebitja Secondary School", t2: "Louis Trichardt High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Westenburg High School", t2: "Taxila Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "The Future Comprehensive School", t2: "HTS Tom Naude", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "Flora Park High School", t2: "Louis Trichardt High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Capricorn High School", t2: "Sebitja Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Westenburg High School", t2: "HTS Tom Naude", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "Taxila Secondary School", t2: "The Future Comprehensive School", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "Mpumalanga": {
+            pools: {
+                "Pool A": [
+                    {name: "St Mark's International School", seed: 1},
+                    {name: "Meridian Karino", seed: 4},
+                    {name: "Beacon College", seed: 5},
+                    {name: "Curro Nelspruit", seed: 8}
+                ],
+                "Pool B": [
+                    {name: "Barberton High School", seed: 2},
+                    {name: "Lowveld High School", seed: 3},
+                    {name: "Curro Mbombela", seed: 6},
+                    {name: "Portia Shabangu Secondary School", seed: 7}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Meridian Karino", t2: "Curro Nelspruit", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "St Mark's International School", t2: "Beacon College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "Lowveld High School", t2: "Portia Shabangu Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Barberton High School", t2: "Curro Mbombela", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "St Mark's International School", t2: "Meridian Karino", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "Beacon College", t2: "Curro Nelspruit", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Barberton High School", t2: "Lowveld High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "Curro Mbombela", t2: "Portia Shabangu Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "St Mark's International School", t2: "Curro Nelspruit", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Meridian Karino", t2: "Beacon College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Barberton High School", t2: "Portia Shabangu Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "Lowveld High School", t2: "Curro Mbombela", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "Gauteng 3": {
+            pools: {
+                "Pool A": [
+                    {name: "Curro Soshanguve", seed: 3},
+                    {name: "Randfontein High", seed: 10},
+                    {name: "CBC Mount Edmund", seed: 15},
+                    {name: "Curro Serengeti", seed: 22}
+                ],
+                "Pool B": [
+                    {name: "Curro Wilgeheuwel", seed: 6},
+                    {name: "Waterstone College", seed: 7},
+                    {name: "Steyn City School", seed: 18},
+                    {name: "Woodhill College", seed: 19}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Randfontein High", t2: "Curro Serengeti", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "Curro Soshanguve", t2: "CBC Mount Edmund", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "Waterstone College", t2: "Woodhill College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Curro Wilgeheuwel", t2: "Steyn City School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "Curro Soshanguve", t2: "Randfontein High", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "CBC Mount Edmund", t2: "Curro Serengeti", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Curro Wilgeheuwel", t2: "Waterstone College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "Steyn City School", t2: "Woodhill College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "Curro Soshanguve", t2: "Curro Serengeti", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Randfontein High", t2: "CBC Mount Edmund", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Curro Wilgeheuwel", t2: "Woodhill College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "Waterstone College", t2: "Steyn City School", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        }
+    };
+
+let tournamentData = JSON.parse(JSON.stringify(DEFAULT_TOURNAMENT_DATA));
+let activeTournament = sessionStorage.getItem('activeTournament') || null;
+let activeRegion = sessionStorage.getItem('activeRegion') || Object.keys(tournamentData)[0];
+
+// --- DOM ELEMENTS ---
+const regionFilters = document.getElementById('regionFilters');
+
+// --- THEME LOGIC ---
+document.getElementById('theme-toggle').addEventListener('click', () => {
+    const theme = document.body.getAttribute('data-theme');
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    document.body.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+});
+const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+document.body.setAttribute('data-theme', savedTheme);
+
+document.getElementById('refresh-btn').addEventListener('click', () => loadData(true));
+
+// --- TOURNAMENT SELECTION ---
+function selectTournament(id) {
+    activeTournament = id;
+    if (id) {
+        sessionStorage.setItem('activeTournament', id);
+    } else {
+        sessionStorage.removeItem('activeTournament');
+    }
+    applyRouting();
+}
+
+function requestTournament() {
+    window.location.href = "mailto:admin@sasfa.co.za?subject=Tournament%20Hosting%20Request";
+}
+
+function applyRouting() {
+    const tList = document.getElementById('tournamentList');
+    const tView = document.getElementById('tournamentView');
+    const gdlView = document.getElementById('gdlView');
+    const hRules = document.getElementById('halalaFooterRules');
+    const watchLiveBtn = document.getElementById('watchLiveBtn');
+
+    if (activeTournament === 'halala') {
+        document.body.setAttribute('data-site', 'halala');
+        tList.style.display = 'none';
+        tView.style.display = 'block';
+        if (gdlView) gdlView.style.display = 'none';
+        if (hRules) hRules.style.display = 'block';
+        updateView();
+            updateLiveStatus();
+    } else if (activeTournament === 'gdl') {
+        document.body.setAttribute('data-site', 'sasfa');
+        tList.style.display = 'none';
+        tView.style.display = 'none';
+        if (gdlView) gdlView.style.display = 'block';
+        if (hRules) hRules.style.display = 'none';
+        if (watchLiveBtn) watchLiveBtn.style.display = 'none';
+    } else {
+        document.body.setAttribute('data-site', 'sasfa');
+        tList.style.display = 'block';
+        tView.style.display = 'none';
+        if (gdlView) gdlView.style.display = 'none';
+        if (hRules) hRules.style.display = 'none';
+        if (watchLiveBtn) watchLiveBtn.style.display = 'none';
+        renderHomePreviews();
+        updateLiveStatus();
+    }
+}
+
+function updateLiveStatus() {
+    const watchLiveBtn = document.getElementById('watchLiveBtn');
+    if (!watchLiveBtn || activeTournament !== 'halala') return;
+    
+    let isLive = false;
+    if (tournamentData) {
+        for (const r in tournamentData) {
+            if (tournamentData[r].matches && tournamentData[r].matches.some(m => m.st === 'LIVE')) {
+                isLive = true;
+                break;
+            }
+            if (tournamentData[r].playoffs && tournamentData[r].playoffs.some(m => m.st === 'LIVE')) {
+                isLive = true;
+                break;
+            }
+        }
+    }
+
+    if (isLive) {
+        watchLiveBtn.style.display = 'inline-flex';
+    } else {
+        watchLiveBtn.style.display = 'none';
+    }
+}
+
+// --- DATA LOADING ---
+async function loadData(showLoading = false) {
+    if (showLoading) document.body.classList.add('is-loading');
+    const lastUpdatedEl = document.getElementById('lastUpdated');
+    try {
+        const response = await fetch('/api/get-data', { cache: 'no-store' });
+        const liveData = await response.json();
+
+        // Only update the view if the fetched data is valid and contains content
+        if (liveData && Object.keys(liveData).length > 0) {
+            // Smart Merge: Enforce correct predefined pools, only ingest matches
+            const sanitizedData = JSON.parse(JSON.stringify(DEFAULT_TOURNAMENT_DATA));
+            Object.keys(liveData).forEach(region => {
+                if (sanitizedData[region] && liveData[region].matches) {
+                    sanitizedData[region].matches = liveData[region].matches;
+                    // Auto-migrate legacy names to fix standing breaks
+                    sanitizedData[region].matches.forEach(m => {
+                        if (m.t1 === "Paul Roos Gimnasium" || m.t1 === "Reddam Constantia") m.t1 = "Reddam House Constantia";
+                        if (m.t2 === "Paul Roos Gimnasium" || m.t2 === "Reddam Constantia") m.t2 = "Reddam House Constantia";
+                        if (m.t1 === "Pinetown Boy's High School" || m.t1 === "Pinetown Boys' High School") m.t1 = "Pinetown Boys High School";
+                        if (m.t2 === "Pinetown Boy's High School" || m.t2 === "Pinetown Boys' High School") m.t2 = "Pinetown Boys High School";
+                        if (m.t1 === "Saint Annes Technical") m.t1 = "Saint Annes Technical High School";
+                        if (m.t2 === "Saint Annes Technical") m.t2 = "Saint Annes Technical High School";
+                    });
+                }
+                if (sanitizedData[region] && Array.isArray(liveData[region].playoffs)) {
+                    sanitizedData[region].playoffs = liveData[region].playoffs;
+                }
+            });
+
+            const newDataString = JSON.stringify(sanitizedData);
+            const currentDataString = JSON.stringify(tournamentData);
+
+            // Only update and re-render if data actually changed from what is currently cached
+            if (newDataString !== currentDataString) {
+                tournamentData = sanitizedData;
+                
+                if (!activeRegion || !tournamentData[activeRegion]) {
+                    activeRegion = Object.keys(tournamentData)[0];
+                }
+                if (activeTournament === 'halala') {
+                    updateView();
+                    updateLiveStatus();
+                } else {
+                    renderHomePreviews();
+                    updateLiveStatus();
+                }
+            }
+            if (lastUpdatedEl) lastUpdatedEl.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
+        } else {
+            console.warn("API returned no data. Displaying default/stale data.");
+            if (lastUpdatedEl && !localStorage.getItem('sasfa-tournament-data')) {
+                lastUpdatedEl.textContent = 'Awaiting live data...';
+            }
+        }
+    } catch (error) {
+        console.error('Error loading data:', error);
+        if (lastUpdatedEl) lastUpdatedEl.textContent = `Failed to update. Retrying automatically...`;
+    } finally {
+        if (showLoading) document.body.classList.remove('is-loading');
+    }
+}
+
+// --- MAIN RENDER LOGIC ---
+function updateView() {
+    regionFilters.innerHTML = Object.keys(tournamentData).map(region => `<button class="filter-btn ${region === activeRegion ? 'active' : ''}" data-region="${region}">${region}</button>`).join('');
+    renderDashboard();
+}
+
+function renderDashboard() {
+    // 1. Calculate Global Stats
+    let totalMatches = 0;
+    let totalGoals = 0;
+    let uniqueTeams = new Set();
+
+    for (const [rName, rData] of Object.entries(tournamentData)) {
+        if (rData.pools) {
+            Object.values(rData.pools).forEach(pool => pool.forEach(t => uniqueTeams.add(t.name)));
+        }
+        if (rData.matches) {
+            totalMatches += rData.matches.length;
+            rData.matches.forEach(m => {
+                if ((m.st === 'FINAL' || m.st === 'LIVE') && m.s1 != null && m.s2 != null) {
+                    totalGoals += (m.s1 + m.s2);
+                }
+            });
+        }
+        if (rData.playoffs) {
+            totalMatches += rData.playoffs.length;
+            rData.playoffs.forEach(m => {
+                if ((m.st === 'FINAL' || m.st === 'LIVE') && m.s1 != null && m.s2 != null) {
+                    totalGoals += (m.s1 + m.s2);
+                }
+            });
+        }
+    }
+    
+    const statTeamsEl = document.getElementById('statTeams');
+    if (statTeamsEl) statTeamsEl.textContent = uniqueTeams.size;
+    const statMatchesEl = document.getElementById('statMatches');
+    if (statMatchesEl) statMatchesEl.textContent = totalMatches;
+    const statGoalsEl = document.getElementById('statGoals');
+    if (statGoalsEl) statGoalsEl.textContent = totalGoals;
+
+    const upcomingMatchesAll = [];
+    for (const [rName, rData] of Object.entries(tournamentData)) {
+        if (rData.matches) {
+            upcomingMatchesAll.push(...rData.matches.filter(m => m.st === 'UPCOMING' || m.st === 'LIVE'));
+        }
+        if (rData.playoffs) {
+            upcomingMatchesAll.push(...rData.playoffs.filter(m => m.st === 'UPCOMING' || m.st === 'LIVE'));
+        }
+    }
+    const parseTime = t => {
+        const [h, m] = (t || '00:00').split(':').map(v => Number(v));
+        return Number.isNaN(h) || Number.isNaN(m) ? 0 : h * 60 + m;
+    };
+    const parseFriendlyDate = dateLabel => {
+        if (!dateLabel) return Number.MAX_SAFE_INTEGER;
+        const match = dateLabel.match(/(\d{1,2})\s+(January|February|March|April|May|June|July|August|September|October|November|December)/i);
+        if (!match) return Number.MAX_SAFE_INTEGER;
+        const [, day, monthName] = match;
+        const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        const monthIndex = monthNames.findIndex(m => m.toLowerCase() === monthName.toLowerCase());
+        return monthIndex >= 0 ? new Date(2026, monthIndex, Number(day)).getTime() : Number.MAX_SAFE_INTEGER;
+    };
+    const getMatchSortValue = match => {
+        const dateValue = parseFriendlyDate(match.d);
+        const timeValue = parseTime(match.t);
+        return dateValue * 10000 + timeValue;
+    };
+    upcomingMatchesAll.sort((a, b) => {
+        const statusOrder = { LIVE: 0, UPCOMING: 1, FINAL: 2 };
+        const orderA = statusOrder[a.st] ?? 3;
+        const orderB = statusOrder[b.st] ?? 3;
+        if (orderA !== orderB) return orderA - orderB;
+        const sortA = getMatchSortValue(a);
+        const sortB = getMatchSortValue(b);
+        return sortA - sortB;
+    });
+    const statNextMatchEl = document.getElementById('statNextMatch');
+    if (statNextMatchEl) {
+        if (upcomingMatchesAll.length > 0) {
+            const nextMatch = upcomingMatchesAll[0];
+            const matchDate = nextMatch.d ? `${nextMatch.d} ` : '';
+            const matchTime = nextMatch.t || nextMatch.time || 'TBD';
+            const formatted = nextMatch.st === 'LIVE'
+                ? `LIVE: ${nextMatch.t1} vs ${nextMatch.t2}`
+                : `${matchDate}${matchTime} ${nextMatch.t1} vs ${nextMatch.t2}`;
+            statNextMatchEl.textContent = formatted;
+        } else {
+            statNextMatchEl.textContent = "Finished";
+        }
+    }
+
+    const regionData = tournamentData[activeRegion];
+    if (!regionData) return;
+
+    const summarySectionEl = document.getElementById('qualifying-summary-section');
+    if (summarySectionEl) summarySectionEl.innerHTML = generateQualifyingSummary(regionData);
+
+    // 2. Fixtures Feed (Live, Upcoming)
+    const liveMatches = [
+        ...regionData.matches.filter(m => m.st === 'LIVE'),
+        ...resolvePlayoffPlaceholders(regionData.playoffs || []).filter(m => m.st === 'LIVE') // Resolve playoffs for live status
+    ];
+    const upcomingMatches = [
+        ...regionData.matches.filter(m => m.st === 'UPCOMING'),
+        ...resolvePlayoffPlaceholders(regionData.playoffs || []).filter(m => m.st === 'UPCOMING') // Resolve playoffs for upcoming
+    ];
+    const finalMatches = [
+        ...regionData.matches.filter(m => m.st === 'FINAL'),
+        ...resolvePlayoffPlaceholders(regionData.playoffs || []).filter(m => m.st === 'FINAL') // Resolve playoffs for final
+    ].reverse(); // Show most recent first
+
+    let fixturesHtml = `<div class="section-title">Fixtures</div>`;
+    if (liveMatches.length === 0 && upcomingMatches.length === 0) {
+        fixturesHtml += `<div class="placeholder-text">No upcoming fixtures.</div>`;
+    } else {
+        liveMatches.forEach(m => fixturesHtml += renderMatch(m));
+        upcomingMatches.forEach(m => fixturesHtml += renderMatch(m));
+    }
+    const feedFixturesEl = document.getElementById('feed-fixtures');
+    if (feedFixturesEl) {
+        if (regionData.playoffs && regionData.playoffs.length > 0) {
+            feedFixturesEl.innerHTML = '';
+            feedFixturesEl.style.display = 'none';
+        } else {
+            feedFixturesEl.style.display = 'block';
+            feedFixturesEl.innerHTML = fixturesHtml;
+        }
+    }
+
+    // 3. Results Feed
+    let resultsHtml = `<div class="section-title">Results</div>`;
+    if (finalMatches.length === 0) {
+        resultsHtml += `<div class="placeholder-text">No results yet.</div>`;
+    } else {
+        finalMatches.forEach(m => resultsHtml += renderMatch(m));
+    }
+    const feedResultsEl = document.getElementById('feed-results');
+    if(feedResultsEl) feedResultsEl.innerHTML = resultsHtml;
+
+    // 4. Playoffs
+    let playoffsHtml = `<div class="section-title">Playoffs</div>`;
+    if (regionData.playoffs && Array.isArray(regionData.playoffs) && regionData.playoffs.length > 0) {
+        const displayPlayoffs = resolvePlayoffPlaceholders(regionData.playoffs);
+        playoffsHtml += `<div class="league-section">`;
+        displayPlayoffs.forEach(match => {
+            const statusLabel = match.st === 'LIVE'
+                ? `<div style="color: var(--live); font-weight: 700;">LIVE</div>`
+                : `<div style="font-size: 0.5rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-top: 4px;">${match.st || 'UPCOMING'}</div>`;
+            const score1 = match.s1 != null ? match.s1 : '-';
+            const score2 = match.s2 != null ? match.s2 : '-';
+            playoffsHtml += `
+                <div class="match-item">
+                    <div class="match-time">
+                        ${match.t || 'TBD'}
+                        <div style="font-size: 0.55rem; margin-top: 2px;">${match.d || 'TBD'}</div>
+                        ${statusLabel}
+                    </div>
+                    <div class="match-team"><div class="team-crest">${(match.t1 || '?').charAt(0)}</div><div>${match.t1 || 'Team 1'}</div></div>
+                    <div class="match-score">
+                        <div class="score-value">${score1}</div>
+                        <div class="score-value" style="color: var(--text-muted); font-size: 0.675rem;">-</div>
+                        <div class="score-value">${score2}</div>
+                    </div>
+                    <div class="match-team"><div class="team-crest">${(match.t2 || '?').charAt(0)}</div><div>${match.t2 || 'Team 2'}</div></div>
+                </div>`;
+        });
+        playoffsHtml += `</div>`;
+
+        const advancement = getPlayoffAdvancementSummary(displayPlayoffs);
+        if (advancement) {
+            playoffsHtml += `
+                <div style="margin-top: 18px; padding: 16px; border-radius: 2px; border-top: 3px solid var(--lime); background: var(--card-bg); border-left: 1px solid var(--frosted-border); border-right: 1px solid var(--frosted-border); border-bottom: 1px solid var(--frosted-border);">
+                    <div style="font-weight: 700; margin-bottom: 10px;">Playoff advancement summary</div>
+                    <div style="display: grid; gap: 8px; font-size: 0.92rem; color: var(--text-main);">
+                        <div><strong>${advancement.winners.length}</strong> winning teams have advanced toward the finals: ${advancement.winners.join(', ')}</div>
+                        <div><strong>${advancement.losers.length}</strong> teams have been knocked out and wildcarded: ${advancement.losers.join(', ')}</div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted);">All playoff matches are scheduled for Saturday 23 May. Scores update live when matches are finished.</div>
+                    </div>
+                </div>`;
+        }
+    } else if (regionData.pools && regionData.pools['Pool A'] && regionData.pools['Pool B']) {
+        const poolsForDisplay = JSON.parse(JSON.stringify(regionData.pools));
+        calculateStandings(poolsForDisplay, regionData.matches, ['FINAL', 'LIVE']);
+        const poolA = poolsForDisplay['Pool A'];
+        const poolB = poolsForDisplay['Pool B'];
+
+        poolA.sort((a, b) => compareTeams(a, b, regionData.matches));
+        poolB.sort((a, b) => compareTeams(a, b, regionData.matches));
+
+        const teamMap = {
+            '1st Pool A': poolA[0] ? poolA[0].name : '1st Pool A',
+            '2nd Pool A': poolA[1] ? poolA[1].name : '2nd Pool A',
+            '1st Pool B': poolB[0] ? poolB[0].name : '1st Pool B',
+            '2nd Pool B': poolB[1] ? poolB[1].name : '2nd Pool B',
+            'Loser M13': 'Loser Match 13',
+            'Winner M13': 'Winner Match 13',
+            'Loser M14': 'Loser Match 14',
+            'Winner M14': 'Winner Match 14'
+        };
+
+        const playoffSchedule = [
+            { round: "Playoff round 1", time: "09:00", matchNum: 13, t1_key: "1st Pool A", t2_key: "2nd Pool B" },
+            { round: "Playoff round 2", time: "10:30", matchNum: 14, t1_key: "2nd Pool A", t2_key: "1st Pool B" },
+            { round: "Playoff round 3", time: "14:00", matchNum: 15, t1_key: "Loser M13", t2_key: "Loser M14", description: "(3rd and 4th)" },
+            { round: "Playoff round 4", time: "15:30", matchNum: 16, t1_key: "Winner M13", t2_key: "Winner M14", description: "(1st and 2nd)" }
+        ];
+
+        playoffsHtml += `<div class="league-section">`;
+        playoffSchedule.forEach(match => {
+            const t1 = teamMap[match.t1_key];
+            const t2 = teamMap[match.t2_key];
+            playoffsHtml += `
+                <div class="match-item">
+                    <div class="match-time">
+                        ${match.time}
+                        <div style="font-size: 0.55rem; margin-top: 2px;">${match.d || 'SAT 23 MAY'}</div>
+                        <div style="font-size: 0.5rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-top: 4px;">${match.round} ${match.description || ''}</div>
+                    </div>
+                    <div class="match-team"><div class="team-crest">${(t1 || '?').charAt(0)}</div><div>${t1}</div></div>
+                    <div class="match-score">
+                        <div class="score-value">-</div>
+                        <div class="score-value" style="color: var(--text-muted); font-size: 0.675rem;">-</div>
+                        <div class="score-value">-</div>
+                    </div>
+                    <div class="match-team"><div class="team-crest">${(t2 || '?').charAt(0)}</div><div>${t2}</div></div>
+                </div>`;
+        });
+        playoffsHtml += `</div>`;
+    } else {
+        playoffsHtml += `<div class="placeholder-text">Playoff data not available for this region.</div>`;
+    }
+    const playoffsSectionEl = document.getElementById('playoffs-section');
+    if (playoffsSectionEl) playoffsSectionEl.innerHTML = playoffsHtml;
+
+    // 5. Teams List
+    let teamsHtml = `<div class="section-title">Participating Teams</div><div class="teams-grid">`;
+    const allTeamsInRegion = [];
+    if (regionData.pools) {
+        for (const pool in regionData.pools) {
+            regionData.pools[pool].forEach(t => allTeamsInRegion.push(t));
+        }
+    }
+    allTeamsInRegion.sort((a,b) => a.name.localeCompare(b.name)).forEach(t => {
+        teamsHtml += `<div class="team-card"><div class="team-crest">${t.name.charAt(0)}</div><span>${t.name}</span></div>`;
+    });
+    teamsHtml += `</div>`;
+    const teamsSectionEl = document.getElementById('teams-section');
+    if(teamsSectionEl) teamsSectionEl.innerHTML = teamsHtml;
+
+    // 5. Standings Table
+    let standingsHtml = `<div class="section-title">Standings</div>`;
+    if (regionData.pools) {
+        const poolsForDisplay = JSON.parse(JSON.stringify(regionData.pools));
+        calculateStandings(poolsForDisplay, regionData.matches, ['FINAL', 'LIVE']);
+        standingsHtml += renderStandings(poolsForDisplay, activeRegion, regionData.matches);
+        standingsHtml += `<div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 12px; font-weight: 600;">* Top 2 teams from each pool qualify for playoffs</div>`;
+    }
+    const standingsSectionEl = document.getElementById('standings-section');
+    if(standingsSectionEl) standingsSectionEl.innerHTML = standingsHtml;
+}
+
+// --- HELPER FUNCTIONS ---
+function renderMatch(match) {
+    const status = match.st || 'UPCOMING';
+
+    let t1Class = '';
+    let t2Class = '';
+    let s1Class = '';
+    let s2Class = '';
+
+    if (match.s1 != null && match.s2 != null) {
+        if (match.s1 > match.s2) {
+            t1Class = 'winner';
+            s1Class = 'winner';
+            t2Class = 'loser';
+            s2Class = 'loser';
+        } else if (match.s2 > match.s1) {
+            t2Class = 'winner';
+            s2Class = 'winner';
+            t1Class = 'loser';
+            s1Class = 'loser';
+        }
+    }
+
+    return `
+        <div class="league-section"><div class="match-item">
+            <div class="match-time">
+                ${status === 'LIVE' ? `<div style="color: var(--live); font-weight: 700;">LIVE</div>` : match.t || '--:--'}
+                <div style="font-size: 0.55rem; margin-top: 2px;">${match.d || ''}</div>
+                ${match.region ? `<div style="font-size: 0.5rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-top: 4px;">${match.region}</div>` : ''}
+            </div>
+            <div class="match-team ${t1Class}"><div class="team-crest">${(match.t1 || '?').charAt(0)}</div><div>${match.t1 || 'Team 1'}</div></div>
+            <div class="match-score">
+                ${status === 'UPCOMING' 
+                    ? `<div class="score-value" style="color: var(--text-muted); font-size: 0.8rem;">vs</div>`
+                    : `
+                    <div class="score-value ${s1Class}">${match.s1 != null ? match.s1 : '-'}</div>
+                    <div class="score-value" style="color: var(--text-muted); font-size: 0.675rem;">-</div>
+                    <div class="score-value ${s2Class}">${match.s2 != null ? match.s2 : '-'}</div>
+                    `}
+            </div>
+            <div class="match-team ${t2Class}"><div class="team-crest">${(match.t2 || '?').charAt(0)}</div><div>${match.t2 || 'Team 2'}</div></div>
+        </div></div>`;
+}
+
+function getPlayoffOutcome(match) {
+    if (!match || match.s1 == null || match.s2 == null) return null;
+    if (match.s1 === match.s2) return null;
+    return match.s1 > match.s2
+        ? { winner: match.t1, loser: match.t2 }
+        : { winner: match.t2, loser: match.t1 };
+}
+
+function resolvePlayoffPlaceholder(teamName, playoffs) {
+    if (!teamName || !Array.isArray(playoffs)) return teamName;
+    const normalized = teamName.replace(/Match/gi, 'M').trim();
+    const matchRef = normalized.match(/^(Winner|Loser)\s+M\s*([0-9]+)/i);
+    if (!matchRef) return teamName;
+    const side = matchRef[1].toLowerCase();
+    const matchNumber = Number(matchRef[2]);
+    const sourceIndex = matchNumber - 13;
+    if (Number.isNaN(matchNumber) || sourceIndex < 0 || sourceIndex >= playoffs.length) return teamName;
+    const outcome = getPlayoffOutcome(playoffs[sourceIndex]);
+    if (!outcome) return teamName;
+    return side === 'winner' ? outcome.winner : outcome.loser;
+}
+
+function resolvePlayoffPlaceholders(playoffs) {
+    if (!Array.isArray(playoffs)) return [];
+    return playoffs.map(match => ({
+        ...match,
+        t1: resolvePlayoffPlaceholder(match.t1, playoffs),
+        t2: resolvePlayoffPlaceholder(match.t2, playoffs)
+    }));
+}
+
+function getPlayoffAdvancementSummary(playoffs) {
+    const resolved = resolvePlayoffPlaceholders(playoffs || []);
+    const finishedMatches = resolved.filter(m => m.st === 'FINAL' && m.s1 != null && m.s2 != null);
+    if (!finishedMatches.length) return null;
+
+    const winners = [];
+    const losers = [];
+    finishedMatches.forEach(match => {
+        if (match.s1 > match.s2) {
+            winners.push(match.t1);
+            losers.push(match.t2);
+        } else if (match.s2 > match.s1) {
+            winners.push(match.t2);
+            losers.push(match.t1);
+        }
+    });
+
+    return {
+        winners: [...new Set(winners)],
+        losers: [...new Set(losers)]
+    };
+}
+
+function renderStandings(pools, regionName, matches = []) {
+    let html = '';
+    for (const [poolName, teams] of Object.entries(pools)) {
+        html += `
+            <div class="standings-card">
+                <div class="standings-title">${regionName ? regionName + ' - ' : ''}${poolName}</div>
+                <table>
+                    <thead><tr><th>Team</th><th class="col-data">P</th><th class="col-data">GD</th><th class="col-data">Pts</th></tr></thead>
+                    <tbody>
+                        ${teams.sort((a, b) => compareTeams(a, b, matches)).map((team, index) => {
+                            const isQualified = index < 2;
+                            const qualifiedClass = isQualified ? 'qualified' : '';
+                            const qualifiedMarker = isQualified ? '<span class="qualified-marker">Q</span>' : '';
+                            return `
+                                <tr class="${qualifiedClass}">
+                                    <td class="col-team">${team.name}<span class="team-seed">(#${team.seed})</span> ${qualifiedMarker}</td>
+                                    <td class="col-data">${team.played}</td>
+                                    <td class="col-data">${team.gd}</td>
+                                    <td class="col-data"><span class="col-pts">${team.points}</span></td>
+                                </tr>`;
+                        }).join('')}
+                    </tbody>
+                </table>
+            </div>`;
+    }
+    return html;
+}
+
+function generateQualifyingSummary(regionData) {
+    let html = `<div class="section-title">Qualifying Round Summary</div>`;
+    if (!regionData.pools) {
+        html += `<div class="placeholder-text">Qualification summary not available for this region.</div>`;
+        return html;
+    }
+
+    const poolsForDisplay = JSON.parse(JSON.stringify(regionData.pools));
+    calculateStandings(poolsForDisplay, regionData.matches, ['FINAL', 'LIVE']);
+    const poolNames = Object.keys(poolsForDisplay);
+    const poolCount = poolNames.length;
+    const totalTeams = Object.values(poolsForDisplay).reduce((sum, pool) => sum + pool.length, 0);
+    const playedMatches = regionData.matches.filter(m => m.st === 'FINAL' || m.st === 'LIVE').length;
+    const totalMatches = regionData.matches.length;
+    const totalQualifiers = poolCount * 2;
+
+    html += `<div class="league-section" style="padding: 18px; display: grid; gap: 14px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px;">
+            <div><strong>Pools</strong><div>${poolCount}</div></div>
+            <div><strong>Teams</strong><div>${totalTeams}</div></div>
+            <div><strong>Matches played</strong><div>${playedMatches} / ${totalMatches}</div></div>
+            <div><strong>Qualifiers</strong><div>${totalQualifiers}</div></div>
+        </div>
+        <div style="font-size: 0.95rem; color: var(--text-muted);">Top two teams from each pool currently on track to advance to the playoffs.</div>
+        <div style="display: grid; gap: 8px; margin-top: 8px;">
+            ${poolNames.map(poolName => {
+                const poolTeams = [...poolsForDisplay[poolName]].sort((a, b) => compareTeams(a, b, regionData.matches));
+                const qualifiers = poolTeams.slice(0, 2).map(t => t.name || 'TBD').join(' & ');
+                return `<div style="font-size: 0.92rem;"><strong>${poolName}:</strong> ${qualifiers}</div>`;
+            }).join('')}
+        </div>
+    </div>`;
+    return html;
+}
+
+function compareTeams(a, b, matches) {
+    if (b.points !== a.points) return b.points - a.points;
+    if (b.gd !== a.gd) return b.gd - a.gd;
+    
+    // Head-to-Head Tiebreaker
+    if (matches && matches.length > 0) {
+        const normalize = name => (name || '').replace(/['\s]/g, '').toLowerCase();
+        const normA = normalize(a.name);
+        const normB = normalize(b.name);
+        
+        const h2hMatch = matches.find(m => 
+            (m.st === 'FINAL' || m.st === 'LIVE') && 
+            ((normalize(m.t1) === normA && normalize(m.t2) === normB) || 
+             (normalize(m.t1) === normB && normalize(m.t2) === normA))
+        );
+        
+        if (h2hMatch && h2hMatch.s1 != null && h2hMatch.s2 != null) {
+            const scoreA = normalize(h2hMatch.t1) === normA ? h2hMatch.s1 : h2hMatch.s2;
+            const scoreB = normalize(h2hMatch.t1) === normB ? h2hMatch.s1 : h2hMatch.s2;
+            if (scoreA !== scoreB) return scoreB - scoreA;
+        }
+    }
+            
+            // Fallback to Seed ranking if tied and no H2H
+            if (a.seed && b.seed && a.seed !== b.seed) {
+                return a.seed - b.seed;
+            }
+    return a.name.localeCompare(b.name);
+}
+
+function renderHomePreviews() {
+    const gridEl = document.getElementById('playoffsPreviewGrid');
+    const highlightsEl = document.getElementById('homepageHighlightsGrid');
+    
+    if (highlightsEl && tournamentData) {
+        let allMatches = [];
+        for (const r in tournamentData) {
+            if (tournamentData[r].matches) {
+                allMatches = allMatches.concat(tournamentData[r].matches.map(m => ({...m, region: r})));
+            }
+            if (tournamentData[r].playoffs) {
+                allMatches = allMatches.concat(tournamentData[r].playoffs.map(m => ({...m, region: r})));
+            }
+        }
+        const activeMatches = allMatches.filter(m => m.st === 'LIVE' || m.st === 'FINAL');
+        
+        activeMatches.sort((a, b) => {
+            if (a.st === 'LIVE' && b.st !== 'LIVE') return -1;
+            if (b.st === 'LIVE' && a.st !== 'LIVE') return 1;
+            return 0; 
+        });
+        
+        const topMatches = activeMatches.slice(0, 3);
+        if (topMatches.length > 0) {
+            highlightsEl.innerHTML = `<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">` + 
+                topMatches.map(m => renderMatch(m)).join('') + 
+                `</div>`;
+        } else {
+            highlightsEl.innerHTML = '<div class="placeholder-text" style="padding: 20px;">No recent highlights. Check back soon for the latest action!</div>';
+        }
+    }
+
+    function getHomePreviewMatches(regionData) {
+        if (!regionData) return [];
+        const playoffMatches = resolvePlayoffPlaceholders(regionData.playoffs || []);
+        const nextPlayoffMatches = playoffMatches
+            .filter(m => m.st === 'LIVE' || m.st === 'UPCOMING')
+            .sort((a, b) => {
+                const order = { LIVE: 0, UPCOMING: 1, FINAL: 2 };
+                return (order[a.st] || 3) - (order[b.st] || 3);
+            });
+        if (nextPlayoffMatches.length > 0) {
+            return nextPlayoffMatches.slice(0, 2);
+        }
+        if (playoffMatches.length > 0) {
+            return playoffMatches.slice(-2);
+        }
+        return [];
+    }
+
+    if (!gridEl || !tournamentData) return;
+
+    let html = '';
+    for (const regionName of Object.keys(tournamentData)) {
+        const regionData = tournamentData[regionName];
+        if (!regionData.pools || !regionData.pools['Pool A'] || !regionData.pools['Pool B']) continue;
+
+        const poolsForDisplay = JSON.parse(JSON.stringify(regionData.pools));
+        calculateStandings(poolsForDisplay, regionData.matches, ['FINAL', 'LIVE']);
+        const poolA = poolsForDisplay['Pool A'].sort((a, b) => compareTeams(a, b, regionData.matches));
+        const poolB = poolsForDisplay['Pool B'].sort((a, b) => compareTeams(a, b, regionData.matches));
+
+        const previewMatches = getHomePreviewMatches(regionData);
+        const t1 = previewMatches[0]?.t1 || (poolA[0] ? poolA[0].name : 'TBD');
+        const t2 = previewMatches[0]?.t2 || (poolB[1] ? poolB[1].name : 'TBD');
+        const t3 = previewMatches[1]?.t1 || (poolA[1] ? poolA[1].name : 'TBD');
+        const t4 = previewMatches[1]?.t2 || (poolB[0] ? poolB[0].name : 'TBD');
+
+        const statusTag = `<span style="font-size: 0.65rem; background: var(--border); padding: 4px 8px; border-radius: 2px; color: var(--text-main); font-family: 'Anton', sans-serif; text-transform: uppercase; letter-spacing: 0.04em;">Confirmed</span>`;
+
+        html += `
+        <div class="tournament-card" style="cursor: default; padding: 20px;">
+            <div style="font-size: 0.95rem; font-weight: 800; color: var(--navy); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+                <span>${regionName}</span>
+                ${statusTag}
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; background: var(--bg); padding: 10px 12px; border-radius: 2px; border: 1px solid var(--frosted-border);">
+                    <span style="font-weight: 700; color: var(--text-main); flex: 1; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${t1}">${t1}</span>
+                    <span style="color: var(--text-muted); font-weight: 800; font-size: 0.65rem; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 700; color: var(--text-main); flex: 1; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${t2}">${t2}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; background: var(--bg); padding: 10px 12px; border-radius: 2px; border: 1px solid var(--frosted-border);">
+                    <span style="font-weight: 700; color: var(--text-main); flex: 1; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${t3}">${t3}</span>
+                    <span style="color: var(--text-muted); font-weight: 800; font-size: 0.65rem; margin: 0 10px;">VS</span>
+                    <span style="font-weight: 700; color: var(--text-main); flex: 1; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${t4}">${t4}</span>
+                </div>
+            </div>
+        </div>`;
+    }
+    gridEl.innerHTML = html;
+}
+
+function calculateStandings(pools, matches, statusesToInclude = ['FINAL']) {
+    for (const poolName in pools) { pools[poolName].forEach(team => { team.points = 0; team.gd = 0; team.played = 0; }); }
+    const allTeams = {};
+    const normalize = name => (name || '').replace(/['\s]/g, '').toLowerCase();
+    for (const poolName in pools) { pools[poolName].forEach(team => { allTeams[normalize(team.name)] = team; }); }
+    matches.filter(m => statusesToInclude.includes(m.st)).forEach(match => {
+        const t1 = allTeams[normalize(match.t1)], t2 = allTeams[normalize(match.t2)];
+        if (t1 && t2) {
+            t1.played += 1;
+            t2.played += 1;
+
+            t1.gd += match.s1 - match.s2;
+            t2.gd += match.s2 - match.s1;
+            if (match.s1 > match.s2) t1.points += 3;
+            else if (match.s2 > match.s1) t2.points += 3;
+            else { t1.points += 1; t2.points += 1; }
+        }
+    });
+}
+
+// --- EVENT LISTENERS ---
+let resizeTimer;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+        if (activeTournament === 'halala') updateView();
+    }, 150);
+});
+
+regionFilters.addEventListener('click', e => {
+    if (e.target.matches('.filter-btn')) {
+        activeRegion = e.target.dataset.region;
+        sessionStorage.setItem('activeRegion', activeRegion);
+        if (activeTournament === 'halala') updateView();
+    }
+});
+
+// --- INITIALIZATION ---
+// 1. Render the page immediately with default data to avoid a blank screen.
+function initializeApp() {
+    const cachedData = localStorage.getItem('sasfa-tournament-data');
+    if (cachedData) {
+        try {
+            tournamentData = JSON.parse(cachedData);
+        } catch (e) {
+            console.error("Failed to parse cached data", e);
+        }
+    }
+
+    applyRouting(); 
+    loadData(false); // Fetch silently in the background
+    setInterval(() => loadData(false), 60000); // And continue to silently check every 60 seconds.
+}
+
+initializeApp();
+</script>
+
+</body>
+</html>
+}
