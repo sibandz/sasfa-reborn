@@ -1961,10 +1961,10 @@ function renderMatch(match) {
 function renderMatchRow(match) {
     const matchDate = match.d || '--';
     const matchTime = match.t || '--:--';
-    const ballImage = match.ballImage || '/images/broadcaster-ball.png';
+    const ballImage = match.ballImage || '/images/broadcaster-ball.svg';
     const referee = match.ref || '-';
     const broadcasterUrl = 'https://live.supersportschools.com/category/606f65f91eea03755e56797c/sub-category/67ff624559d9be83280028c6/';
-    const broadcasterLogo = match.broadcastLogo || '/images/broadcaster-ball.png';
+    const broadcasterLogo = match.broadcastLogo || '/images/sasfa_logo-removebg-preview.png';
     const broadcaster = `<a href="${broadcasterUrl}" target="_blank" rel="noopener noreferrer" class="broadcaster-link"><img src="${broadcasterLogo}" alt="Supersports Schools" class="broadcaster-logo" onerror="this.style.display='none'" /><span class="broadcaster-label">Watch Live</span></a>`;
     const team1 = match.t1 || 'Team 1';
     const team2 = match.t2 || 'Team 2';
