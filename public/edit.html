@@ -896,6 +896,18 @@
 
     const LOCAL_STORAGE_KEY = 'sasfa-tournament-data';
 
+    function getLocalCachedData() {
+        try {
+            const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+            if (!raw) return null;
+            const parsed = JSON.parse(raw);
+            return parsed && typeof parsed === 'object' ? parsed : null;
+        } catch (error) {
+            console.warn('Local cache parse failed:', error);
+            return null;
+        }
+    }
+
     function applySavedData(savedData) {
         if (!savedData || typeof savedData !== 'object') return;
 
@@ -917,20 +929,36 @@
 
     function loadSavedData() {
         return fetch('/api/get-data')
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) throw new Error(`Server error: ${res.status}`);
+                return res.json();
+            })
             .then(data => {
                 if (data && Object.keys(data).length > 0) {
                     applySavedData(data);
+                    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tournamentData));
                     return saveData().catch(e => console.error('Initial auto-save failed', e));
+                }
+
+                const localCached = getLocalCachedData();
+                if (localCached && Object.keys(localCached).length > 0) {
+                    applySavedData(localCached);
                 }
             })
             .catch(err => {
                 console.error('Unable to load tournament data from server. Using default data.', err);
+                const localCached = getLocalCachedData();
+                if (localCached && Object.keys(localCached).length > 0) {
+                    applySavedData(localCached);
+                }
                 return Promise.resolve();
             });
     }
 
     function saveData() {
+        // Always keep a browser-side copy so fixture edits are never lost.
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tournamentData));
+
         return fetch('/api/save-data', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -938,11 +966,11 @@
         })
         .then(res => {
             if (!res.ok) throw new Error(`Server error: ${res.status}`);
-            return res.json();
+            return res.json().catch(() => ({ message: 'Saved' }));
         })
         .catch(error => {
-            console.error('Error saving data to server:', error);
-            throw error;
+            console.error('Error saving data to server, using local cache fallback:', error);
+            return { message: 'Saved locally (server unavailable)', storage: 'local' };
         });
     }
 
@@ -1258,10 +1286,14 @@
                     }
                 }
             }
-            await saveData();
+            const saveResult = await saveData();
             populatePlayoffOptions();
             populateNationalOptions();
-            setPlayoffStatus('Playoff fixture saved successfully. Refresh public page.');
+            if (saveResult && saveResult.storage === 'local') {
+                setPlayoffStatus('Playoff fixture saved locally. Server unavailable right now.');
+            } else {
+                setPlayoffStatus('Playoff fixture saved successfully. Refresh public page.');
+            }
         } catch (error) {
             setPlayoffStatus('Error saving playoff fixture.', false);
         }
@@ -1287,9 +1319,13 @@
             activePlayoffIndex = Math.max(0, regionData.playoffs.length - 1);
         }
         try {
-            await saveData();
+            const saveResult = await saveData();
             populatePlayoffOptions();
-            setPlayoffStatus('Playoff fixture deleted.');
+            if (saveResult && saveResult.storage === 'local') {
+                setPlayoffStatus('Playoff fixture deleted locally. Server unavailable right now.');
+            } else {
+                setPlayoffStatus('Playoff fixture deleted.');
+            }
         } catch (error) {
             setPlayoffStatus('Error deleting playoff fixture.', false);
         }
@@ -1411,9 +1447,13 @@
             fixture.ps1 = nPen1 !== '' ? Number(nPen1) : null;
             fixture.ps2 = nPen2 !== '' ? Number(nPen2) : null;
 
-            await saveData();
+            const saveResult = await saveData();
             populateNationalOptions();
-            setNationalStatus('National fixture saved successfully. Refresh public page.');
+            if (saveResult && saveResult.storage === 'local') {
+                setNationalStatus('National fixture saved locally. Server unavailable right now.');
+            } else {
+                setNationalStatus('National fixture saved successfully. Refresh public page.');
+            }
         } catch (error) {
             setNationalStatus('Error saving National fixture.', false);
         }
@@ -1437,9 +1477,13 @@
             activeNationalIndex = Math.max(0, nationalData.matches.length - 1);
         }
         try {
-            await saveData();
+            const saveResult = await saveData();
             populateNationalOptions();
-            setNationalStatus('National fixture deleted.');
+            if (saveResult && saveResult.storage === 'local') {
+                setNationalStatus('National fixture deleted locally. Server unavailable right now.');
+            } else {
+                setNationalStatus('National fixture deleted.');
+            }
         } catch (error) {
             setNationalStatus('Error deleting National fixture.', false);
         }
@@ -1503,11 +1547,15 @@
             calculateStandings(tournamentData[activeRegion]);
             updatePlayoffsFromStandings(tournamentData[activeRegion]);
 
-            await saveData();
+            const saveResult = await saveData();
             populateMatchOptions(); // Repopulate to reflect any potential name changes
             populatePlayoffOptions(); // Refresh playoff selections based on new standings
             populateNationalOptions(); // Refresh national options
-            setSaveStatus('Saved to server successfully. Refresh public page.');
+            if (saveResult && saveResult.storage === 'local') {
+                setSaveStatus('Saved locally. Server unavailable right now.');
+            } else {
+                setSaveStatus('Saved to server successfully. Refresh public page.');
+            }
         } catch (error) {
             let msg = 'Error saving to server!';
             if (error && error.message) {
@@ -1522,9 +1570,13 @@
         if (confirm("Are you sure you want to reset ALL tournament data back to defaults? This will overwrite the live database and cannot be undone.")) {
             tournamentData = JSON.parse(JSON.stringify(DEFAULT_TOURNAMENT_DATA));
             try {
-                await saveData();
+                const saveResult = await saveData();
                 populateRegionOptions(); // Reloads the UI with the fresh defaults
-                setSaveStatus('Database reset to defaults successfully.');
+                if (saveResult && saveResult.storage === 'local') {
+                    setSaveStatus('Database reset locally. Server unavailable right now.');
+                } else {
+                    setSaveStatus('Database reset to defaults successfully.');
+                }
             } catch (error) {
                 setSaveStatus('Error resetting database to server!', false);
             }
@@ -1558,9 +1610,13 @@
             });
 
             if (recoveredCount > 0) {
-                await saveData();
+                const saveResult = await saveData();
                 populateMatchOptions();
-                setSaveStatus(`Recovered ${recoveredCount} matches! Refresh public page.`);
+                if (saveResult && saveResult.storage === 'local') {
+                    setSaveStatus(`Recovered ${recoveredCount} matches locally. Server unavailable right now.`);
+                } else {
+                    setSaveStatus(`Recovered ${recoveredCount} matches! Refresh public page.`);
+                }
                 alert(`Successfully recovered ${recoveredCount} missing matches from your browser's cache!`);
             } else {
                 setSaveStatus('No new results found in local cache.', false);

@@ -2052,6 +2052,26 @@ function loadData(showLoading = false) {
         })
         .catch(error => {
             console.error('Error loading fixture data from server:', error);
+            const localRaw = localStorage.getItem(LOCAL_STORAGE_KEY);
+            if (localRaw) {
+                try {
+                    const localData = JSON.parse(localRaw);
+                    if (localData && typeof localData === 'object' && Object.keys(localData).length > 0) {
+                        applySavedData(localData);
+                        if (activeTournament === 'halala') {
+                            updateView();
+                            updateLiveStatus();
+                        } else {
+                            renderHomePreviews();
+                            updateLiveStatus();
+                        }
+                        if (lastUpdatedEl) lastUpdatedEl.textContent = `Loaded from local cache: ${new Date().toLocaleTimeString()}`;
+                        return;
+                    }
+                } catch (localError) {
+                    console.warn('Local cache parse failed:', localError);
+                }
+            }
             if (lastUpdatedEl) lastUpdatedEl.textContent = 'Unable to load fixtures from server.';
         })
         .finally(() => {

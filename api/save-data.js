@@ -16,7 +16,14 @@ module.exports = async function handler(req, res) {
     }
 
     try {
-        const newData = req.body;
+        let newData = req.body;
+        if (typeof newData === 'string') {
+            try {
+                newData = JSON.parse(newData);
+            } catch (parseError) {
+                return res.status(400).json({ message: 'Invalid JSON payload.' });
+            }
+        }
 
         if (!newData || typeof newData !== 'object' || Array.isArray(newData)) {
             return res.status(400).json({ message: 'Invalid data provided.' });
