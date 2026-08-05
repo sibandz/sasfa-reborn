@@ -1282,6 +1282,13 @@
                 padding: 12px 16px;
             }
 
+            .section-title {
+                font-size: 0.92rem;
+                letter-spacing: 0.06em;
+                padding: 8px 0 8px 10px;
+                border-left-width: 5px;
+            }
+
             .jump-nav {
                 position: static;
                 border-bottom: none;
@@ -1303,6 +1310,74 @@
                 padding: 12px 14px;
                 grid-template-columns: 56px minmax(0, 1fr) auto minmax(0, 1fr);
                 gap: 10px;
+            }
+
+            .schedule-table {
+                min-width: 0;
+                box-shadow: none;
+                border-radius: 10px;
+            }
+
+            .schedule-table th,
+            .schedule-table td {
+                padding: 10px 8px;
+                font-size: 0.74rem;
+            }
+
+            .schedule-table th {
+                font-size: 0.62rem;
+                letter-spacing: 0.08em;
+            }
+
+            .schedule-table .date-column,
+            .schedule-table .datetime-column {
+                width: 72px;
+                min-width: 72px;
+                text-align: left;
+            }
+
+            .schedule-table .match-column {
+                min-width: 0;
+                width: auto;
+            }
+
+            .schedule-table .ball-column,
+            .schedule-table th:nth-child(3),
+            .schedule-table td:nth-child(3),
+            .schedule-table th:nth-child(5),
+            .schedule-table td:nth-child(5),
+            .schedule-table th:nth-child(6),
+            .schedule-table td:nth-child(6) {
+                display: none;
+            }
+
+            .schedule-table .team-name {
+                font-size: 0.7rem;
+                line-height: 1.2;
+            }
+
+            .schedule-table .team-badge {
+                width: 22px;
+                height: 22px;
+            }
+
+            .schedule-table .team-scoreline {
+                font-size: 0.58rem;
+                padding: 2px 6px;
+            }
+
+            .standings-card {
+                padding: 4px;
+            }
+
+            .standings-card th,
+            .standings-card td {
+                padding: 8px 6px;
+                font-size: 0.72rem;
+            }
+
+            .standings-card .col-data {
+                width: 44px;
             }
 
             .match-team {
@@ -1887,30 +1962,30 @@ let activeFinalsTeam = sessionStorage.getItem('activeFinalsTeam') || 'ALL';
 let activeFinalsGroup = sessionStorage.getItem('activeFinalsGroup') || 'ALL';
 
 const TEAM_LOGO_MAP = {
-    'Navalsig High School': '/images/navalsig.png',
-    'Curro Thatchfield': '/images/curro tatchfield.png',
-    'Flora Park High School': '/images/florapark.png',
-    'Camps Bay High School': '/images/camps bay.png',
-    'Virginia High School': '/images/virginias.png',
-    'Curro Soshanguve': '/images/curro soshanguve.png',
-    'Grey College': '/images/grey college.png',
-    'Curro Century City': '/images/curro century city.png',
-    'CBC Mount Edmund': '/images/cbc mount edmund.png',
-    'Meridian Cosmo City': '/images/meridian cosmo city.png',
-    'Clapham High School': '/images/clapham.png',
-    'Barberton High School': '/images/barberton.png',
-    'Northern Academy': '/images/nothern academy.png',
-    'Waterstone College': '/images/waterstone.png',
-    'Rosina Sedibane': '/images/rosine sedibane.png',
-    "St Anne's High School": "/images/st anne's.png",
-    'Glenwood High School': '/images/glenwood high.png',
-    'Westenburg High School': '/images/westerberg high.png',
-    'Norkem Park High School': '/images/norkem park.png',
-    'Mondeor High School': '/images/mondeor high.png',
-    'Meridian Pinehurst': '/images/meridian pinehurst.png',
-    'Vaal High School': '/images/the vaal high.png',
-    'Curro Nelspruit': '/images/curro nelspruit.png',
-    'Durban High School': '/images/durban high.png'
+    'Navalsig High School': '/images/schools/navalsig-high-school.png',
+    'Curro Thatchfield': '/images/schools/curro-thatchfield.png',
+    'Flora Park High School': '/images/schools/flora-park-high-school.png',
+    'Camps Bay High School': '/images/schools/camps-bay-high-school.png',
+    'Virginia High School': '/images/schools/virginia-high-school.png',
+    'Curro Soshanguve': '/images/schools/curro-soshanguve.png',
+    'Grey College': '/images/schools/grey-college.png',
+    'Curro Century City': '/images/schools/curro-century-city.png',
+    'CBC Mount Edmund': '/images/schools/cbc-mount-edmund.png',
+    'Meridian Cosmo City': '/images/schools/meridian-cosmo-city.png',
+    'Clapham High School': '/images/schools/clapham-high-school.png',
+    'Barberton High School': '/images/schools/barberton-high-school.png',
+    'Northern Academy': '/images/schools/northern-academy.png',
+    'Waterstone College': '/images/schools/waterstone-college.png',
+    'Rosina Sedibane': '/images/schools/rosina-sedibane.png',
+    "St Anne's High School": '/images/schools/st-annes-high-school.png',
+    'Glenwood High School': '/images/schools/glenwood-high-school.png',
+    'Westenburg High School': '/images/schools/westenburg-high-school.png',
+    'Norkem Park High School': '/images/schools/norkem-park-high-school.png',
+    'Mondeor High School': '/images/schools/mondeor-high-school.png',
+    'Meridian Pinehurst': '/images/schools/meridian-pinehurst.png',
+    'Vaal High School': '/images/schools/vaal-high-school.png',
+    'Curro Nelspruit': '/images/schools/curro-nelspruit.png',
+    'Durban High School': '/images/schools/durban-high-school.png'
 };
 
 // --- DOM ELEMENTS ---
