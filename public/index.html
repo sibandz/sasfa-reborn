@@ -341,6 +341,44 @@
             align-items: center;
         }
 
+        .phase-tabs {
+            background: var(--card-bg-solid);
+            padding: 12px 20px 4px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .phase-tab-btn {
+            background: transparent;
+            border: 2px solid var(--border);
+            padding: 7px 16px;
+            border-radius: 0;
+            font-family: "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            font-size: 0.74rem;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: 0.15s;
+            font-weight: 700;
+        }
+
+        .phase-tab-btn:hover {
+            border-color: var(--lime);
+            color: var(--lime);
+        }
+
+        .phase-tab-btn.active {
+            background: var(--lime);
+            color: var(--ink);
+            border-color: var(--lime);
+            box-shadow: 0 10px 20px rgba(198,255,51,0.18);
+        }
+
         .filter-btn {
             background: transparent;
             border: 2px solid var(--border);
@@ -1258,6 +1296,12 @@
         <a href="#feed-results">Results</a>
     </div>
 
+    <div class="phase-tabs" id="phaseTabs">
+        <button class="phase-tab-btn active" data-phase="qualifications">Qualifications</button>
+        <button class="phase-tab-btn" data-phase="playoffs">Playoffs</button>
+        <button class="phase-tab-btn" data-phase="finals">Finals</button>
+    </div>
+
     <div class="filters" id="regionFilters" style="display: flex; flex-wrap: wrap; justify-content: center; padding: 16px 20px; border-bottom: 1px solid var(--border); background: var(--card-bg-solid);">
         <div style="color: var(--text-muted); font-size: 0.85rem; font-weight: 600;">Loading regions...</div>
     </div>
@@ -1586,9 +1630,11 @@ const LOCAL_STORAGE_KEY = 'sasfa-tournament-data';
 let tournamentData = JSON.parse(JSON.stringify(DEFAULT_TOURNAMENT_DATA));
 let activeTournament = sessionStorage.getItem('activeTournament') || null;
 let activeRegion = sessionStorage.getItem('activeRegion') || Object.keys(tournamentData)[0];
+let activePhase = sessionStorage.getItem('activePhase') || (activeRegion === 'National Finals' ? 'finals' : 'qualifications');
 
 // --- DOM ELEMENTS ---
 const regionFilters = document.getElementById('regionFilters');
+const phaseTabs = document.getElementById('phaseTabs');
 
 // --- THEME LOGIC ---
 document.getElementById('theme-toggle').addEventListener('click', () => {
@@ -1732,11 +1778,43 @@ function loadData(showLoading = false) {
 
 // --- MAIN RENDER LOGIC ---
 function updateView() {
-    regionFilters.innerHTML = Object.keys(tournamentData).map(region => `<button class="filter-btn ${region === activeRegion ? 'active' : ''}" data-region="${region}">${region}</button>`).join('');
+    const allRegions = Object.keys(tournamentData);
+    const hasNationalFinals = allRegions.includes('National Finals');
+
+    if (activePhase === 'finals' && hasNationalFinals) {
+        activeRegion = 'National Finals';
+    }
+
+    const regionOptions = activePhase === 'finals'
+        ? (hasNationalFinals ? ['National Finals'] : allRegions)
+        : allRegions.filter(r => r !== 'National Finals');
+
+    if (!regionOptions.includes(activeRegion)) {
+        activeRegion = regionOptions[0] || allRegions[0];
+    }
+    sessionStorage.setItem('activeRegion', activeRegion);
+
+    if (phaseTabs) {
+        phaseTabs.innerHTML = `
+            <button class="phase-tab-btn ${activePhase === 'qualifications' ? 'active' : ''}" data-phase="qualifications">Qualifications</button>
+            <button class="phase-tab-btn ${activePhase === 'playoffs' ? 'active' : ''}" data-phase="playoffs">Playoffs</button>
+            <button class="phase-tab-btn ${activePhase === 'finals' ? 'active' : ''}" data-phase="finals">Finals</button>
+        `;
+    }
+
+    if (regionFilters) {
+        regionFilters.style.display = regionOptions.length > 1 ? 'flex' : 'none';
+        regionFilters.innerHTML = regionOptions.map(region => `<button class="filter-btn ${region === activeRegion ? 'active' : ''}" data-region="${region}">${region}</button>`).join('');
+    }
+
     renderDashboard();
 }
 
 function renderDashboard() {
+    const isQualificationsPhase = activePhase === 'qualifications';
+    const isPlayoffsPhase = activePhase === 'playoffs';
+    const isFinalsPhase = activePhase === 'finals';
+
     // 1. Calculate Global Stats
     let totalMatches = 0;
     let totalGoals = 0;
@@ -1826,21 +1904,30 @@ function renderDashboard() {
     if (!regionData) return;
 
     const summarySectionEl = document.getElementById('qualifying-summary-section');
-    if (summarySectionEl) summarySectionEl.innerHTML = generateQualifyingSummary(regionData);
+    const standingsSectionEl = document.getElementById('standings-section');
+    const teamsSectionEl = document.getElementById('teams-section');
+    const playoffsSectionEl = document.getElementById('playoffs-section');
+    const feedFixturesEl = document.getElementById('feed-fixtures');
+    const feedResultsEl = document.getElementById('feed-results');
+
+    if (summarySectionEl) summarySectionEl.style.display = isQualificationsPhase ? 'block' : 'none';
+    if (standingsSectionEl) standingsSectionEl.style.display = isQualificationsPhase ? 'block' : 'none';
+    if (teamsSectionEl) teamsSectionEl.style.display = isQualificationsPhase ? 'block' : 'none';
+    if (playoffsSectionEl) playoffsSectionEl.style.display = isPlayoffsPhase ? 'block' : 'none';
+    if (feedFixturesEl) feedFixturesEl.style.display = 'block';
+    if (feedResultsEl) feedResultsEl.style.display = 'block';
+
+    if (summarySectionEl && isQualificationsPhase) {
+        summarySectionEl.innerHTML = generateQualifyingSummary(regionData);
+    }
 
     // 2. Fixtures Feed (Live, Upcoming)
-    const liveMatches = [
-        ...regionData.matches.filter(m => m.st === 'LIVE'),
-        ...resolvePlayoffPlaceholders(regionData.playoffs || []).filter(m => m.st === 'LIVE') // Resolve playoffs for live status
-    ];
-    const upcomingMatches = [
-        ...regionData.matches.filter(m => m.st === 'UPCOMING'),
-        ...resolvePlayoffPlaceholders(regionData.playoffs || []).filter(m => m.st === 'UPCOMING') // Resolve playoffs for upcoming
-    ];
-    const finalMatches = [
-        ...regionData.matches.filter(m => m.st === 'FINAL'),
-        ...resolvePlayoffPlaceholders(regionData.playoffs || []).filter(m => m.st === 'FINAL') // Resolve playoffs for final
-    ].reverse(); // Show most recent first
+    const stageMatches = isPlayoffsPhase
+        ? resolvePlayoffPlaceholders(regionData.playoffs || [])
+        : regionData.matches || [];
+    const liveMatches = stageMatches.filter(m => m.st === 'LIVE');
+    const upcomingMatches = stageMatches.filter(m => m.st === 'UPCOMING');
+    const finalMatches = stageMatches.filter(m => m.st === 'FINAL').reverse();
 
     const buildScheduleTable = (matches, title) => {
         if (matches.length === 0) {
@@ -1868,21 +1955,21 @@ function renderDashboard() {
             </div>`;
     };
 
-    let fixturesHtml = buildScheduleTable([...liveMatches, ...upcomingMatches], 'Fixtures');
-    const feedFixturesEl = document.getElementById('feed-fixtures');
+    const fixturesTitle = isFinalsPhase ? 'Finals Fixtures' : (isPlayoffsPhase ? 'Playoff Fixtures' : 'Qualification Fixtures');
+    const resultsTitle = isFinalsPhase ? 'Finals Results' : (isPlayoffsPhase ? 'Playoff Results' : 'Qualification Results');
+    let fixturesHtml = buildScheduleTable([...liveMatches, ...upcomingMatches], fixturesTitle);
     if (feedFixturesEl) {
         feedFixturesEl.style.display = 'block';
         feedFixturesEl.innerHTML = fixturesHtml;
     }
 
     // 3. Results Feed
-    let resultsHtml = buildScheduleTable(finalMatches, 'Results');
-    const feedResultsEl = document.getElementById('feed-results');
+    let resultsHtml = buildScheduleTable(finalMatches, resultsTitle);
     if (feedResultsEl) feedResultsEl.innerHTML = resultsHtml;
 
     // 4. Playoffs
     let playoffsHtml = '';
-    if (regionData.playoffs && Array.isArray(regionData.playoffs) && regionData.playoffs.length > 0) {
+    if (isPlayoffsPhase && regionData.playoffs && Array.isArray(regionData.playoffs) && regionData.playoffs.length > 0) {
         const displayPlayoffs = resolvePlayoffPlaceholders(regionData.playoffs);
         playoffsHtml = buildScheduleTable(displayPlayoffs, 'Playoffs');
 
@@ -1898,7 +1985,7 @@ function renderDashboard() {
                     </div>
                 </div>`;
         }
-    } else if (regionData.pools && regionData.pools['Pool A'] && regionData.pools['Pool B']) {
+    } else if (isPlayoffsPhase && regionData.pools && regionData.pools['Pool A'] && regionData.pools['Pool B']) {
         const poolsForDisplay = JSON.parse(JSON.stringify(regionData.pools));
         calculateStandings(poolsForDisplay, regionData.matches, ['FINAL', 'LIVE']);
         const poolA = poolsForDisplay['Pool A'];
@@ -1946,37 +2033,38 @@ function renderDashboard() {
                 </div>`;
         });
         playoffsHtml += `</div>`;
-    } else {
+    } else if (isPlayoffsPhase) {
         playoffsHtml += `<div class="placeholder-text">Playoff data not available for this region.</div>`;
     }
-    const playoffsSectionEl = document.getElementById('playoffs-section');
     if (playoffsSectionEl) playoffsSectionEl.innerHTML = playoffsHtml;
 
     // 5. Teams List
-    let teamsHtml = `<div class="section-title">Participating Teams</div><div class="teams-grid">`;
-    const allTeamsInRegion = [];
-    if (regionData.pools) {
-        for (const pool in regionData.pools) {
-            regionData.pools[pool].forEach(t => allTeamsInRegion.push(t));
+    if (isQualificationsPhase) {
+        let teamsHtml = `<div class="section-title">Participating Teams</div><div class="teams-grid">`;
+        const allTeamsInRegion = [];
+        if (regionData.pools) {
+            for (const pool in regionData.pools) {
+                regionData.pools[pool].forEach(t => allTeamsInRegion.push(t));
+            }
         }
+        allTeamsInRegion.sort((a,b) => a.name.localeCompare(b.name)).forEach(t => {
+            teamsHtml += `<div class="team-card"><div class="team-crest">${t.name.charAt(0)}</div><span>${t.name}</span></div>`;
+        });
+        teamsHtml += `</div>`;
+        if(teamsSectionEl) teamsSectionEl.innerHTML = teamsHtml;
     }
-    allTeamsInRegion.sort((a,b) => a.name.localeCompare(b.name)).forEach(t => {
-        teamsHtml += `<div class="team-card"><div class="team-crest">${t.name.charAt(0)}</div><span>${t.name}</span></div>`;
-    });
-    teamsHtml += `</div>`;
-    const teamsSectionEl = document.getElementById('teams-section');
-    if(teamsSectionEl) teamsSectionEl.innerHTML = teamsHtml;
 
     // 5. Standings Table
-    let standingsHtml = `<div class="section-title">Standings</div>`;
-    if (regionData.pools) {
-        const poolsForDisplay = JSON.parse(JSON.stringify(regionData.pools));
-        calculateStandings(poolsForDisplay, regionData.matches, ['FINAL', 'LIVE']);
-        standingsHtml += renderStandings(poolsForDisplay, activeRegion, regionData.matches);
-        standingsHtml += `<div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 12px; font-weight: 600;">* Top 2 teams from each pool qualify for playoffs</div>`;
+    if (isQualificationsPhase) {
+        let standingsHtml = `<div class="section-title">Standings</div>`;
+        if (regionData.pools) {
+            const poolsForDisplay = JSON.parse(JSON.stringify(regionData.pools));
+            calculateStandings(poolsForDisplay, regionData.matches, ['FINAL', 'LIVE']);
+            standingsHtml += renderStandings(poolsForDisplay, activeRegion, regionData.matches);
+            standingsHtml += `<div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 12px; font-weight: 600;">* Top 2 teams from each pool qualify for playoffs</div>`;
+        }
+        if(standingsSectionEl) standingsSectionEl.innerHTML = standingsHtml;
     }
-    const standingsSectionEl = document.getElementById('standings-section');
-    if(standingsSectionEl) standingsSectionEl.innerHTML = standingsHtml;
 }
 
 // --- HELPER FUNCTIONS ---
@@ -2332,6 +2420,17 @@ regionFilters.addEventListener('click', e => {
         if (activeTournament === 'halala') updateView();
     }
 });
+
+if (phaseTabs) {
+    phaseTabs.addEventListener('click', e => {
+        if (!e.target.matches('.phase-tab-btn')) return;
+        const nextPhase = e.target.dataset.phase;
+        if (!nextPhase || nextPhase === activePhase) return;
+        activePhase = nextPhase;
+        sessionStorage.setItem('activePhase', activePhase);
+        if (activeTournament === 'halala') updateView();
+    });
+}
 
 // --- INITIALIZATION ---
 // 1. Fetch tournament data from server on page load.
