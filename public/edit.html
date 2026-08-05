@@ -269,7 +269,7 @@
                 </div>
                 <button type="submit">Login</button>
                 <div id="loginError" style="color: #8f1a1a; font-size: 0.9rem; margin-top: 10px; display: none;"></div>
-                <p class="hint">This is a local browser-side editor. Updates are saved in your browser storage and reflected on the public fixtures page.</p>
+                <p class="hint">This editor writes fixture updates to the server database for shared public visibility.</p>
             </form>
         </div>
 
@@ -1564,7 +1564,7 @@
                 setSaveStatus(`Recovered ${recoveredCount} matches! Refresh public page.`);
                 alert(`Successfully recovered ${recoveredCount} missing matches from your browser's cache!`);
             } else {
-                setSaveStatus('No new results found in local cache.', false);
+                setSaveStatus('No recoverable browser backup data found.', false);
                 alert("No missing results were found in your browser's local storage.");
             }
         } catch (error) {

@@ -748,9 +748,27 @@
             gap: 10px;
             margin-bottom: 6px;
         }
+        .schedule-table .team-line-main {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+            flex: 1;
+        }
         .schedule-table .team-name {
             font-weight: 700;
             color: #111827;
+        }
+        .schedule-table .team-scoreline {
+            margin-left: auto;
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: #0f172a;
+            background: #c6ff33;
+            border-radius: 999px;
+            padding: 2px 8px;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
         }
         .schedule-table .team-badge {
             display: inline-flex;
@@ -1869,12 +1887,30 @@ let activeFinalsTeam = sessionStorage.getItem('activeFinalsTeam') || 'ALL';
 let activeFinalsGroup = sessionStorage.getItem('activeFinalsGroup') || 'ALL';
 
 const TEAM_LOGO_MAP = {
-    'Navalsig High School': '/images/schools/pool-a/navalsig-high-school.png',
-    'Curro Thatchfield': '/images/schools/pool-a/curro-thatchfield.png',
-    'Flora Park High School': '/images/schools/pool-a/flora-park-high-school.png',
-    'Camps Bay High School': '/images/schools/pool-a/camps-bay-high-school.png',
-    'Virginia High School': '/images/schools/pool-a/virginia-high-school.png',
-    'Curro Soshanguve': '/images/schools/pool-a/curro-soshanguve.png'
+    'Navalsig High School': '/images/navalsig.png',
+    'Curro Thatchfield': '/images/curro tatchfield.png',
+    'Flora Park High School': '/images/florapark.png',
+    'Camps Bay High School': '/images/camps bay.png',
+    'Virginia High School': '/images/virginias.png',
+    'Curro Soshanguve': '/images/curro soshanguve.png',
+    'Grey College': '/images/grey college.png',
+    'Curro Century City': '/images/curro century city.png',
+    'CBC Mount Edmund': '/images/cbc mount edmund.png',
+    'Meridian Cosmo City': '/images/meridian cosmo city.png',
+    'Clapham High School': '/images/clapham.png',
+    'Barberton High School': '/images/barberton.png',
+    'Northern Academy': '/images/nothern academy.png',
+    'Waterstone College': '/images/waterstone.png',
+    'Rosina Sedibane': '/images/rosine sedibane.png',
+    "St Anne's High School": "/images/st anne's.png",
+    'Glenwood High School': '/images/glenwood high.png',
+    'Westenburg High School': '/images/westerberg high.png',
+    'Norkem Park High School': '/images/norkem park.png',
+    'Mondeor High School': '/images/mondeor high.png',
+    'Meridian Pinehurst': '/images/meridian pinehurst.png',
+    'Vaal High School': '/images/the vaal high.png',
+    'Curro Nelspruit': '/images/curro nelspruit.png',
+    'Durban High School': '/images/durban high.png'
 };
 
 // --- DOM ELEMENTS ---
@@ -2582,14 +2618,19 @@ function renderMatchRow(match) {
     const broadcaster = `<a href="${broadcasterUrl}" target="_blank" rel="noopener noreferrer" class="broadcaster-link"><img src="${broadcasterLogo}" alt="Supersports Schools" class="broadcaster-logo" data-fallback="/images/ss schools.png" onerror="if (this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; }" /><span class="broadcaster-label">Watch Live</span></a>`;
     const team1 = match.t1 || 'Team 1';
     const team2 = match.t2 || 'Team 2';
+    const status = String(match.st || 'UPCOMING').toUpperCase();
+    const showScoreline = (status === 'LIVE' || status === 'FINAL') && match.s1 != null && match.s2 != null;
+    const statusLabel = status === 'LIVE' ? 'LIVE' : 'FT';
+    const team1ScoreText = showScoreline ? `${statusLabel} ${match.s1}` : '';
+    const team2ScoreText = showScoreline ? `${statusLabel} ${match.s2}` : '';
     return `
         <tr>
             <td class="date-column">${matchDate}</td>
             <td class="datetime-column">${matchTime}</td>
             <td class="ball-column"><div class="ball-cell"><img src="${ballImage}" alt="Match ball" class="ball-image" loading="lazy" onload="this.style.opacity='1'" onerror="this.src='/images/ball-used.png'; this.style.opacity='1'" style="opacity:0.8;" /></div></td>
             <td class="match-column">
-                <div class="team-line">${renderTeamLogoBadge(team1, 'badge')}<span class="team-name">${team1}</span></div>
-                <div class="team-line">${renderTeamLogoBadge(team2, 'badge')}<span class="team-name">${team2}</span></div>
+                <div class="team-line"><span class="team-line-main">${renderTeamLogoBadge(team1, 'badge')}<span class="team-name">${team1}</span></span>${showScoreline ? `<span class="team-scoreline">${team1ScoreText}</span>` : ''}</div>
+                <div class="team-line"><span class="team-line-main">${renderTeamLogoBadge(team2, 'badge')}<span class="team-name">${team2}</span></span>${showScoreline ? `<span class="team-scoreline">${team2ScoreText}</span>` : ''}</div>
             </td>
             <td>${referee}</td>
             <td>${broadcaster}</td>
