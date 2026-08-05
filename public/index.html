@@ -708,14 +708,14 @@
             border-bottom: 1px solid rgba(255,255,255,0.08);
             box-shadow: inset 0 -1px 0 rgba(0,0,0,0.2);
         }
-        table {
+        .standings-card table {
             width: 100%;
             border-collapse: collapse;
             font-size: 0.88rem;
             color: #F7F4E6;
             font-family: "SF Pro Text", "SF Pro Display", "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
         }
-        th {
+        .standings-card th {
             text-align: left;
             color: #999999;
             padding: 10px 12px 8px;
@@ -727,20 +727,20 @@
             background: rgba(255,255,255,0.04);
             font-family: "SF Pro Text", "SF Pro Display", "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
         }
-        td {
+        .standings-card td {
             padding: 10px 12px;
             border-bottom: 1px solid rgba(255,255,255,0.10);
             font-family: "SF Pro Text", "SF Pro Display", "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
             vertical-align: middle;
             color: #F7F4E6;
         }
-        tr:last-child td {
+        .standings-card tr:last-child td {
             border-bottom: none;
         }
-        tbody tr { background: rgba(255,255,255,0.02); transition: background-color 0.12s ease; border-left: 3px solid #dcff3f; }
-        tbody tr:nth-child(even) { background: rgba(255,255,255,0.04); }
-        tbody tr:hover { background: rgba(255,255,255,0.08); }
-        .col-rank { width: 36px; font-weight: 700; text-align: center; color: #F7F4E6; display: block; }
+        .standings-card tbody tr { background: rgba(255,255,255,0.02); transition: background-color 0.12s ease; border-left: 3px solid #dcff3f; }
+        .standings-card tbody tr:nth-child(even) { background: rgba(255,255,255,0.04); }
+        .standings-card tbody tr:hover { background: rgba(255,255,255,0.08); }
+        .standings-card .col-rank { width: 44px; font-weight: 700; text-align: center; color: #F7F4E6; }
         .col-team { display: flex; align-items: center; gap: 8px; font-weight: 700; color: #F7F4E6; flex: 1; }
         .col-team .team-name { display: flex; flex-direction: column; gap: 2px; }
         .col-team .team-name span:first-child { font-weight: 700; }
@@ -1971,8 +1971,8 @@ function renderMatchRow(match) {
     const ballImage = match.ballImage || '/images/ball-used.png';
     const referee = match.ref || '-';
     const broadcasterUrl = 'https://live.supersportschools.com/category/606f65f91eea03755e56797c/sub-category/67ff624559d9be83280028c6/';
-    const broadcasterLogo = match.broadcastLogo || '/images/ss%20schools.png';
-    const broadcaster = `<a href="${broadcasterUrl}" target="_blank" rel="noopener noreferrer" class="broadcaster-link"><img src="${broadcasterLogo}" alt="Supersports Schools" class="broadcaster-logo" onerror="this.style.display='none'" /><span class="broadcaster-label">Watch Live</span></a>`;
+    const broadcasterLogo = match.broadcastLogo || '/images/ss schools.png';
+    const broadcaster = `<a href="${broadcasterUrl}" target="_blank" rel="noopener noreferrer" class="broadcaster-link"><img src="${broadcasterLogo}" alt="Supersports Schools" class="broadcaster-logo" data-fallback="/images/ss schools.png" onerror="if (this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; }" /><span class="broadcaster-label">Watch Live</span></a>`;
     const team1 = match.t1 || 'Team 1';
     const team2 = match.t2 || 'Team 2';
     const badge1 = team1.charAt(0) || '?';
