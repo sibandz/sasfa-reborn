@@ -794,26 +794,34 @@
     }
 
     function loadSavedData() {
-        try {
-            const cachedData = localStorage.getItem(LOCAL_STORAGE_KEY);
-            if (cachedData) {
-                const saved = JSON.parse(cachedData);
-                applySavedData(saved);
-                saveData().catch(e => console.error('Initial auto-save failed', e));
-            }
-        } catch (err) {
-            console.error('Unable to load tournament data from localStorage. Using default data.', err);
-        }
+        return fetch('/api/get-data')
+            .then(res => res.json())
+            .then(data => {
+                if (data && Object.keys(data).length > 0) {
+                    applySavedData(data);
+                    return saveData().catch(e => console.error('Initial auto-save failed', e));
+                }
+            })
+            .catch(err => {
+                console.error('Unable to load tournament data from server. Using default data.', err);
+                return Promise.resolve();
+            });
     }
 
     function saveData() {
-        try {
-            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tournamentData));
-            return Promise.resolve();
-        } catch (error) {
-            console.error('Error saving data to localStorage:', error);
-            return Promise.reject(error);
-        }
+        return fetch('/api/save-data', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(tournamentData)
+        })
+        .then(res => {
+            if (!res.ok) throw new Error(`Server error: ${res.status}`);
+            return res.json();
+        })
+        .catch(error => {
+            console.error('Error saving data to server:', error);
+            throw error;
+        });
     }
 
     /**
