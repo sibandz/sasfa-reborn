@@ -2055,12 +2055,12 @@ function renderStandings(pools, regionName, matches = []) {
                         ${teams.sort((a, b) => compareTeams(a, b, matches)).map((team, index) => {
                             const isQualified = index < 2;
                             const qualifiedClass = isQualified ? 'qualified' : '';
-                            const wins = Math.floor(team.points / 3);
-                            const winBadge = `<span class="team-badge">${wins}</span>`;
+                            const teamInitial = (team.name || '?').charAt(0);
+                            const teamBadge = `<div class="team-crest">${teamInitial}</div>`;
                             return `
                                 <tr class="${qualifiedClass}">
                                     <td class="col-rank">${index + 1}</td>
-                                    <td class="col-team">${winBadge}<span class="team-name"><span>${team.name}</span><span class="team-seed">(#${team.seed})</span></span></td>
+                                    <td class="col-team">${teamBadge}<span class="team-name"><span>${team.name}</span><span class="team-seed">(#${team.seed})</span></span></td>
                                     <td class="col-data">${team.played}</td>
                                     <td class="col-data">${team.gd}</td>
                                     <td class="col-data"><span class="col-pts">${team.points}</span></td>
