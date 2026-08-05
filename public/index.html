@@ -699,13 +699,13 @@
         }
         .standings-title {
             font-family: 'Anton', "SF Pro Display", "SF Pro Text", "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-            color: #dcff3f;
-            background: rgba(15, 20, 34, 0.88);
+            color: #FFFFFF;
+            background: #1a1a1a;
             font-size: 0.84rem;
             text-transform: uppercase;
             letter-spacing: 0.12em;
             padding: 10px 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            border-bottom: 2px solid #1a1a1a;
             box-shadow: inset 0 -1px 0 rgba(0,0,0,0.2);
         }
         table {
@@ -717,14 +717,14 @@
         }
         th {
             text-align: left;
-            color: #F7F4E6;
+            color: #999999;
             padding: 10px 12px 8px;
-            border-bottom: 1px solid rgba(255,255,255,0.16);
-            font-weight: 700;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            font-weight: 600;
             text-transform: uppercase;
-            font-size: 0.72rem;
+            font-size: 0.70rem;
             letter-spacing: 0.08em;
-            background: rgba(255,255,255,0.04);
+            background: rgba(255,255,255,0.02);
             font-family: "SF Pro Text", "SF Pro Display", "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
         }
         td {
@@ -740,10 +740,12 @@
         tbody tr { background: rgba(255,255,255,0.02); transition: background-color 0.12s ease; }
         tbody tr:nth-child(even) { background: rgba(255,255,255,0.04); }
         tbody tr:hover { background: rgba(255,255,255,0.08); }
-        .col-rank { width: 36px; font-weight: 700; text-align: center; color: #F7F4E6; }
-        .col-team { display: flex; align-items: center; gap: 10px; font-weight: 600; color: #F7F4E6; }
+        .col-rank { width: 36px; font-weight: 700; text-align: center; color: #F7F4E6; display: none; }
+        .col-team { display: flex; align-items: center; gap: 8px; font-weight: 700; color: #F7F4E6; }
+        .col-team .team-name { display: flex; align-items: center; gap: 6px; }
+        .team-badge { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: #00a8e8; color: #FFFFFF; border-radius: 4px; font-size: 0.70rem; font-weight: 700; flex-shrink: 0; }
         .col-data { text-align: center; font-weight: 600; width: 48px; font-variant-numeric: tabular-nums; color: #F7F4E6; }
-        .team-seed { font-weight: 500; color: rgba(247,244,230,0.75); font-size: 0.78rem; margin-left: 6px; }
+        .team-seed { font-weight: 400; color: rgba(247,244,230,0.65); font-size: 0.75rem; }
         .standings-card th, .standings-card td { color: #F7F4E6; }
         .standings-card .team-seed { color: rgba(247,244,230,0.72); }
         .col-pts {
@@ -2048,16 +2050,17 @@ function renderStandings(pools, regionName, matches = []) {
             <div class="standings-card">
                 <div class="standings-title">${regionName ? regionName + ' - ' : ''}${poolName}</div>
                 <table>
-                    <thead><tr><th class="col-rank">#</th><th>Team</th><th class="col-data">P</th><th class="col-data">GD</th><th class="col-data">Pts</th></tr></thead>
+                    <thead><tr><th class="col-rank">#</th><th>TEAM</th><th class="col-data">P</th><th class="col-data">GD</th><th class="col-data">PTS</th></tr></thead>
                     <tbody>
                         ${teams.sort((a, b) => compareTeams(a, b, matches)).map((team, index) => {
                             const isQualified = index < 2;
                             const qualifiedClass = isQualified ? 'qualified' : '';
-                            const qualifiedMarker = isQualified ? '<span class="qualified-marker">Q</span>' : '';
+                            const wins = Math.floor(team.points / 3);
+                            const winBadge = `<span class="team-badge">${wins}</span>`;
                             return `
                                 <tr class="${qualifiedClass}">
                                     <td class="col-rank">${index + 1}</td>
-                                    <td class="col-team"><span>${team.name}</span><span class="team-seed">(#${team.seed})</span>${qualifiedMarker}</td>
+                                    <td class="col-team">${winBadge}<span class="team-name"><span>${team.name}</span><span class="team-seed">(#${team.seed})</span></span></td>
                                     <td class="col-data">${team.played}</td>
                                     <td class="col-data">${team.gd}</td>
                                     <td class="col-data"><span class="col-pts">${team.points}</span></td>
