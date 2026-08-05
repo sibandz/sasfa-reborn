@@ -2837,7 +2837,7 @@ function renderStandings(pools, regionName, matches = []) {
                             return `
                                 <tr class="${qualifiedClass}">
                                     <td class="col-rank">${index + 1}</td>
-                                    <td class="col-team"><span class="team-name"><span style="display: inline-flex; align-items: center; gap: 8px; min-width: 0;"><span>${renderTeamLogoBadge(team.name, 'inline')}</span><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${team.name}</span></span><span class="team-origin-text">${teamSubtext}</span></span><span class="team-seed-badge">#${team.seed}</span></td>
+                                    <td class="col-team"><span class="team-name"><span style="display: inline-flex; align-items: center; gap: 8px; min-width: 0;"><span>${renderTeamLogoBadge(team.name, 'inline')}</span><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${team.name}</span></span><span class="team-origin-text">${teamSubtext}</span></span></td>
                                     <td class="col-data">${team.played}</td>
                                     <td class="col-data">${team.gd}</td>
                                     <td class="col-data"><span class="col-pts">${team.points}</span></td>
