@@ -379,6 +379,43 @@
             box-shadow: 0 10px 20px rgba(198,255,51,0.18);
         }
 
+        .finals-stage-tabs {
+            background: var(--card-bg-solid);
+            padding: 8px 20px 12px;
+            border-bottom: 1px solid var(--border);
+            display: none;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .finals-stage-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            padding: 6px 12px;
+            border-radius: 0;
+            font-family: "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            font-size: 0.68rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: 0.15s;
+            font-weight: 700;
+        }
+
+        .finals-stage-btn:hover {
+            border-color: var(--lime);
+            color: var(--lime);
+        }
+
+        .finals-stage-btn.active {
+            background: color-mix(in srgb, var(--lime) 20%, transparent);
+            color: var(--text-main);
+            border-color: var(--lime);
+        }
+
         .filter-btn {
             background: transparent;
             border: 2px solid var(--border);
@@ -1302,6 +1339,8 @@
         <button class="phase-tab-btn" data-phase="finals">Finals</button>
     </div>
 
+    <div class="finals-stage-tabs" id="finalsStageTabs"></div>
+
     <div class="filters" id="regionFilters" style="display: flex; flex-wrap: wrap; justify-content: center; padding: 16px 20px; border-bottom: 1px solid var(--border); background: var(--card-bg-solid);">
         <div style="color: var(--text-muted); font-size: 0.85rem; font-weight: 600;">Loading regions...</div>
     </div>
@@ -1631,10 +1670,12 @@ let tournamentData = JSON.parse(JSON.stringify(DEFAULT_TOURNAMENT_DATA));
 let activeTournament = sessionStorage.getItem('activeTournament') || null;
 let activeRegion = sessionStorage.getItem('activeRegion') || Object.keys(tournamentData)[0];
 let activePhase = sessionStorage.getItem('activePhase') || (activeRegion === 'National Finals' ? 'finals' : 'qualifications');
+let activeFinalsStage = sessionStorage.getItem('activeFinalsStage') || 'quarterfinal';
 
 // --- DOM ELEMENTS ---
 const regionFilters = document.getElementById('regionFilters');
 const phaseTabs = document.getElementById('phaseTabs');
+const finalsStageTabs = document.getElementById('finalsStageTabs');
 
 // --- THEME LOGIC ---
 document.getElementById('theme-toggle').addEventListener('click', () => {
@@ -1802,6 +1843,21 @@ function updateView() {
         `;
     }
 
+    if (finalsStageTabs) {
+        if (activePhase === 'finals') {
+            finalsStageTabs.style.display = 'flex';
+            finalsStageTabs.innerHTML = `
+                <button class="finals-stage-btn ${activeFinalsStage === 'groupstage' ? 'active' : ''}" data-finals-stage="groupstage">Group Stage</button>
+                <button class="finals-stage-btn ${activeFinalsStage === 'quarterfinal' ? 'active' : ''}" data-finals-stage="quarterfinal">Quarter-final</button>
+                <button class="finals-stage-btn ${activeFinalsStage === 'semifinal' ? 'active' : ''}" data-finals-stage="semifinal">Semi-final</button>
+                <button class="finals-stage-btn ${activeFinalsStage === 'final' ? 'active' : ''}" data-finals-stage="final">Final</button>
+            `;
+        } else {
+            finalsStageTabs.style.display = 'none';
+            finalsStageTabs.innerHTML = '';
+        }
+    }
+
     if (regionFilters) {
         regionFilters.style.display = regionOptions.length > 1 ? 'flex' : 'none';
         regionFilters.innerHTML = regionOptions.map(region => `<button class="filter-btn ${region === activeRegion ? 'active' : ''}" data-region="${region}">${region}</button>`).join('');
@@ -1922,9 +1978,21 @@ function renderDashboard() {
     }
 
     // 2. Fixtures Feed (Live, Upcoming)
-    const stageMatches = isPlayoffsPhase
-        ? resolvePlayoffPlaceholders(regionData.playoffs || [])
-        : regionData.matches || [];
+    const getFinalsMatchStage = (match) => {
+        const label = String(match?.type || '').toLowerCase();
+        if (label.includes('group') || label.includes('round robin')) return 'groupstage';
+        if (label.includes('quarter')) return 'quarterfinal';
+        if (label.includes('semi')) return 'semifinal';
+        if (label.includes('play-off') || label.includes('playoff') || label.includes('final')) return 'final';
+        return 'groupstage';
+    };
+
+    const filterFinalsMatchesByStage = (matches, stage) =>
+        (matches || []).filter(match => getFinalsMatchStage(match) === stage);
+
+    const stageMatches = isFinalsPhase
+        ? filterFinalsMatchesByStage(regionData.matches || [], activeFinalsStage)
+        : (isPlayoffsPhase ? resolvePlayoffPlaceholders(regionData.playoffs || []) : (regionData.matches || []));
     const liveMatches = stageMatches.filter(m => m.st === 'LIVE');
     const upcomingMatches = stageMatches.filter(m => m.st === 'UPCOMING');
     const finalMatches = stageMatches.filter(m => m.st === 'FINAL').reverse();
@@ -1955,8 +2023,16 @@ function renderDashboard() {
             </div>`;
     };
 
-    const fixturesTitle = isFinalsPhase ? 'Finals Fixtures' : (isPlayoffsPhase ? 'Playoff Fixtures' : 'Qualification Fixtures');
-    const resultsTitle = isFinalsPhase ? 'Finals Results' : (isPlayoffsPhase ? 'Playoff Results' : 'Qualification Results');
+    const finalsStageLabelMap = {
+        groupstage: 'Group Stage',
+        quarterfinal: 'Quarter-final',
+        semifinal: 'Semi-final',
+        final: 'Final'
+    };
+    const finalsStageLabel = finalsStageLabelMap[activeFinalsStage] || 'Finals';
+
+    const fixturesTitle = isFinalsPhase ? `National Finals ${finalsStageLabel} Fixtures` : (isPlayoffsPhase ? 'Playoff Fixtures' : 'Qualification Fixtures');
+    const resultsTitle = isFinalsPhase ? `National Finals ${finalsStageLabel} Results` : (isPlayoffsPhase ? 'Playoff Results' : 'Qualification Results');
     let fixturesHtml = buildScheduleTable([...liveMatches, ...upcomingMatches], fixturesTitle);
     if (feedFixturesEl) {
         feedFixturesEl.style.display = 'block';
@@ -2428,6 +2504,21 @@ if (phaseTabs) {
         if (!nextPhase || nextPhase === activePhase) return;
         activePhase = nextPhase;
         sessionStorage.setItem('activePhase', activePhase);
+        if (activePhase === 'finals' && !activeFinalsStage) {
+            activeFinalsStage = 'quarterfinal';
+            sessionStorage.setItem('activeFinalsStage', activeFinalsStage);
+        }
+        if (activeTournament === 'halala') updateView();
+    });
+}
+
+if (finalsStageTabs) {
+    finalsStageTabs.addEventListener('click', e => {
+        if (!e.target.matches('.finals-stage-btn')) return;
+        const nextStage = e.target.dataset.finalsStage;
+        if (!nextStage || nextStage === activeFinalsStage) return;
+        activeFinalsStage = nextStage;
+        sessionStorage.setItem('activeFinalsStage', activeFinalsStage);
         if (activeTournament === 'halala') updateView();
     });
 }
