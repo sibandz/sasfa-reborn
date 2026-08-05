@@ -416,6 +416,43 @@
             border-color: var(--lime);
         }
 
+        .finals-group-tabs {
+            background: var(--card-bg-solid);
+            padding: 0 20px 12px;
+            border-bottom: 1px solid var(--border);
+            display: none;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .finals-group-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            padding: 6px 12px;
+            border-radius: 0;
+            font-family: "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            font-size: 0.66rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: 0.15s;
+            font-weight: 700;
+        }
+
+        .finals-group-btn:hover {
+            border-color: var(--lime);
+            color: var(--lime);
+        }
+
+        .finals-group-btn.active {
+            background: color-mix(in srgb, var(--lime) 20%, transparent);
+            color: var(--text-main);
+            border-color: var(--lime);
+        }
+
         .filter-btn {
             background: transparent;
             border: 2px solid var(--border);
@@ -1359,6 +1396,7 @@
     </div>
 
     <div class="finals-stage-tabs" id="finalsStageTabs"></div>
+    <div class="finals-group-tabs" id="finalsGroupTabs"></div>
     <div class="finals-filter-row" id="finalsFilterRow">
         <span class="finals-filter-label">School Filter</span>
         <select id="finalsTeamSelect" class="finals-filter-select">
@@ -1790,11 +1828,13 @@ let activeRegion = sessionStorage.getItem('activeRegion') || 'National Finals';
 let activePhase = sessionStorage.getItem('activePhase') || 'finals';
 let activeFinalsStage = sessionStorage.getItem('activeFinalsStage') || 'quarterfinal';
 let activeFinalsTeam = sessionStorage.getItem('activeFinalsTeam') || 'ALL';
+let activeFinalsGroup = sessionStorage.getItem('activeFinalsGroup') || 'ALL';
 
 // --- DOM ELEMENTS ---
 const regionFilters = document.getElementById('regionFilters');
 const phaseTabs = document.getElementById('phaseTabs');
 const finalsStageTabs = document.getElementById('finalsStageTabs');
+const finalsGroupTabs = document.getElementById('finalsGroupTabs');
 const finalsFilterRow = document.getElementById('finalsFilterRow');
 const finalsTeamSelect = document.getElementById('finalsTeamSelect');
 
@@ -2012,6 +2052,25 @@ function updateView() {
         }
     }
 
+    if (finalsGroupTabs) {
+        if (activePhase === 'finals' && activeFinalsStage === 'groupstage') {
+            finalsGroupTabs.style.display = 'flex';
+            const poolTabs = ['ALL', 'Pool A', 'Pool B', 'Pool C', 'Pool D'];
+            if (!poolTabs.includes(activeFinalsGroup)) {
+                activeFinalsGroup = 'ALL';
+                sessionStorage.setItem('activeFinalsGroup', activeFinalsGroup);
+            }
+            finalsGroupTabs.innerHTML = poolTabs.map(pool => {
+                const label = pool === 'ALL' ? 'All' : pool;
+                const activeClass = activeFinalsGroup === pool ? 'active' : '';
+                return `<button class="finals-group-btn ${activeClass}" data-finals-group="${pool}">${label}</button>`;
+            }).join('');
+        } else {
+            finalsGroupTabs.style.display = 'none';
+            finalsGroupTabs.innerHTML = '';
+        }
+    }
+
     if (regionFilters) {
         regionFilters.style.display = regionOptions.length > 1 ? 'flex' : 'none';
         regionFilters.innerHTML = regionOptions.map(region => `<button class="filter-btn ${region === activeRegion ? 'active' : ''}" data-region="${region}">${region}</button>`).join('');
@@ -2149,6 +2208,12 @@ function renderDashboard() {
         return (matches || []).filter(match => getFinalsMatchStage(match) === stage);
     }
 
+    function getFinalsPoolFromMatch(match) {
+        const label = String(match?.type || '');
+        const poolMatch = label.match(/pool\s+([a-d])/i);
+        return poolMatch ? `Pool ${poolMatch[1].toUpperCase()}` : null;
+    }
+
     const summarySectionEl = document.getElementById('qualifying-summary-section');
     const standingsSectionEl = document.getElementById('standings-section');
     const teamsSectionEl = document.getElementById('teams-section');
@@ -2171,10 +2236,18 @@ function renderDashboard() {
 
     if (showFinalsGroupStandings && standingsSectionEl) {
         const projectedFinalsMatches = resolveNationalFinalsPlaceholders(regionData);
-        const poolsForDisplay = JSON.parse(JSON.stringify(regionData.pools || {}));
+        const allPoolsForDisplay = JSON.parse(JSON.stringify(regionData.pools || {}));
         const groupMatchesForStandings = projectedFinalsMatches.filter(m => getFinalsMatchStage(m) === 'groupstage');
-        calculateStandings(poolsForDisplay, groupMatchesForStandings, ['FINAL', 'LIVE']);
-        let finalsStandingsHtml = `<div class="section-title">National Finals Group Standings</div>`;
+        const selectedGroupMatchesForStandings = activeFinalsGroup === 'ALL'
+            ? groupMatchesForStandings
+            : groupMatchesForStandings.filter(m => getFinalsPoolFromMatch(m) === activeFinalsGroup);
+        let poolsForDisplay = allPoolsForDisplay;
+        if (activeFinalsGroup !== 'ALL' && allPoolsForDisplay[activeFinalsGroup]) {
+            poolsForDisplay = { [activeFinalsGroup]: allPoolsForDisplay[activeFinalsGroup] };
+        }
+        calculateStandings(poolsForDisplay, selectedGroupMatchesForStandings, ['FINAL', 'LIVE']);
+        const standingsTitleSuffix = activeFinalsGroup === 'ALL' ? '' : ` - ${activeFinalsGroup}`;
+        let finalsStandingsHtml = `<div class="section-title">National Finals Group Standings${standingsTitleSuffix}</div>`;
         finalsStandingsHtml += renderStandings(poolsForDisplay, 'National Finals', groupMatchesForStandings);
         finalsStandingsHtml += `<div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 12px; font-weight: 600;">* Rankings update automatically from final/live group-stage results.</div>`;
         standingsSectionEl.innerHTML = finalsStandingsHtml;
@@ -2183,9 +2256,12 @@ function renderDashboard() {
     // 2. Fixtures Feed (Live, Upcoming)
 
     const projectedFinalsMatches = isFinalsPhase ? resolveNationalFinalsPlaceholders(regionData) : [];
-    const stageMatches = isFinalsPhase
+    const stageMatchesBase = isFinalsPhase
         ? filterFinalsMatchesByStage(projectedFinalsMatches, activeFinalsStage)
         : (isPlayoffsPhase ? resolvePlayoffPlaceholders(regionData.playoffs || []) : (regionData.matches || []));
+    const stageMatches = (isFinalsPhase && activeFinalsStage === 'groupstage' && activeFinalsGroup !== 'ALL')
+        ? stageMatchesBase.filter(m => getFinalsPoolFromMatch(m) === activeFinalsGroup)
+        : stageMatchesBase;
     const selectedStageMatches = (isFinalsPhase && activeFinalsTeam !== 'ALL')
         ? stageMatches.filter(m => m.t1 === activeFinalsTeam || m.t2 === activeFinalsTeam)
         : stageMatches;
@@ -2217,12 +2293,6 @@ function renderDashboard() {
                     </tbody>
                 </table>
             </div>`;
-    };
-
-    const getFinalsPoolFromMatch = (match) => {
-        const label = String(match?.type || '');
-        const poolMatch = label.match(/pool\s+([a-d])/i);
-        return poolMatch ? `Pool ${poolMatch[1].toUpperCase()}` : null;
     };
 
     const buildFinalsGroupStageGroupedTables = (matches, title) => {
@@ -2274,6 +2344,7 @@ function renderDashboard() {
     };
     const finalsStageLabel = finalsStageLabelMap[activeFinalsStage] || 'Finals';
     const isFinalsGroupStage = isFinalsPhase && activeFinalsStage === 'groupstage';
+    const finalsGroupSuffix = isFinalsGroupStage && activeFinalsGroup !== 'ALL' ? ` - ${activeFinalsGroup}` : '';
 
     if (summarySectionEl && isFinalsPhase) {
         const summaryMatches = selectedStageMatches;
@@ -2294,8 +2365,8 @@ function renderDashboard() {
             </div>`;
     }
 
-    const fixturesTitle = isFinalsPhase ? `National Finals ${finalsStageLabel} Fixtures` : (isPlayoffsPhase ? 'Playoff Fixtures' : 'Qualification Fixtures');
-    const resultsTitle = isFinalsPhase ? `National Finals ${finalsStageLabel} Results` : (isPlayoffsPhase ? 'Playoff Results' : 'Qualification Results');
+    const fixturesTitle = isFinalsPhase ? `National Finals ${finalsStageLabel}${finalsGroupSuffix} Fixtures` : (isPlayoffsPhase ? 'Playoff Fixtures' : 'Qualification Fixtures');
+    const resultsTitle = isFinalsPhase ? `National Finals ${finalsStageLabel}${finalsGroupSuffix} Results` : (isPlayoffsPhase ? 'Playoff Results' : 'Qualification Results');
     let fixturesHtml = isFinalsGroupStage
         ? buildFinalsGroupStageGroupedTables([...liveMatches, ...upcomingMatches], fixturesTitle)
         : buildScheduleTable([...liveMatches, ...upcomingMatches], fixturesTitle);
@@ -2900,7 +2971,22 @@ if (finalsStageTabs) {
         if (!nextStage || nextStage === activeFinalsStage) return;
         activeFinalsStage = nextStage;
         sessionStorage.setItem('activeFinalsStage', activeFinalsStage);
+        if (nextStage !== 'groupstage') {
+            activeFinalsGroup = 'ALL';
+            sessionStorage.setItem('activeFinalsGroup', activeFinalsGroup);
+        }
         if (activeTournament === 'halala') updateView();
+    });
+}
+
+if (finalsGroupTabs) {
+    finalsGroupTabs.addEventListener('click', e => {
+        if (!e.target.matches('.finals-group-btn')) return;
+        const nextGroup = e.target.dataset.finalsGroup;
+        if (!nextGroup || nextGroup === activeFinalsGroup) return;
+        activeFinalsGroup = nextGroup;
+        sessionStorage.setItem('activeFinalsGroup', activeFinalsGroup);
+        if (activeTournament === 'halala' && activePhase === 'finals' && activeFinalsStage === 'groupstage') updateView();
     });
 }
 
