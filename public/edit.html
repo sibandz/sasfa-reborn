@@ -937,9 +937,20 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(tournamentData)
         })
-        .then(res => {
-            if (!res.ok) throw new Error(`Server error: ${res.status}`);
-            return res.json().catch(() => ({ message: 'Saved' }));
+        .then(async res => {
+            let payload = null;
+            try {
+                payload = await res.json();
+            } catch (_) {
+                payload = null;
+            }
+
+            if (!res.ok) {
+                const reason = payload && payload.message ? payload.message : `Server error: ${res.status}`;
+                throw new Error(reason);
+            }
+
+            return payload || { message: 'Saved' };
         })
         .catch(error => {
             console.error('Error saving data to server:', error);

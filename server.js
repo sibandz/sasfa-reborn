@@ -1,8 +1,18 @@
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
-const BIN_ID = process.env.JSONBIN_BIN_ID;
-const API_KEY = process.env.JSONBIN_API_KEY;
+const RAW_BIN_ID = process.env.JSONBIN_BIN_ID || process.env.JSONBIN_BIN || process.env.JSONBIN_ID || '';
+const API_KEY = process.env.JSONBIN_API_KEY || process.env.JSONBIN_MASTER_KEY || process.env.JSONBIN_KEY || '';
+
+function normalizeBinId(raw) {
+    const value = String(raw || '').trim();
+    if (!value) return '';
+    const urlMatch = value.match(/\/b\/([a-zA-Z0-9]+)/i);
+    if (urlMatch) return urlMatch[1];
+    return value;
+}
+
+const BIN_ID = normalizeBinId(RAW_BIN_ID);
 
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
@@ -20,7 +30,7 @@ app.use(express.static(__dirname));
 app.get('/api/get-data', async (req, res) => {
     try {
         if (!BIN_ID || !API_KEY) {
-            return res.status(500).json({ message: 'Server cloud credentials are not configured.' });
+            return res.status(500).json({ message: 'Server cloud credentials are not configured (JSONBIN_BIN_ID / JSONBIN_API_KEY).' });
         }
 
         const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
@@ -34,7 +44,7 @@ app.get('/api/get-data', async (req, res) => {
         return res.json(data.record || {});
     } catch (error) {
         console.error('Error retrieving data:', error);
-        res.status(500).json({ message: 'Error retrieving data.' });
+        res.status(500).json({ message: error.message || 'Error retrieving data.' });
     }
 });
 
@@ -47,7 +57,7 @@ app.post('/api/save-data', async (req, res) => {
         }
 
         if (!BIN_ID || !API_KEY) {
-            return res.status(500).json({ message: 'Server cloud credentials are not configured.' });
+            return res.status(500).json({ message: 'Server cloud credentials are not configured (JSONBIN_BIN_ID / JSONBIN_API_KEY).' });
         }
 
         const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
@@ -65,7 +75,7 @@ app.post('/api/save-data', async (req, res) => {
         return res.status(200).json({ message: 'Data saved successfully to cloud.' });
     } catch (error) {
         console.error('Error saving data:', error);
-        res.status(500).json({ message: 'Error saving data.' });
+        res.status(500).json({ message: error.message || 'Error saving data.' });
     }
 });
 
