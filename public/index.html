@@ -711,6 +711,7 @@
         .standings-card table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
             font-size: 0.88rem;
             color: #F7F4E6;
             font-family: "SF Pro Text", "SF Pro Display", "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
@@ -737,19 +738,34 @@
         .standings-card tr:last-child td {
             border-bottom: none;
         }
-        .standings-card tbody tr { background: rgba(255,255,255,0.02); transition: background-color 0.12s ease; border-left: 3px solid #dcff3f; }
+        .standings-card tbody tr { background: rgba(255,255,255,0.02); transition: background-color 0.12s ease; }
         .standings-card tbody tr:nth-child(even) { background: rgba(255,255,255,0.04); }
         .standings-card tbody tr:hover { background: rgba(255,255,255,0.08); }
-        .standings-card .col-rank { width: 44px; font-weight: 700; text-align: center; color: #F7F4E6; }
-        .col-team { display: flex; align-items: center; gap: 8px; font-weight: 700; color: #F7F4E6; flex: 1; }
-        .col-team .team-name { display: flex; flex-direction: column; gap: 2px; }
-        .col-team .team-name span:first-child { font-weight: 700; }
+        .standings-card .col-rank { width: 36px; font-weight: 700; text-align: center; color: #F7F4E6; }
+        .standings-card th.col-team { text-align: left; }
+        .standings-card td.col-team {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            font-weight: 700;
+            color: #F7F4E6;
+            min-width: 0;
+        }
+        .standings-card .col-team .team-name {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+        }
+        .standings-card .col-team .team-name span:first-child { font-weight: 700; }
         .team-badge { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: #5dd844; color: #000000; border-radius: 4px; font-size: 0.70rem; font-weight: 700; flex-shrink: 0; }
         .team-seed-badge { display: inline-flex; align-items: center; justify-content: center; background: #5dd844; color: #000000; border-radius: 4px; font-size: 0.65rem; font-weight: 700; padding: 2px 6px; flex-shrink: 0; }
-        .col-data { text-align: center; font-weight: 600; width: 48px; font-variant-numeric: tabular-nums; color: #F7F4E6; }
+        .standings-card .col-data { text-align: center; font-weight: 600; width: 56px; font-variant-numeric: tabular-nums; color: #F7F4E6; }
         .team-seed { font-weight: 400; color: rgba(247,244,230,0.65); font-size: 0.75rem; }
         .standings-card th, .standings-card td { color: #F7F4E6; }
         .standings-card .team-seed { color: rgba(247,244,230,0.72); }
+        .standings-card tbody td:first-child { border-left: 3px solid #dcff3f; }
         .col-pts {
             font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
             font-weight: 700;
@@ -2052,7 +2068,14 @@ function renderStandings(pools, regionName, matches = []) {
             <div class="standings-card">
                 <div class="standings-title">${regionName ? regionName + ' - ' : ''}${poolName}</div>
                 <table>
-                    <thead><tr><th class="col-rank">#</th><th>TEAM</th><th class="col-data">P</th><th class="col-data">GD</th><th class="col-data">PTS</th></tr></thead>
+                    <colgroup>
+                        <col style="width: 36px;">
+                        <col>
+                        <col style="width: 56px;">
+                        <col style="width: 56px;">
+                        <col style="width: 68px;">
+                    </colgroup>
+                    <thead><tr><th class="col-rank">#</th><th class="col-team">TEAM</th><th class="col-data">P</th><th class="col-data">GD</th><th class="col-data">PTS</th></tr></thead>
                     <tbody>
                         ${teams.sort((a, b) => compareTeams(a, b, matches)).map((team, index) => {
                             const isQualified = index < 2;
