@@ -2219,6 +2219,53 @@ function renderDashboard() {
             </div>`;
     };
 
+    const getFinalsPoolFromMatch = (match) => {
+        const label = String(match?.type || '');
+        const poolMatch = label.match(/pool\s+([a-d])/i);
+        return poolMatch ? `Pool ${poolMatch[1].toUpperCase()}` : null;
+    };
+
+    const buildFinalsGroupStageGroupedTables = (matches, title) => {
+        const grouped = { 'Pool A': [], 'Pool B': [], 'Pool C': [], 'Pool D': [] };
+        matches.forEach((match) => {
+            const pool = getFinalsPoolFromMatch(match);
+            if (pool && grouped[pool]) {
+                grouped[pool].push(match);
+            }
+        });
+
+        const hasAny = Object.values(grouped).some(poolMatches => poolMatches.length > 0);
+        if (!hasAny) {
+            return `<div class="section-title">${title}</div><div class="placeholder-text">No ${title.toLowerCase()}.</div>`;
+        }
+
+        let html = `<div class="section-title">${title}</div>`;
+        Object.entries(grouped).forEach(([poolName, poolMatches]) => {
+            if (poolMatches.length === 0) return;
+            const rows = poolMatches.map(m => renderMatchRow(m)).join('');
+            html += `
+                <div class="section-title" style="margin-top: 14px; font-size: 0.95rem;">${poolName}</div>
+                <div class="schedule-table-wrapper">
+                    <table class="schedule-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Datetime</th>
+                                <th>Ball</th>
+                                <th>Match</th>
+                                <th>Referee</th>
+                                <th>Broadcaster</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rows}
+                        </tbody>
+                    </table>
+                </div>`;
+        });
+        return html;
+    };
+
     const finalsStageLabelMap = {
         groupstage: 'Group Stage',
         quarterfinal: 'Quarter-final',
@@ -2226,6 +2273,7 @@ function renderDashboard() {
         final: 'Final'
     };
     const finalsStageLabel = finalsStageLabelMap[activeFinalsStage] || 'Finals';
+    const isFinalsGroupStage = isFinalsPhase && activeFinalsStage === 'groupstage';
 
     if (summarySectionEl && isFinalsPhase) {
         const summaryMatches = selectedStageMatches;
@@ -2248,14 +2296,18 @@ function renderDashboard() {
 
     const fixturesTitle = isFinalsPhase ? `National Finals ${finalsStageLabel} Fixtures` : (isPlayoffsPhase ? 'Playoff Fixtures' : 'Qualification Fixtures');
     const resultsTitle = isFinalsPhase ? `National Finals ${finalsStageLabel} Results` : (isPlayoffsPhase ? 'Playoff Results' : 'Qualification Results');
-    let fixturesHtml = buildScheduleTable([...liveMatches, ...upcomingMatches], fixturesTitle);
+    let fixturesHtml = isFinalsGroupStage
+        ? buildFinalsGroupStageGroupedTables([...liveMatches, ...upcomingMatches], fixturesTitle)
+        : buildScheduleTable([...liveMatches, ...upcomingMatches], fixturesTitle);
     if (feedFixturesEl) {
         feedFixturesEl.style.display = 'block';
         feedFixturesEl.innerHTML = fixturesHtml;
     }
 
     // 3. Results Feed
-    let resultsHtml = buildScheduleTable(finalMatches, resultsTitle);
+    let resultsHtml = isFinalsGroupStage
+        ? buildFinalsGroupStageGroupedTables(finalMatches, resultsTitle)
+        : buildScheduleTable(finalMatches, resultsTitle);
     if (feedResultsEl) feedResultsEl.innerHTML = resultsHtml;
 
     // 4. Playoffs
