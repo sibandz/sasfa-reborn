@@ -764,6 +764,8 @@
             font-size: 0.8rem;
             font-weight: 800;
             text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
         }
         .schedule-table .broadcaster-link {
             display: inline-flex;
@@ -993,6 +995,43 @@
             color: var(--lime);
             flex-shrink: 0;
             overflow: hidden;
+            position: relative;
+        }
+        .team-logo-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background: #ffffff;
+        }
+        .team-logo-fallback {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+        .team-inline-logo {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            background: rgba(15, 23, 42, 0.06);
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .team-inline-logo .team-logo-fallback {
+            font-size: 0.62rem;
+            color: #111827;
         }
         .match-score {
             grid-column: 3;
@@ -1830,6 +1869,15 @@ let activeFinalsStage = sessionStorage.getItem('activeFinalsStage') || 'quarterf
 let activeFinalsTeam = sessionStorage.getItem('activeFinalsTeam') || 'ALL';
 let activeFinalsGroup = sessionStorage.getItem('activeFinalsGroup') || 'ALL';
 
+const TEAM_LOGO_MAP = {
+    'Navalsig High School': '/images/schools/pool-a/navalsig-high-school.png',
+    'Curro Thatchfield': '/images/schools/pool-a/curro-thatchfield.png',
+    'Flora Park High School': '/images/schools/pool-a/flora-park-high-school.png',
+    'Camps Bay High School': '/images/schools/pool-a/camps-bay-high-school.png',
+    'Virginia High School': '/images/schools/pool-a/virginia-high-school.png',
+    'Curro Soshanguve': '/images/schools/pool-a/curro-soshanguve.png'
+};
+
 // --- DOM ELEMENTS ---
 const regionFilters = document.getElementById('regionFilters');
 const phaseTabs = document.getElementById('phaseTabs');
@@ -2437,13 +2485,13 @@ function renderDashboard() {
                         <div style="font-size: 0.55rem; margin-top: 2px;">${match.d || 'SAT 23 MAY'}</div>
                         <div style="font-size: 0.5rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-top: 4px;">${match.round} ${match.description || ''}</div>
                     </div>
-                    <div class="match-team"><div class="team-crest">${(t1 || '?').charAt(0)}</div><div>${t1}</div></div>
+                    <div class="match-team">${renderTeamLogoBadge(t1, 'crest')}<div>${t1}</div></div>
                     <div class="match-score">
                         <div class="score-value">-</div>
                         <div class="score-value" style="color: var(--text-muted); font-size: 0.675rem;">-</div>
                         <div class="score-value">-</div>
                     </div>
-                    <div class="match-team"><div class="team-crest">${(t2 || '?').charAt(0)}</div><div>${t2}</div></div>
+                    <div class="match-team">${renderTeamLogoBadge(t2, 'crest')}<div>${t2}</div></div>
                 </div>`;
         });
         playoffsHtml += `</div>`;
@@ -2462,7 +2510,7 @@ function renderDashboard() {
             }
         }
         allTeamsInRegion.sort((a,b) => a.name.localeCompare(b.name)).forEach(t => {
-            teamsHtml += `<div class="team-card"><div class="team-crest">${t.name.charAt(0)}</div><span>${t.name}</span></div>`;
+            teamsHtml += `<div class="team-card">${renderTeamLogoBadge(t.name, 'crest')}<span>${t.name}</span></div>`;
         });
         teamsHtml += `</div>`;
         if(teamsSectionEl) teamsSectionEl.innerHTML = teamsHtml;
@@ -2511,7 +2559,7 @@ function renderMatch(match) {
                 <div style="font-size: 0.55rem; margin-top: 2px;">${match.d || ''}</div>
                 ${match.region ? `<div style="font-size: 0.5rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-top: 4px;">${match.region}</div>` : ''}
             </div>
-            <div class="match-team ${t1Class}"><div class="team-crest">${(match.t1 || '?').charAt(0)}</div><div>${match.t1 || 'Team 1'}</div></div>
+            <div class="match-team ${t1Class}">${renderTeamLogoBadge(match.t1, 'crest')}<div>${match.t1 || 'Team 1'}</div></div>
             <div class="match-score">
                 ${status === 'UPCOMING' 
                     ? `<div class="score-value" style="color: var(--text-muted); font-size: 0.8rem;">vs</div>`
@@ -2521,7 +2569,7 @@ function renderMatch(match) {
                     <div class="score-value ${s2Class}">${match.s2 != null ? match.s2 : '-'}</div>
                     `}
             </div>
-            <div class="match-team ${t2Class}"><div class="team-crest">${(match.t2 || '?').charAt(0)}</div><div>${match.t2 || 'Team 2'}</div></div>
+            <div class="match-team ${t2Class}">${renderTeamLogoBadge(match.t2, 'crest')}<div>${match.t2 || 'Team 2'}</div></div>
         </div></div>`;
 }
 
@@ -2535,16 +2583,14 @@ function renderMatchRow(match) {
     const broadcaster = `<a href="${broadcasterUrl}" target="_blank" rel="noopener noreferrer" class="broadcaster-link"><img src="${broadcasterLogo}" alt="Supersports Schools" class="broadcaster-logo" data-fallback="/images/ss schools.png" onerror="if (this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; }" /><span class="broadcaster-label">Watch Live</span></a>`;
     const team1 = match.t1 || 'Team 1';
     const team2 = match.t2 || 'Team 2';
-    const badge1 = team1.charAt(0) || '?';
-    const badge2 = team2.charAt(0) || '?';
     return `
         <tr>
             <td class="date-column">${matchDate}</td>
             <td class="datetime-column">${matchTime}</td>
             <td class="ball-column"><div class="ball-cell"><img src="${ballImage}" alt="Match ball" class="ball-image" loading="lazy" onload="this.style.opacity='1'" onerror="this.src='/images/ball-used.png'; this.style.opacity='1'" style="opacity:0.8;" /></div></td>
             <td class="match-column">
-                <div class="team-line"><span class="team-badge">${badge1}</span><span class="team-name">${team1}</span></div>
-                <div class="team-line"><span class="team-badge">${badge2}</span><span class="team-name">${team2}</span></div>
+                <div class="team-line">${renderTeamLogoBadge(team1, 'badge')}<span class="team-name">${team1}</span></div>
+                <div class="team-line">${renderTeamLogoBadge(team2, 'badge')}<span class="team-name">${team2}</span></div>
             </td>
             <td>${referee}</td>
             <td>${broadcaster}</td>
@@ -2715,6 +2761,36 @@ function getPlayoffAdvancementSummary(playoffs) {
     };
 }
 
+function isPlaceholderTeamName(teamName) {
+    const label = String(teamName || '').trim();
+    if (!label) return true;
+    if (/^(winner|loser)\s*m\s*\d+$/i.test(label)) return true;
+    if (/^\d+(st|nd|rd|th)\s+pool\s+[a-z]$/i.test(label)) return true;
+    return false;
+}
+
+function getTeamLogoUrl(teamName) {
+    if (isPlaceholderTeamName(teamName)) return '';
+    return TEAM_LOGO_MAP[teamName] || '';
+}
+
+function renderTeamLogoBadge(teamName, variant = 'badge') {
+    const nameLabel = String(teamName || 'Team').trim();
+    const initial = nameLabel.charAt(0).toUpperCase() || '?';
+    const logoUrl = getTeamLogoUrl(nameLabel);
+    const imageHtml = logoUrl
+        ? `<img src="${logoUrl}" alt="${nameLabel} logo" class="team-logo-image" loading="lazy" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'" />`
+        : '';
+
+    if (variant === 'crest') {
+        return `<span class="team-crest">${imageHtml}<span class="team-logo-fallback">${initial}</span></span>`;
+    }
+    if (variant === 'inline') {
+        return `<span class="team-inline-logo">${imageHtml}<span class="team-logo-fallback">${initial}</span></span>`;
+    }
+    return `<span class="team-badge">${imageHtml}<span class="team-logo-fallback">${initial}</span></span>`;
+}
+
 function renderStandings(pools, regionName, matches = []) {
     let html = '';
     const isNationalFinalsTable = regionName === 'National Finals';
@@ -2741,7 +2817,7 @@ function renderStandings(pools, regionName, matches = []) {
                             return `
                                 <tr class="${qualifiedClass}">
                                     <td class="col-rank">${index + 1}</td>
-                                    <td class="col-team"><span class="team-name"><span>${team.name}</span><span class="team-origin-text">${teamSubtext}</span></span><span class="team-seed-badge">#${team.seed}</span></td>
+                                    <td class="col-team"><span class="team-name"><span style="display: inline-flex; align-items: center; gap: 8px; min-width: 0;"><span>${renderTeamLogoBadge(team.name, 'inline')}</span><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${team.name}</span></span><span class="team-origin-text">${teamSubtext}</span></span><span class="team-seed-badge">#${team.seed}</span></td>
                                     <td class="col-data">${team.played}</td>
                                     <td class="col-data">${team.gd}</td>
                                     <td class="col-data"><span class="col-pts">${team.points}</span></td>
