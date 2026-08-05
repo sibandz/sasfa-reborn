@@ -1336,7 +1336,7 @@
     <div class="phase-tabs" id="phaseTabs">
         <button class="phase-tab-btn active" data-phase="qualifications">Qualifications</button>
         <button class="phase-tab-btn" data-phase="playoffs">Playoffs</button>
-        <button class="phase-tab-btn" data-phase="finals">Finals</button>
+        <button class="phase-tab-btn" data-phase="finals">National Finals</button>
     </div>
 
     <div class="finals-stage-tabs" id="finalsStageTabs"></div>
@@ -1622,8 +1622,101 @@
             ]
         },
         "National Finals": {
-            pools: {},
+            pools: {
+                "Pool A": [
+                    {name: "Navalsig", seed: 1},
+                    {name: "Curro Thatchfield", seed: 2},
+                    {name: "Flora Park", seed: 3},
+                    {name: "Camps Bay", seed: 4},
+                    {name: "Virginia", seed: 5},
+                    {name: "Curro Soshanguve", seed: 6}
+                ],
+                "Pool B": [
+                    {name: "Grey College", seed: 1},
+                    {name: "Curro Century City", seed: 2},
+                    {name: "CBC Mt Edmund", seed: 3},
+                    {name: "Meridian Cosmo City", seed: 4},
+                    {name: "Clapham High", seed: 5},
+                    {name: "Barberton High", seed: 6}
+                ],
+                "Pool C": [
+                    {name: "Northern Academy", seed: 1},
+                    {name: "Waterstone College", seed: 2},
+                    {name: "Rosina Sedibane", seed: 3},
+                    {name: "St Annes", seed: 4},
+                    {name: "Glenwood", seed: 5},
+                    {name: "Westenburg", seed: 6}
+                ],
+                "Pool D": [
+                    {name: "Norkem Park", seed: 1},
+                    {name: "Mondeor High", seed: 2},
+                    {name: "Meridian Pinehurst", seed: 3},
+                    {name: "Vaal High", seed: 4},
+                    {name: "Curro Nelspruit", seed: 5},
+                    {name: "Durban High", seed: 6}
+                ]
+            },
             matches: [
+                { d: "Friday 7 August", t: "08:00", t1: "Northern Academy", t2: "Waterstone College", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M1" },
+                { d: "Friday 7 August", t: "09:10", t1: "Rosina Sedibane", t2: "St Annes", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M2" },
+                { d: "Friday 7 August", t: "10:20", t1: "Glenwood", t2: "Westenburg", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M3" },
+                { d: "Friday 7 August", t: "08:00", t1: "Navalsig", t2: "Curro Thatchfield", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M4" },
+                { d: "Friday 7 August", t: "09:10", t1: "Flora Park", t2: "Camps Bay", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M5" },
+                { d: "Friday 7 August", t: "10:20", t1: "Virginia", t2: "Curro Soshanguve", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M6" },
+                { d: "Friday 7 August", t: "08:00", t1: "Grey College", t2: "Curro Century City", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M7" },
+                { d: "Friday 7 August", t: "09:10", t1: "CBC Mt Edmund", t2: "Meridian Cosmo City", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M8" },
+                { d: "Friday 7 August", t: "10:20", t1: "Clapham High", t2: "Barberton High", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M9" },
+                { d: "Friday 7 August", t: "08:00", t1: "Norkem Park", t2: "Mondeor High", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M10" },
+                { d: "Friday 7 August", t: "09:10", t1: "Meridian Pinehurst", t2: "Vaal High", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M11" },
+                { d: "Friday 7 August", t: "10:20", t1: "Curro Nelspruit", t2: "Durban High", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M12" },
+                { d: "Friday 7 August", t: "11:30", t1: "Northern Academy", t2: "St Annes", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M13" },
+                { d: "Friday 7 August", t: "12:40", t1: "Waterstone College", t2: "Westenburg", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M14" },
+                { d: "Friday 7 August", t: "13:50", t1: "Rosina Sedibane", t2: "Glenwood", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M15" },
+                { d: "Friday 7 August", t: "15:00", t1: "Westenburg", t2: "Northern Academy", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M16" },
+                { d: "Friday 7 August", t: "16:10", t1: "St Annes", t2: "Glenwood", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M17" },
+                { d: "Saturday 8 August", t: "09:10", t1: "Waterstone College", t2: "Rosina Sedibane", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M18" },
+                { d: "Friday 7 August", t: "11:30", t1: "Navalsig", t2: "Camps Bay", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M19" },
+                { d: "Friday 7 August", t: "12:40", t1: "Curro Thatchfield", t2: "Curro Soshanguve", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M20" },
+                { d: "Friday 7 August", t: "13:50", t1: "Flora Park", t2: "Virginia", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M21" },
+                { d: "Friday 7 August", t: "15:00", t1: "Curro Soshanguve", t2: "Navalsig", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M22" },
+                { d: "Friday 7 August", t: "16:10", t1: "Camps Bay", t2: "Virginia", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M23" },
+                { d: "Saturday 8 August", t: "09:10", t1: "Curro Thatchfield", t2: "Flora Park", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M24" },
+                { d: "Friday 7 August", t: "11:30", t1: "Grey College", t2: "Meridian Cosmo City", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M25" },
+                { d: "Friday 7 August", t: "12:40", t1: "Curro Century City", t2: "Barberton High", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M26" },
+                { d: "Friday 7 August", t: "13:50", t1: "CBC Mt Edmund", t2: "Clapham High", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M27" },
+                { d: "Friday 7 August", t: "15:00", t1: "Barberton High", t2: "Grey College", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M28" },
+                { d: "Friday 7 August", t: "16:10", t1: "Meridian Cosmo City", t2: "Clapham High", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M29" },
+                { d: "Saturday 8 August", t: "09:10", t1: "Curro Century City", t2: "CBC Mt Edmund", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M30" },
+                { d: "Friday 7 August", t: "11:30", t1: "Norkem Park", t2: "Vaal High", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M31" },
+                { d: "Friday 7 August", t: "12:40", t1: "Mondeor High", t2: "Durban High", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M32" },
+                { d: "Friday 7 August", t: "13:50", t1: "Meridian Pinehurst", t2: "Curro Nelspruit", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M33" },
+                { d: "Friday 7 August", t: "15:00", t1: "Durban High", t2: "Norkem Park", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M34" },
+                { d: "Friday 7 August", t: "16:10", t1: "Vaal High", t2: "Curro Nelspruit", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M35" },
+                { d: "Saturday 8 August", t: "09:10", t1: "Mondeor High", t2: "Meridian Pinehurst", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M36" },
+                { d: "Saturday 8 August", t: "10:20", t1: "Northern Academy", t2: "Glenwood", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M37" },
+                { d: "Saturday 8 August", t: "11:30", t1: "Rosina Sedibane", t2: "Westenburg", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M38" },
+                { d: "Saturday 8 August", t: "12:40", t1: "St Annes", t2: "Waterstone College", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M39" },
+                { d: "Saturday 8 August", t: "13:50", t1: "Northern Academy", t2: "Rosina Sedibane", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M40" },
+                { d: "Saturday 8 August", t: "15:00", t1: "Glenwood", t2: "Waterstone College", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M41" },
+                { d: "Saturday 8 August", t: "16:10", t1: "Westenburg", t2: "St Annes", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M42" },
+                { d: "Saturday 8 August", t: "10:20", t1: "Navalsig", t2: "Virginia", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M43" },
+                { d: "Saturday 8 August", t: "11:30", t1: "Flora Park", t2: "Curro Soshanguve", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M44" },
+                { d: "Saturday 8 August", t: "12:40", t1: "Camps Bay", t2: "Curro Thatchfield", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M45" },
+                { d: "Saturday 8 August", t: "13:50", t1: "Navalsig", t2: "Flora Park", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M46" },
+                { d: "Saturday 8 August", t: "15:00", t1: "Virginia", t2: "Curro Thatchfield", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M47" },
+                { d: "Saturday 8 August", t: "16:10", t1: "Curro Soshanguve", t2: "Camps Bay", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M48" },
+                { d: "Saturday 8 August", t: "10:20", t1: "Grey College", t2: "Clapham High", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M49" },
+                { d: "Saturday 8 August", t: "11:30", t1: "CBC Mt Edmund", t2: "Barberton High", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M50" },
+                { d: "Saturday 8 August", t: "12:40", t1: "Meridian Cosmo City", t2: "Curro Century City", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M51" },
+                { d: "Saturday 8 August", t: "13:50", t1: "Grey College", t2: "CBC Mt Edmund", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M52" },
+                { d: "Saturday 8 August", t: "15:00", t1: "Clapham High", t2: "Curro Century City", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M53" },
+                { d: "Saturday 8 August", t: "16:10", t1: "Barberton High", t2: "Meridian Cosmo City", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M54" },
+                { d: "Saturday 8 August", t: "10:20", t1: "Norkem Park", t2: "Curro Nelspruit", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M55" },
+                { d: "Saturday 8 August", t: "11:30", t1: "Meridian Pinehurst", t2: "Durban High", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M56" },
+                { d: "Saturday 8 August", t: "12:40", t1: "Vaal High", t2: "Mondeor High", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M57" },
+                { d: "Saturday 8 August", t: "13:50", t1: "Norkem Park", t2: "Meridian Pinehurst", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M58" },
+                { d: "Saturday 8 August", t: "15:00", t1: "Curro Nelspruit", t2: "Mondeor High", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M59" },
+                { d: "Saturday 8 August", t: "16:10", t1: "Durban High", t2: "Vaal High", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M60" },
                 { d: "Sunday 9 August", t: "08:00", t1: "5th Pool A", t2: "6th Pool B", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Bowl M61" },
                 { d: "Sunday 9 August", t: "08:00", t1: "6th Pool A", t2: "5th Pool B", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Bowl M62" },
                 { d: "Sunday 9 August", t: "08:00", t1: "5th Pool C", t2: "6th Pool D", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Bowl M63" },
@@ -1667,9 +1760,9 @@
 
 const LOCAL_STORAGE_KEY = 'sasfa-tournament-data';
 let tournamentData = JSON.parse(JSON.stringify(DEFAULT_TOURNAMENT_DATA));
-let activeTournament = sessionStorage.getItem('activeTournament') || null;
-let activeRegion = sessionStorage.getItem('activeRegion') || Object.keys(tournamentData)[0];
-let activePhase = sessionStorage.getItem('activePhase') || (activeRegion === 'National Finals' ? 'finals' : 'qualifications');
+let activeTournament = sessionStorage.getItem('activeTournament') || 'halala';
+let activeRegion = sessionStorage.getItem('activeRegion') || 'National Finals';
+let activePhase = sessionStorage.getItem('activePhase') || 'finals';
 let activeFinalsStage = sessionStorage.getItem('activeFinalsStage') || 'quarterfinal';
 
 // --- DOM ELEMENTS ---
@@ -1767,14 +1860,47 @@ function updateLiveStatus() {
 function applySavedData(savedData) {
     if (!savedData || typeof savedData !== 'object') return;
 
+    const mergeNationalFinalsMatches = (defaultMatches, savedMatches) => {
+        const savedByType = new Map();
+        (savedMatches || []).forEach(match => {
+            const key = String(match?.type || '').trim().toLowerCase();
+            if (key) savedByType.set(key, { ...match });
+        });
+
+        const merged = (defaultMatches || []).map(defaultMatch => {
+            const key = String(defaultMatch?.type || '').trim().toLowerCase();
+            if (!key || !savedByType.has(key)) return { ...defaultMatch };
+            return { ...defaultMatch, ...savedByType.get(key) };
+        });
+
+        (savedMatches || []).forEach(match => {
+            const key = String(match?.type || '').trim().toLowerCase();
+            if (!key) return;
+            const exists = merged.some(item => String(item?.type || '').trim().toLowerCase() === key);
+            if (!exists) merged.push({ ...match });
+        });
+
+        return merged;
+    };
+
     const sanitizedData = JSON.parse(JSON.stringify(DEFAULT_TOURNAMENT_DATA));
     Object.keys(savedData).forEach(region => {
         if (sanitizedData[region]) {
             if (Array.isArray(savedData[region].matches)) {
-                sanitizedData[region].matches = savedData[region].matches.map(match => ({ ...match }));
+                if (region === 'National Finals') {
+                    sanitizedData[region].matches = mergeNationalFinalsMatches(
+                        sanitizedData[region].matches,
+                        savedData[region].matches
+                    );
+                } else {
+                    sanitizedData[region].matches = savedData[region].matches.map(match => ({ ...match }));
+                }
             }
             if (Array.isArray(savedData[region].playoffs)) {
                 sanitizedData[region].playoffs = savedData[region].playoffs.map(match => ({ ...match }));
+            }
+            if (region === 'National Finals' && savedData[region].pools && typeof savedData[region].pools === 'object') {
+                sanitizedData[region].pools = JSON.parse(JSON.stringify(savedData[region].pools));
             }
         }
     });
@@ -1839,7 +1965,7 @@ function updateView() {
         phaseTabs.innerHTML = `
             <button class="phase-tab-btn ${activePhase === 'qualifications' ? 'active' : ''}" data-phase="qualifications">Qualifications</button>
             <button class="phase-tab-btn ${activePhase === 'playoffs' ? 'active' : ''}" data-phase="playoffs">Playoffs</button>
-            <button class="phase-tab-btn ${activePhase === 'finals' ? 'active' : ''}" data-phase="finals">Finals</button>
+            <button class="phase-tab-btn ${activePhase === 'finals' ? 'active' : ''}" data-phase="finals">National Finals</button>
         `;
     }
 
@@ -1959,6 +2085,19 @@ function renderDashboard() {
     const regionData = tournamentData[activeRegion];
     if (!regionData) return;
 
+    function getFinalsMatchStage(match) {
+        const label = String(match?.type || '').toLowerCase();
+        if (label.includes('group') || label.includes('round robin')) return 'groupstage';
+        if (label.includes('quarter')) return 'quarterfinal';
+        if (label.includes('semi')) return 'semifinal';
+        if (label.includes('play-off') || label.includes('playoff') || label.includes('final')) return 'final';
+        return 'groupstage';
+    }
+
+    function filterFinalsMatchesByStage(matches, stage) {
+        return (matches || []).filter(match => getFinalsMatchStage(match) === stage);
+    }
+
     const summarySectionEl = document.getElementById('qualifying-summary-section');
     const standingsSectionEl = document.getElementById('standings-section');
     const teamsSectionEl = document.getElementById('teams-section');
@@ -1966,8 +2105,10 @@ function renderDashboard() {
     const feedFixturesEl = document.getElementById('feed-fixtures');
     const feedResultsEl = document.getElementById('feed-results');
 
+    const showFinalsGroupStandings = isFinalsPhase && activeFinalsStage === 'groupstage';
+
     if (summarySectionEl) summarySectionEl.style.display = isQualificationsPhase ? 'block' : 'none';
-    if (standingsSectionEl) standingsSectionEl.style.display = isQualificationsPhase ? 'block' : 'none';
+    if (standingsSectionEl) standingsSectionEl.style.display = (isQualificationsPhase || showFinalsGroupStandings) ? 'block' : 'none';
     if (teamsSectionEl) teamsSectionEl.style.display = isQualificationsPhase ? 'block' : 'none';
     if (playoffsSectionEl) playoffsSectionEl.style.display = isPlayoffsPhase ? 'block' : 'none';
     if (feedFixturesEl) feedFixturesEl.style.display = 'block';
@@ -1977,21 +2118,22 @@ function renderDashboard() {
         summarySectionEl.innerHTML = generateQualifyingSummary(regionData);
     }
 
+    if (showFinalsGroupStandings && standingsSectionEl) {
+        const projectedFinalsMatches = resolveNationalFinalsPlaceholders(regionData);
+        const poolsForDisplay = JSON.parse(JSON.stringify(regionData.pools || {}));
+        const groupMatchesForStandings = projectedFinalsMatches.filter(m => getFinalsMatchStage(m) === 'groupstage');
+        calculateStandings(poolsForDisplay, groupMatchesForStandings, ['FINAL', 'LIVE']);
+        let finalsStandingsHtml = `<div class="section-title">National Finals Group Standings</div>`;
+        finalsStandingsHtml += renderStandings(poolsForDisplay, 'National Finals', groupMatchesForStandings);
+        finalsStandingsHtml += `<div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 12px; font-weight: 600;">* Rankings update automatically from final/live group-stage results.</div>`;
+        standingsSectionEl.innerHTML = finalsStandingsHtml;
+    }
+
     // 2. Fixtures Feed (Live, Upcoming)
-    const getFinalsMatchStage = (match) => {
-        const label = String(match?.type || '').toLowerCase();
-        if (label.includes('group') || label.includes('round robin')) return 'groupstage';
-        if (label.includes('quarter')) return 'quarterfinal';
-        if (label.includes('semi')) return 'semifinal';
-        if (label.includes('play-off') || label.includes('playoff') || label.includes('final')) return 'final';
-        return 'groupstage';
-    };
 
-    const filterFinalsMatchesByStage = (matches, stage) =>
-        (matches || []).filter(match => getFinalsMatchStage(match) === stage);
-
+    const projectedFinalsMatches = isFinalsPhase ? resolveNationalFinalsPlaceholders(regionData) : [];
     const stageMatches = isFinalsPhase
-        ? filterFinalsMatchesByStage(regionData.matches || [], activeFinalsStage)
+        ? filterFinalsMatchesByStage(projectedFinalsMatches, activeFinalsStage)
         : (isPlayoffsPhase ? resolvePlayoffPlaceholders(regionData.playoffs || []) : (regionData.matches || []));
     const liveMatches = stageMatches.filter(m => m.st === 'LIVE');
     const upcomingMatches = stageMatches.filter(m => m.st === 'UPCOMING');
@@ -2219,6 +2361,116 @@ function getPlayoffOutcome(match) {
     return match.s1 > match.s2
         ? { winner: match.t1, loser: match.t2 }
         : { winner: match.t2, loser: match.t1 };
+}
+
+function getResolvedMatchOutcome(match) {
+    if (!match || match.s1 == null || match.s2 == null) return null;
+    const status = (match.st || '').toUpperCase();
+    if (status !== 'FINAL' && status !== 'LIVE') return null;
+
+    if (match.s1 > match.s2) return { winner: match.t1, loser: match.t2 };
+    if (match.s2 > match.s1) return { winner: match.t2, loser: match.t1 };
+
+    if (match.ps1 != null && match.ps2 != null && match.ps1 !== match.ps2) {
+        return match.ps1 > match.ps2
+            ? { winner: match.t1, loser: match.t2 }
+            : { winner: match.t2, loser: match.t1 };
+    }
+    return null;
+}
+
+function getMatchNumberFromType(match) {
+    const typeLabel = String(match?.type || '');
+    const found = typeLabel.match(/\bM\s*(\d+)\b/i);
+    return found ? Number(found[1]) : null;
+}
+
+function toOrdinalLabel(value) {
+    if (value === 1) return '1st';
+    if (value === 2) return '2nd';
+    if (value === 3) return '3rd';
+    return `${value}th`;
+}
+
+function buildNationalFinalsRankMap(regionData, matches) {
+    const pools = JSON.parse(JSON.stringify(regionData?.pools || {}));
+    const groupMatches = (matches || []).filter(m => String(m?.type || '').toLowerCase().includes('group stage'));
+    calculateStandings(pools, groupMatches, ['FINAL', 'LIVE']);
+
+    const rankMap = {};
+    Object.entries(pools).forEach(([poolName, teams]) => {
+        const poolLetterMatch = poolName.match(/([A-Z])$/i);
+        const poolLetter = poolLetterMatch ? poolLetterMatch[1].toUpperCase() : poolName.replace('Pool ', '').trim().toUpperCase();
+        const sortedTeams = [...teams].sort((a, b) => compareTeams(a, b, groupMatches));
+        sortedTeams.forEach((team, idx) => {
+            const rankToken = `${toOrdinalLabel(idx + 1)} pool ${poolLetter}`.toLowerCase();
+            rankMap[rankToken] = team.name;
+        });
+    });
+
+    return rankMap;
+}
+
+function resolveNationalFinalsPlaceholders(regionData) {
+    if (!regionData || !Array.isArray(regionData.matches)) return [];
+
+    const resolvedMatches = regionData.matches.map(match => ({ ...match }));
+    const rankMap = buildNationalFinalsRankMap(regionData, resolvedMatches);
+    const matchIndexByNumber = {};
+    resolvedMatches.forEach((match, index) => {
+        const matchNumber = getMatchNumberFromType(match);
+        if (matchNumber != null) {
+            matchIndexByNumber[matchNumber] = index;
+        }
+    });
+
+    const normalizeToken = value => String(value || '').trim().replace(/\s+/g, ' ').toLowerCase();
+    const outcomeTokenPattern = /^(winner|loser)\s*m\s*(\d+)$/i;
+
+    const resolvePoolRankToken = token => {
+        const normalized = normalizeToken(token);
+        return rankMap[normalized] || token;
+    };
+
+    const resolveOutcomeToken = token => {
+        const normalized = String(token || '').trim();
+        const match = normalized.match(outcomeTokenPattern);
+        if (!match) return token;
+
+        const side = match[1].toLowerCase();
+        const sourceMatchNo = Number(match[2]);
+        const sourceIndex = matchIndexByNumber[sourceMatchNo];
+        if (sourceIndex == null) return token;
+
+        const sourceOutcome = getResolvedMatchOutcome(resolvedMatches[sourceIndex]);
+        if (!sourceOutcome) return token;
+        return side === 'winner' ? sourceOutcome.winner : sourceOutcome.loser;
+    };
+
+    resolvedMatches.forEach(match => {
+        match.t1 = resolvePoolRankToken(match.t1);
+        match.t2 = resolvePoolRankToken(match.t2);
+    });
+
+    let updated = true;
+    let guard = 0;
+    while (updated && guard < 8) {
+        updated = false;
+        guard += 1;
+        resolvedMatches.forEach(match => {
+            const beforeT1 = match.t1;
+            const beforeT2 = match.t2;
+
+            match.t1 = resolvePoolRankToken(resolveOutcomeToken(match.t1));
+            match.t2 = resolvePoolRankToken(resolveOutcomeToken(match.t2));
+
+            if (match.t1 !== beforeT1 || match.t2 !== beforeT2) {
+                updated = true;
+            }
+        });
+    }
+
+    return resolvedMatches;
 }
 
 function resolvePlayoffPlaceholder(teamName, playoffs) {
