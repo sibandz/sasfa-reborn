@@ -699,8 +699,8 @@
         }
         .standings-title {
             font-family: 'Anton', "SF Pro Display", "SF Pro Text", "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-            color: #FFFFFF;
-            background: #1a1a1a;
+            color: #dcff3f;
+            background: rgba(15, 20, 34, 0.88);
             font-size: 0.84rem;
             text-transform: uppercase;
             letter-spacing: 0.12em;
@@ -737,13 +737,15 @@
         tr:last-child td {
             border-bottom: none;
         }
-        tbody tr { background: rgba(255,255,255,0.02); transition: background-color 0.12s ease; }
+        tbody tr { background: rgba(255,255,255,0.02); transition: background-color 0.12s ease; border-left: 3px solid #dcff3f; }
         tbody tr:nth-child(even) { background: rgba(255,255,255,0.04); }
         tbody tr:hover { background: rgba(255,255,255,0.08); }
-        .col-rank { width: 36px; font-weight: 700; text-align: center; color: #F7F4E6; display: none; }
-        .col-team { display: flex; align-items: center; gap: 8px; font-weight: 700; color: #F7F4E6; }
-        .col-team .team-name { display: flex; align-items: center; gap: 6px; }
-        .team-badge { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: #00a8e8; color: #FFFFFF; border-radius: 4px; font-size: 0.70rem; font-weight: 700; flex-shrink: 0; }
+        .col-rank { width: 36px; font-weight: 700; text-align: center; color: #F7F4E6; display: block; }
+        .col-team { display: flex; align-items: center; gap: 8px; font-weight: 700; color: #F7F4E6; flex: 1; }
+        .col-team .team-name { display: flex; flex-direction: column; gap: 2px; }
+        .col-team .team-name span:first-child { font-weight: 700; }
+        .team-badge { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: #5dd844; color: #000000; border-radius: 4px; font-size: 0.70rem; font-weight: 700; flex-shrink: 0; }
+        .team-seed-badge { display: inline-flex; align-items: center; justify-content: center; background: #5dd844; color: #000000; border-radius: 4px; font-size: 0.65rem; font-weight: 700; padding: 2px 6px; flex-shrink: 0; }
         .col-data { text-align: center; font-weight: 600; width: 48px; font-variant-numeric: tabular-nums; color: #F7F4E6; }
         .team-seed { font-weight: 400; color: rgba(247,244,230,0.65); font-size: 0.75rem; }
         .standings-card th, .standings-card td { color: #F7F4E6; }
@@ -2055,12 +2057,12 @@ function renderStandings(pools, regionName, matches = []) {
                         ${teams.sort((a, b) => compareTeams(a, b, matches)).map((team, index) => {
                             const isQualified = index < 2;
                             const qualifiedClass = isQualified ? 'qualified' : '';
-                            const teamInitial = (team.name || '?').charAt(0);
-                            const teamBadge = `<div class="team-crest">${teamInitial}</div>`;
+                            const wins = Math.floor(team.points / 3);
+                            const winBadge = `<span class="team-badge">${wins}</span>`;
                             return `
                                 <tr class="${qualifiedClass}">
                                     <td class="col-rank">${index + 1}</td>
-                                    <td class="col-team">${teamBadge}<span class="team-name"><span>${team.name}</span><span class="team-seed">(#${team.seed})</span></span></td>
+                                    <td class="col-team"><span class="team-name"><span>${team.name}</span><span class="team-seed-badge">#${team.seed}</span></span>${winBadge}</td>
                                     <td class="col-data">${team.played}</td>
                                     <td class="col-data">${team.gd}</td>
                                     <td class="col-data"><span class="col-pts">${team.points}</span></td>
