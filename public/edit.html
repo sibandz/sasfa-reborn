@@ -151,8 +151,13 @@
             .card-title { font-size: 0.9rem; }
             .note-box { font-size: 0.68rem; }
             .small-copy { font-size: 0.64rem; }
-            .shirt-select { min-height: 88px; }
             .stats-grid { grid-template-columns: 1fr; }
+            .event-row {
+                grid-template-columns: 1fr;
+            }
+            .save-value {
+                min-width: 34px;
+            }
         }
         label {
             display: block;
@@ -173,9 +178,6 @@
             font-size: 0.9rem;
             color: var(--text-main);
             font-family: "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-        }
-        .shirt-select {
-            min-height: 96px;
         }
         input:focus, select:focus {
             outline: none;
@@ -239,6 +241,66 @@
             letter-spacing: 0;
             color: var(--text-muted);
             font-weight: 500;
+        }
+        .event-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 8px;
+            align-items: end;
+        }
+        .event-row button {
+            padding: 10px 12px;
+            font-size: 0.66rem;
+            min-height: 43px;
+        }
+        .event-list {
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .event-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 9px;
+            border: 1px solid var(--card-border);
+            background: rgba(255, 255, 255, 0.08);
+            font-size: 0.7rem;
+            color: var(--text-main);
+        }
+        .chip-remove {
+            border: 0;
+            background: transparent;
+            color: var(--lime);
+            cursor: pointer;
+            padding: 0;
+            font-size: 0.76rem;
+            line-height: 1;
+        }
+        .save-control {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .save-control button {
+            min-width: 38px;
+            padding: 8px 10px;
+        }
+        .save-value {
+            min-width: 40px;
+            text-align: center;
+            border: 1px solid var(--card-border);
+            padding: 8px 10px;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .empty-event-note {
+            color: var(--text-muted);
+            font-size: 0.68rem;
+            font-style: italic;
+            margin-top: 6px;
         }
         .note-box {
             margin-top: 24px;
@@ -350,39 +412,107 @@
                 <div class="stats-card">
                     <h3>Home Team Match Stats</h3>
                     <label>Scorers
-                        <select id="editHomeScorers" class="shirt-select" multiple></select>
-                        <span class="field-note">Select shirt numbers. Use Ctrl/Cmd + click for multiple selections.</span>
+                        <div class="event-row">
+                            <select id="homeScorerNumber"></select>
+                            <button type="button" onclick="addEventNumber('homeScorers', 'homeScorerNumber')">Add</button>
+                        </div>
+                        <div id="homeScorersList" class="event-list"></div>
                     </label>
                     <label>Assists
-                        <select id="editHomeAssists" class="shirt-select" multiple></select>
+                        <div class="event-row">
+                            <select id="homeAssistNumber"></select>
+                            <button type="button" onclick="addEventNumber('homeAssists', 'homeAssistNumber')">Add</button>
+                        </div>
+                        <div id="homeAssistsList" class="event-list"></div>
                     </label>
                     <label>Saves
-                        <select id="editHomeSaves" class="shirt-select" multiple></select>
+                        <div class="save-control">
+                            <button type="button" onclick="changeSaveCount('homeSaves', -1)">-</button>
+                            <div id="homeSaveValue" class="save-value">0</div>
+                            <button type="button" onclick="changeSaveCount('homeSaves', 1)">+</button>
+                        </div>
+                        <span class="field-note">Use +/- during live games to update quickly.</span>
                     </label>
                     <label>Yellow cards
-                        <select id="editHomeYellowCards" class="shirt-select" multiple></select>
+                        <div class="event-row" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;">
+                            <select id="homeYellowNumber"></select>
+                            <select id="homeYellowReason">
+                                <option value="decent">decent</option>
+                                <option value="simulation">simulation</option>
+                                <option value="dangerous tackle">dangerous tackle</option>
+                                <option value="last man tackle">last man tackle</option>
+                                <option value="coach/manager">coach/manager</option>
+                            </select>
+                            <button type="button" onclick="addCardEvent('homeYellowCards', 'homeYellowNumber', 'homeYellowReason')">Add</button>
+                        </div>
+                        <div id="homeYellowList" class="event-list"></div>
                     </label>
                     <label>Red cards
-                        <select id="editHomeRedCards" class="shirt-select" multiple></select>
+                        <div class="event-row" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;">
+                            <select id="homeRedNumber"></select>
+                            <select id="homeRedReason">
+                                <option value="decent">decent</option>
+                                <option value="simulation">simulation</option>
+                                <option value="dangerous tackle">dangerous tackle</option>
+                                <option value="last man tackle">last man tackle</option>
+                                <option value="coach/manager">coach/manager</option>
+                            </select>
+                            <button type="button" onclick="addCardEvent('homeRedCards', 'homeRedNumber', 'homeRedReason')">Add</button>
+                        </div>
+                        <div id="homeRedList" class="event-list"></div>
                     </label>
                 </div>
                 <div class="stats-card">
                     <h3>Away Team Match Stats</h3>
                     <label>Scorers
-                        <select id="editAwayScorers" class="shirt-select" multiple></select>
-                        <span class="field-note">Select shirt numbers. Use Ctrl/Cmd + click for multiple selections.</span>
+                        <div class="event-row">
+                            <select id="awayScorerNumber"></select>
+                            <button type="button" onclick="addEventNumber('awayScorers', 'awayScorerNumber')">Add</button>
+                        </div>
+                        <div id="awayScorersList" class="event-list"></div>
                     </label>
                     <label>Assists
-                        <select id="editAwayAssists" class="shirt-select" multiple></select>
+                        <div class="event-row">
+                            <select id="awayAssistNumber"></select>
+                            <button type="button" onclick="addEventNumber('awayAssists', 'awayAssistNumber')">Add</button>
+                        </div>
+                        <div id="awayAssistsList" class="event-list"></div>
                     </label>
                     <label>Saves
-                        <select id="editAwaySaves" class="shirt-select" multiple></select>
+                        <div class="save-control">
+                            <button type="button" onclick="changeSaveCount('awaySaves', -1)">-</button>
+                            <div id="awaySaveValue" class="save-value">0</div>
+                            <button type="button" onclick="changeSaveCount('awaySaves', 1)">+</button>
+                        </div>
+                        <span class="field-note">Use +/- during live games to update quickly.</span>
                     </label>
                     <label>Yellow cards
-                        <select id="editAwayYellowCards" class="shirt-select" multiple></select>
+                        <div class="event-row" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;">
+                            <select id="awayYellowNumber"></select>
+                            <select id="awayYellowReason">
+                                <option value="decent">decent</option>
+                                <option value="simulation">simulation</option>
+                                <option value="dangerous tackle">dangerous tackle</option>
+                                <option value="last man tackle">last man tackle</option>
+                                <option value="coach/manager">coach/manager</option>
+                            </select>
+                            <button type="button" onclick="addCardEvent('awayYellowCards', 'awayYellowNumber', 'awayYellowReason')">Add</button>
+                        </div>
+                        <div id="awayYellowList" class="event-list"></div>
                     </label>
                     <label>Red cards
-                        <select id="editAwayRedCards" class="shirt-select" multiple></select>
+                        <div class="event-row" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;">
+                            <select id="awayRedNumber"></select>
+                            <select id="awayRedReason">
+                                <option value="decent">decent</option>
+                                <option value="simulation">simulation</option>
+                                <option value="dangerous tackle">dangerous tackle</option>
+                                <option value="last man tackle">last man tackle</option>
+                                <option value="coach/manager">coach/manager</option>
+                            </select>
+                            <button type="button" onclick="addCardEvent('awayRedCards', 'awayRedNumber', 'awayRedReason')">Add</button>
+                        </div>
+                        <div id="awayRedList" class="event-list"></div>
                     </label>
                 </div>
             </div>
@@ -939,16 +1069,6 @@
     const editScore2 = document.getElementById('editScore2');
     const editTeam1 = document.getElementById('editTeam1');
     const editTeam2 = document.getElementById('editTeam2');
-    const editHomeScorers = document.getElementById('editHomeScorers');
-    const editAwayScorers = document.getElementById('editAwayScorers');
-    const editHomeAssists = document.getElementById('editHomeAssists');
-    const editAwayAssists = document.getElementById('editAwayAssists');
-    const editHomeSaves = document.getElementById('editHomeSaves');
-    const editAwaySaves = document.getElementById('editAwaySaves');
-    const editHomeYellowCards = document.getElementById('editHomeYellowCards');
-    const editAwayYellowCards = document.getElementById('editAwayYellowCards');
-    const editHomeRedCards = document.getElementById('editHomeRedCards');
-    const editAwayRedCards = document.getElementById('editAwayRedCards');
     const saveStatus = document.getElementById('saveStatus');
     const loginForm = document.getElementById('loginForm');
     const saveButton = document.getElementById('saveButton');
@@ -983,17 +1103,16 @@
     const deleteNationalButton = document.getElementById('deleteNationalButton');
     const nationalSaveStatus = document.getElementById('nationalSaveStatus');
 
-    const STAT_SELECTS = [
-        editHomeScorers,
-        editAwayScorers,
-        editHomeAssists,
-        editAwayAssists,
-        editHomeSaves,
-        editAwaySaves,
-        editHomeYellowCards,
-        editAwayYellowCards,
-        editHomeRedCards,
-        editAwayRedCards
+    const CARD_REASON_OPTIONS = ['decent', 'simulation', 'dangerous tackle', 'last man tackle', 'coach/manager'];
+    const STATS_NUMBER_SELECT_IDS = [
+        'homeScorerNumber',
+        'awayScorerNumber',
+        'homeAssistNumber',
+        'awayAssistNumber',
+        'homeYellowNumber',
+        'awayYellowNumber',
+        'homeRedNumber',
+        'awayRedNumber'
     ];
 
     const DEFAULT_MATCH_STATS = {
@@ -1001,8 +1120,8 @@
         awayScorers: [],
         homeAssists: [],
         awayAssists: [],
-        homeSaves: [],
-        awaySaves: [],
+        homeSaves: 0,
+        awaySaves: 0,
         homeYellowCards: [],
         awayYellowCards: [],
         homeRedCards: [],
@@ -1011,62 +1130,211 @@
 
     function normalizeShirtNumbers(value) {
         if (Array.isArray(value)) {
-            const values = value
+            return value
                 .map(item => Number(item))
                 .filter(num => Number.isInteger(num) && num >= 1 && num <= 99);
-            return [...new Set(values)];
         }
         if (typeof value === 'number') {
             return Number.isInteger(value) && value >= 1 && value <= 99 ? [value] : [];
         }
         if (typeof value === 'string') {
             const found = value.match(/\d+/g) || [];
-            const values = found
+            return found
                 .map(item => Number(item))
                 .filter(num => Number.isInteger(num) && num >= 1 && num <= 99);
-            return [...new Set(values)];
         }
         return [];
     }
 
-    function initializeShirtNumberSelects() {
+    function normalizeSaveCount(value) {
+        if (typeof value === 'number' && Number.isFinite(value)) {
+            return Math.max(0, Math.floor(value));
+        }
+        if (Array.isArray(value)) {
+            return value.length;
+        }
+        const parsed = Number(value);
+        if (Number.isFinite(parsed)) {
+            return Math.max(0, Math.floor(parsed));
+        }
+        return 0;
+    }
+
+    function normalizeCardEvent(item) {
+        if (item && typeof item === 'object' && !Array.isArray(item)) {
+            const num = Number(item.number);
+            if (!Number.isInteger(num) || num < 1 || num > 99) return null;
+            const reasonRaw = String(item.reason || '').trim().toLowerCase();
+            const reason = CARD_REASON_OPTIONS.includes(reasonRaw) ? reasonRaw : reasonRaw;
+            return { number: num, reason: reason || CARD_REASON_OPTIONS[0] };
+        }
+        const num = Number(item);
+        if (Number.isInteger(num) && num >= 1 && num <= 99) {
+            return { number: num, reason: CARD_REASON_OPTIONS[0] };
+        }
+        return null;
+    }
+
+    function normalizeCardEvents(value) {
+        if (!Array.isArray(value)) return [];
+        return value.map(normalizeCardEvent).filter(Boolean);
+    }
+
+    function initializeStatsEditorControls() {
         const optionsMarkup = Array.from({ length: 99 }, (_, i) => {
             const shirtNo = i + 1;
             return `<option value="${shirtNo}">#${shirtNo}</option>`;
         }).join('');
-        STAT_SELECTS.forEach(select => {
+        STATS_NUMBER_SELECT_IDS.forEach(id => {
+            const select = document.getElementById(id);
             if (!select || select.dataset.initialized === 'true') return;
             select.innerHTML = optionsMarkup;
             select.dataset.initialized = 'true';
         });
     }
 
-    function setSelectedShirtNumbers(select, values) {
-        if (!select) return;
-        const normalized = normalizeShirtNumbers(values);
-        const selected = new Set(normalized.map(String));
-        Array.from(select.options).forEach(opt => {
-            opt.selected = selected.has(opt.value);
-        });
+    function getActiveMatch() {
+        const regionData = tournamentData[activeRegion];
+        if (!regionData || !Array.isArray(regionData.matches)) return null;
+        return regionData.matches[activeMatchIndex] || null;
     }
 
-    function getSelectedShirtNumbers(select) {
-        if (!select) return [];
-        return Array.from(select.selectedOptions)
-            .map(opt => Number(opt.value))
-            .filter(num => Number.isInteger(num) && num >= 1 && num <= 99);
+    function getActiveMatchStats() {
+        const match = getActiveMatch();
+        if (!match) return { ...DEFAULT_MATCH_STATS };
+        return ensureMatchStats(match);
+    }
+
+    function summarizeNumberEvents(list) {
+        const counts = {};
+        list.forEach(num => {
+            counts[num] = (counts[num] || 0) + 1;
+        });
+        return Object.entries(counts)
+            .map(([num, count]) => ({ number: Number(num), count }))
+            .sort((a, b) => a.number - b.number);
+    }
+
+    function renderNumberEventList(containerId, key) {
+        const el = document.getElementById(containerId);
+        if (!el) return;
+        const stats = getActiveMatchStats();
+        const summary = summarizeNumberEvents(stats[key] || []);
+        if (!summary.length) {
+            el.innerHTML = '<div class="empty-event-note">No entries yet</div>';
+            return;
+        }
+        el.innerHTML = summary.map(item =>
+            `<span class="event-chip">#${item.number} x${item.count} <button type="button" class="chip-remove" onclick="decrementEventNumber('${key}', ${item.number})">-1</button></span>`
+        ).join('');
+    }
+
+    function renderCardEventList(containerId, key) {
+        const el = document.getElementById(containerId);
+        if (!el) return;
+        const stats = getActiveMatchStats();
+        const events = stats[key] || [];
+        if (!events.length) {
+            el.innerHTML = '<div class="empty-event-note">No cards recorded</div>';
+            return;
+        }
+        el.innerHTML = events.map((event, index) =>
+            `<span class="event-chip">#${event.number} - ${escapeHtml(event.reason)} <button type="button" class="chip-remove" onclick="removeCardEvent('${key}', ${index})">x</button></span>`
+        ).join('');
+    }
+
+    function renderStatsEditorState() {
+        const stats = getActiveMatchStats();
+        const homeSaveValue = document.getElementById('homeSaveValue');
+        const awaySaveValue = document.getElementById('awaySaveValue');
+        if (homeSaveValue) homeSaveValue.textContent = String(stats.homeSaves || 0);
+        if (awaySaveValue) awaySaveValue.textContent = String(stats.awaySaves || 0);
+
+        renderNumberEventList('homeScorersList', 'homeScorers');
+        renderNumberEventList('awayScorersList', 'awayScorers');
+        renderNumberEventList('homeAssistsList', 'homeAssists');
+        renderNumberEventList('awayAssistsList', 'awayAssists');
+        renderCardEventList('homeYellowList', 'homeYellowCards');
+        renderCardEventList('awayYellowList', 'awayYellowCards');
+        renderCardEventList('homeRedList', 'homeRedCards');
+        renderCardEventList('awayRedList', 'awayRedCards');
     }
 
     function ensureMatchStats(match) {
         if (!match || typeof match !== 'object') return { ...DEFAULT_MATCH_STATS };
-        const safeStats = { ...DEFAULT_MATCH_STATS };
+        const safeStats = JSON.parse(JSON.stringify(DEFAULT_MATCH_STATS));
         const currentStats = (match.stats && typeof match.stats === 'object') ? match.stats : {};
-        Object.keys(safeStats).forEach(key => {
-            safeStats[key] = normalizeShirtNumbers(currentStats[key]);
-        });
+        safeStats.homeScorers = normalizeShirtNumbers(currentStats.homeScorers);
+        safeStats.awayScorers = normalizeShirtNumbers(currentStats.awayScorers);
+        safeStats.homeAssists = normalizeShirtNumbers(currentStats.homeAssists);
+        safeStats.awayAssists = normalizeShirtNumbers(currentStats.awayAssists);
+        safeStats.homeSaves = normalizeSaveCount(currentStats.homeSaves);
+        safeStats.awaySaves = normalizeSaveCount(currentStats.awaySaves);
+        safeStats.homeYellowCards = normalizeCardEvents(currentStats.homeYellowCards);
+        safeStats.awayYellowCards = normalizeCardEvents(currentStats.awayYellowCards);
+        safeStats.homeRedCards = normalizeCardEvents(currentStats.homeRedCards);
+        safeStats.awayRedCards = normalizeCardEvents(currentStats.awayRedCards);
         match.stats = safeStats;
         return safeStats;
     }
+
+    function addEventNumber(key, selectId) {
+        const select = document.getElementById(selectId);
+        const number = Number(select ? select.value : NaN);
+        if (!Number.isInteger(number) || number < 1 || number > 99) return;
+        const stats = getActiveMatchStats();
+        stats[key].push(number);
+        renderStatsEditorState();
+    }
+
+    function decrementEventNumber(key, number) {
+        const stats = getActiveMatchStats();
+        const idx = stats[key].findIndex(n => n === number);
+        if (idx === -1) return;
+        stats[key].splice(idx, 1);
+        renderStatsEditorState();
+    }
+
+    function changeSaveCount(key, delta) {
+        const stats = getActiveMatchStats();
+        const next = Math.max(0, normalizeSaveCount(stats[key]) + Number(delta || 0));
+        stats[key] = next;
+        renderStatsEditorState();
+    }
+
+    function addCardEvent(key, numberSelectId, reasonSelectId) {
+        const numberSelect = document.getElementById(numberSelectId);
+        const reasonSelect = document.getElementById(reasonSelectId);
+        const number = Number(numberSelect ? numberSelect.value : NaN);
+        const reason = String(reasonSelect ? reasonSelect.value : '').trim().toLowerCase();
+
+        if (!Number.isInteger(number) || number < 1 || number > 99) {
+            setSaveStatus('Select a valid shirt number for the card.', false);
+            return;
+        }
+        if (!reason) {
+            setSaveStatus('Select a reason for the card.', false);
+            return;
+        }
+
+        const stats = getActiveMatchStats();
+        stats[key].push({ number, reason });
+        renderStatsEditorState();
+    }
+
+    function removeCardEvent(key, index) {
+        const stats = getActiveMatchStats();
+        if (!Array.isArray(stats[key])) return;
+        if (index < 0 || index >= stats[key].length) return;
+        stats[key].splice(index, 1);
+        renderStatsEditorState();
+    }
+
+    window.addEventNumber = addEventNumber;
+    window.decrementEventNumber = decrementEventNumber;
+    window.changeSaveCount = changeSaveCount;
+    window.addCardEvent = addCardEvent;
+    window.removeCardEvent = removeCardEvent;
 
     function escapeHtml(value) {
         return String(value || '')
@@ -1080,7 +1348,19 @@
     function buildPrintList(value) {
         const items = normalizeShirtNumbers(value);
         if (!items.length) return '<div class="empty">None recorded</div>';
-        return `<ul>${items.map(item => `<li>${escapeHtml(`#${item}`)}</li>`).join('')}</ul>`;
+        const summary = summarizeNumberEvents(items);
+        return `<ul>${summary.map(item => `<li>${escapeHtml(`#${item.number} x${item.count}`)}</li>`).join('')}</ul>`;
+    }
+
+    function buildSavePrint(value) {
+        const count = normalizeSaveCount(value);
+        return `<div>${count}</div>`;
+    }
+
+    function buildCardPrintList(value) {
+        const events = normalizeCardEvents(value);
+        if (!events.length) return '<div class="empty">None recorded</div>';
+        return `<ul>${events.map(item => `<li>${escapeHtml(`#${item.number} - ${item.reason}`)}</li>`).join('')}</ul>`;
     }
 
     function applySavedData(savedData) {
@@ -1282,24 +1562,15 @@
 
     function fillEditorForm() {
         const match = tournamentData[activeRegion].matches[activeMatchIndex];
-        const stats = ensureMatchStats(match);
-        initializeShirtNumberSelects();
+        ensureMatchStats(match);
+        initializeStatsEditorControls();
         editStatus.value = match.st || 'UPCOMING';
         editTime.value = match.t || '';
         editScore1.value = match.s1 != null ? match.s1 : '';
         editScore2.value = match.s2 != null ? match.s2 : '';
         editTeam1.value = match.t1 || '';
         editTeam2.value = match.t2 || '';
-        setSelectedShirtNumbers(editHomeScorers, stats.homeScorers);
-        setSelectedShirtNumbers(editAwayScorers, stats.awayScorers);
-        setSelectedShirtNumbers(editHomeAssists, stats.homeAssists);
-        setSelectedShirtNumbers(editAwayAssists, stats.awayAssists);
-        setSelectedShirtNumbers(editHomeSaves, stats.homeSaves);
-        setSelectedShirtNumbers(editAwaySaves, stats.awaySaves);
-        setSelectedShirtNumbers(editHomeYellowCards, stats.homeYellowCards);
-        setSelectedShirtNumbers(editAwayYellowCards, stats.awayYellowCards);
-        setSelectedShirtNumbers(editHomeRedCards, stats.homeRedCards);
-        setSelectedShirtNumbers(editAwayRedCards, stats.awayRedCards);
+        renderStatsEditorState();
         setSaveStatus('Loaded current match details.');
     }
 
@@ -1368,11 +1639,11 @@
                 <div class="label">Assists</div>
                 ${buildPrintList(stats.homeAssists)}
                 <div class="label">Saves</div>
-                ${buildPrintList(stats.homeSaves)}
+                ${buildSavePrint(stats.homeSaves)}
                 <div class="label">Yellow Cards</div>
-                ${buildPrintList(stats.homeYellowCards)}
+                ${buildCardPrintList(stats.homeYellowCards)}
                 <div class="label">Red Cards</div>
-                ${buildPrintList(stats.homeRedCards)}
+                ${buildCardPrintList(stats.homeRedCards)}
             </section>
             <section class="card">
                 <h2 class="team">${escapeHtml(match.t2 || 'Away Team')}</h2>
@@ -1381,11 +1652,11 @@
                 <div class="label">Assists</div>
                 ${buildPrintList(stats.awayAssists)}
                 <div class="label">Saves</div>
-                ${buildPrintList(stats.awaySaves)}
+                ${buildSavePrint(stats.awaySaves)}
                 <div class="label">Yellow Cards</div>
-                ${buildPrintList(stats.awayYellowCards)}
+                ${buildCardPrintList(stats.awayYellowCards)}
                 <div class="label">Red Cards</div>
-                ${buildPrintList(stats.awayRedCards)}
+                ${buildCardPrintList(stats.awayRedCards)}
             </section>
         </div>
         <p class="meta">Generated from SASFA Admin Portal.</p>
@@ -1816,7 +2087,7 @@
     async function handleSave() {
         try {
             const match = tournamentData[activeRegion].matches[activeMatchIndex];
-            const stats = ensureMatchStats(match);
+            ensureMatchStats(match);
             match.st = editStatus.value;
             match.t = editTime.value.trim() || match.t;
             match.s1 = Number(editScore1.value || 0);
@@ -1828,16 +2099,6 @@
             match.ps2 = (editPenalties2 && editPenalties2.value !== '') ? Number(editPenalties2.value) : null;
             match.t1 = editTeam1.value.trim() || match.t1;
             match.t2 = editTeam2.value.trim() || match.t2;
-            stats.homeScorers = getSelectedShirtNumbers(editHomeScorers);
-            stats.awayScorers = getSelectedShirtNumbers(editAwayScorers);
-            stats.homeAssists = getSelectedShirtNumbers(editHomeAssists);
-            stats.awayAssists = getSelectedShirtNumbers(editAwayAssists);
-            stats.homeSaves = getSelectedShirtNumbers(editHomeSaves);
-            stats.awaySaves = getSelectedShirtNumbers(editAwaySaves);
-            stats.homeYellowCards = getSelectedShirtNumbers(editHomeYellowCards);
-            stats.awayYellowCards = getSelectedShirtNumbers(editAwayYellowCards);
-            stats.homeRedCards = getSelectedShirtNumbers(editHomeRedCards);
-            stats.awayRedCards = getSelectedShirtNumbers(editAwayRedCards);
 
             // Recalculate official standings for the entire region before saving
             calculateStandings(tournamentData[activeRegion]);
@@ -1929,7 +2190,7 @@
     addNationalButton.addEventListener('click', handleNationalAdd);
     deleteNationalButton.addEventListener('click', handleNationalDelete);
     (async () => {
-        initializeShirtNumberSelects();
+        initializeStatsEditorControls();
         await loadSavedData();
         if (sessionStorage.getItem(AUTH_FLAG) === 'true') {
             showEditor();

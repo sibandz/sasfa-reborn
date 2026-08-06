@@ -2953,10 +2953,64 @@ function normalizeStatNumbers(value) {
     return [];
 }
 
+function normalizeSaveCount(value) {
+    if (typeof value === 'number' && Number.isFinite(value)) {
+        return Math.max(0, Math.floor(value));
+    }
+    if (Array.isArray(value)) {
+        return normalizeStatNumbers(value).length;
+    }
+    const parsed = Number(value);
+    if (Number.isFinite(parsed)) {
+        return Math.max(0, Math.floor(parsed));
+    }
+    return 0;
+}
+
+function summarizeStatNumbers(value) {
+    const values = normalizeStatNumbers(value);
+    const counts = {};
+    values.forEach(num => {
+        counts[num] = (counts[num] || 0) + 1;
+    });
+    return Object.entries(counts)
+        .map(([num, count]) => ({ number: Number(num), count }))
+        .sort((a, b) => a.number - b.number);
+}
+
+function normalizeCardEvents(value) {
+    if (!Array.isArray(value)) return [];
+    const normalized = [];
+    value.forEach(item => {
+        if (item && typeof item === 'object' && !Array.isArray(item)) {
+            const num = Number(item.number);
+            if (Number.isInteger(num) && num >= 1 && num <= 99) {
+                normalized.push({ number: num, reason: String(item.reason || '').trim() || 'decent' });
+            }
+            return;
+        }
+        const num = Number(item);
+        if (Number.isInteger(num) && num >= 1 && num <= 99) {
+            normalized.push({ number: num, reason: 'decent' });
+        }
+    });
+    return normalized;
+}
+
 function formatModalStatList(value) {
-    const numbers = normalizeStatNumbers(value);
-    if (!numbers.length) return '<span style="color:#6b7280;">None recorded</span>';
-    return numbers.map(n => `#${n}`).join(', ');
+    const summary = summarizeStatNumbers(value);
+    if (!summary.length) return '<span style="color:#6b7280;">None recorded</span>';
+    return summary.map(item => `#${item.number} x${item.count}`).join(', ');
+}
+
+function formatModalSaveCount(value) {
+    return String(normalizeSaveCount(value));
+}
+
+function formatModalCardList(value) {
+    const events = normalizeCardEvents(value);
+    if (!events.length) return '<span style="color:#6b7280;">None recorded</span>';
+    return events.map(item => `#${item.number} (${item.reason})`).join(', ');
 }
 
 function closeMatchDetailModal() {
@@ -2994,11 +3048,11 @@ function openMatchDetailModal(detailId) {
                 <div class="match-detail-stat-label">Assists</div>
                 <div class="match-detail-list">${formatModalStatList(stats.homeAssists)}</div>
                 <div class="match-detail-stat-label">Saves</div>
-                <div class="match-detail-list">${formatModalStatList(stats.homeSaves)}</div>
+                <div class="match-detail-list">${formatModalSaveCount(stats.homeSaves)}</div>
                 <div class="match-detail-stat-label">Yellow Cards</div>
-                <div class="match-detail-list">${formatModalStatList(stats.homeYellowCards)}</div>
+                <div class="match-detail-list">${formatModalCardList(stats.homeYellowCards)}</div>
                 <div class="match-detail-stat-label">Red Cards</div>
-                <div class="match-detail-list">${formatModalStatList(stats.homeRedCards)}</div>
+                <div class="match-detail-list">${formatModalCardList(stats.homeRedCards)}</div>
             </div>
             <div class="match-detail-team-card">
                 <h3>${match.t2 || 'Team 2'}</h3>
@@ -3007,11 +3061,11 @@ function openMatchDetailModal(detailId) {
                 <div class="match-detail-stat-label">Assists</div>
                 <div class="match-detail-list">${formatModalStatList(stats.awayAssists)}</div>
                 <div class="match-detail-stat-label">Saves</div>
-                <div class="match-detail-list">${formatModalStatList(stats.awaySaves)}</div>
+                <div class="match-detail-list">${formatModalSaveCount(stats.awaySaves)}</div>
                 <div class="match-detail-stat-label">Yellow Cards</div>
-                <div class="match-detail-list">${formatModalStatList(stats.awayYellowCards)}</div>
+                <div class="match-detail-list">${formatModalCardList(stats.awayYellowCards)}</div>
                 <div class="match-detail-stat-label">Red Cards</div>
-                <div class="match-detail-list">${formatModalStatList(stats.awayRedCards)}</div>
+                <div class="match-detail-list">${formatModalCardList(stats.awayRedCards)}</div>
             </div>
         </div>`;
 
