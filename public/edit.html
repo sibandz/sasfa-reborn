@@ -143,6 +143,7 @@
         }
         @media (max-width: 720px) {
             .form-row { grid-template-columns: 1fr; }
+            .page-card { padding: 16px; }
             label { font-size: 0.68rem; }
             input, select { font-size: 0.72rem; }
             button { font-size: 0.7rem; }
@@ -152,12 +153,30 @@
             .note-box { font-size: 0.68rem; }
             .small-copy { font-size: 0.64rem; }
             .stats-grid { grid-template-columns: 1fr; }
+            .stats-grid { gap: 12px; margin-bottom: 14px; }
+            .stats-card { padding: 12px; }
             .event-row {
                 grid-template-columns: 1fr;
+            }
+            .event-row button {
+                width: 100%;
+            }
+            .event-chip {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .save-control {
+                width: 100%;
+                justify-content: space-between;
             }
             .save-value {
                 min-width: 34px;
             }
+            .form-footer {
+                gap: 10px;
+            }
+            .form-footer button { width: 100%; }
+            .status-pill { width: 100%; }
         }
         label {
             display: block;
@@ -760,6 +779,7 @@
             </div>
             <div class="form-footer">
                 <button id="saveNationalButton" type="button">Save national fixture</button>
+                <button id="printNationalButton" type="button" style="background: var(--white); border-color: var(--white); color: var(--ink);">Print National Sheet</button>
                 <div class="status-pill" id="nationalSaveStatus">Not saved</div>
             </div>
             <p class="hint">Use this section to manage the ultimate National Finals knockout stages taking place in August.</p>
@@ -1206,6 +1226,7 @@
     const nationalScore1 = document.getElementById('nationalScore1');
     const nationalScore2 = document.getElementById('nationalScore2');
     const saveNationalButton = document.getElementById('saveNationalButton');
+    const printNationalButton = document.getElementById('printNationalButton');
     const addNationalButton = document.getElementById('addNationalButton');
     const deleteNationalButton = document.getElementById('deleteNationalButton');
     const nationalSaveStatus = document.getElementById('nationalSaveStatus');
@@ -1314,16 +1335,55 @@
         });
     }
 
-    function getActiveMatch() {
+    function getMatchByScope(scope = 'regional') {
+        if (scope === 'national') {
+            const nationalData = tournamentData['National Finals'];
+            if (!nationalData || !Array.isArray(nationalData.matches)) return null;
+            return nationalData.matches[activeNationalIndex] || null;
+        }
         const regionData = tournamentData[activeRegion];
         if (!regionData || !Array.isArray(regionData.matches)) return null;
         return regionData.matches[activeMatchIndex] || null;
     }
 
-    function getActiveMatchStats() {
-        const match = getActiveMatch();
+    function getMatchStatsByScope(scope = 'regional') {
+        const match = getMatchByScope(scope);
         if (!match) return { ...DEFAULT_MATCH_STATS };
         return ensureMatchStats(match);
+    }
+
+    function getScopedContainerIds(scope, key) {
+        if (scope === 'national') {
+            const nationalMap = {
+                homeScorers: 'nationalHomeScorersList',
+                awayScorers: 'nationalAwayScorersList',
+                homeAssists: 'nationalHomeAssistsList',
+                awayAssists: 'nationalAwayAssistsList',
+                homeYellowCards: 'nationalHomeYellowList',
+                awayYellowCards: 'nationalAwayYellowList',
+                homeRedCards: 'nationalHomeRedList',
+                awayRedCards: 'nationalAwayRedList'
+            };
+            return nationalMap[key];
+        }
+        const regionalMap = {
+            homeScorers: 'homeScorersList',
+            awayScorers: 'awayScorersList',
+            homeAssists: 'homeAssistsList',
+            awayAssists: 'awayAssistsList',
+            homeYellowCards: 'homeYellowList',
+            awayYellowCards: 'awayYellowList',
+            homeRedCards: 'homeRedList',
+            awayRedCards: 'awayRedList'
+        };
+        return regionalMap[key];
+    }
+
+    function getScopedSaveValueId(scope, side) {
+        if (scope === 'national') {
+            return side === 'home' ? 'nationalHomeSaveValue' : 'nationalAwaySaveValue';
+        }
+        return side === 'home' ? 'homeSaveValue' : 'awaySaveValue';
     }
 
     function summarizeNumberEvents(list) {
@@ -1336,10 +1396,10 @@
             .sort((a, b) => a.number - b.number);
     }
 
-    function renderNumberEventList(containerId, key) {
+    function renderNumberEventList(containerId, key, scope = 'regional') {
         const el = document.getElementById(containerId);
         if (!el) return;
-        const stats = getActiveMatchStats();
+        const stats = getMatchStatsByScope(scope);
         const summary = summarizeNumberEvents(stats[key] || []);
         if (!summary.length) {
             el.innerHTML = '<div class="empty-event-note">No entries yet</div>';
@@ -1350,10 +1410,10 @@
         ).join('');
     }
 
-    function renderCardEventList(containerId, key) {
+    function renderCardEventList(containerId, key, scope = 'regional') {
         const el = document.getElementById(containerId);
         if (!el) return;
-        const stats = getActiveMatchStats();
+        const stats = getMatchStatsByScope(scope);
         const events = stats[key] || [];
         if (!events.length) {
             el.innerHTML = '<div class="empty-event-note">No cards recorded</div>';
@@ -1364,21 +1424,21 @@
         ).join('');
     }
 
-    function renderStatsEditorState() {
-        const stats = getActiveMatchStats();
-        const homeSaveValue = document.getElementById('homeSaveValue');
-        const awaySaveValue = document.getElementById('awaySaveValue');
+    function renderStatsEditorState(scope = 'regional') {
+        const stats = getMatchStatsByScope(scope);
+        const homeSaveValue = document.getElementById(getScopedSaveValueId(scope, 'home'));
+        const awaySaveValue = document.getElementById(getScopedSaveValueId(scope, 'away'));
         if (homeSaveValue) homeSaveValue.textContent = String(stats.homeSaves || 0);
         if (awaySaveValue) awaySaveValue.textContent = String(stats.awaySaves || 0);
 
-        renderNumberEventList('homeScorersList', 'homeScorers');
-        renderNumberEventList('awayScorersList', 'awayScorers');
-        renderNumberEventList('homeAssistsList', 'homeAssists');
-        renderNumberEventList('awayAssistsList', 'awayAssists');
-        renderCardEventList('homeYellowList', 'homeYellowCards');
-        renderCardEventList('awayYellowList', 'awayYellowCards');
-        renderCardEventList('homeRedList', 'homeRedCards');
-        renderCardEventList('awayRedList', 'awayRedCards');
+        renderNumberEventList(getScopedContainerIds(scope, 'homeScorers'), 'homeScorers', scope);
+        renderNumberEventList(getScopedContainerIds(scope, 'awayScorers'), 'awayScorers', scope);
+        renderNumberEventList(getScopedContainerIds(scope, 'homeAssists'), 'homeAssists', scope);
+        renderNumberEventList(getScopedContainerIds(scope, 'awayAssists'), 'awayAssists', scope);
+        renderCardEventList(getScopedContainerIds(scope, 'homeYellowCards'), 'homeYellowCards', scope);
+        renderCardEventList(getScopedContainerIds(scope, 'awayYellowCards'), 'awayYellowCards', scope);
+        renderCardEventList(getScopedContainerIds(scope, 'homeRedCards'), 'homeRedCards', scope);
+        renderCardEventList(getScopedContainerIds(scope, 'awayRedCards'), 'awayRedCards', scope);
     }
 
     function ensureMatchStats(match) {
@@ -1399,31 +1459,31 @@
         return safeStats;
     }
 
-    function addEventNumber(key, selectId) {
+    function addEventNumber(key, selectId, scope = 'regional') {
         const select = document.getElementById(selectId);
         const number = Number(select ? select.value : NaN);
         if (!Number.isInteger(number) || number < 1 || number > 99) return;
-        const stats = getActiveMatchStats();
+        const stats = getMatchStatsByScope(scope);
         stats[key].push(number);
-        renderStatsEditorState();
+        renderStatsEditorState(scope);
     }
 
-    function decrementEventNumber(key, number) {
-        const stats = getActiveMatchStats();
+    function decrementEventNumber(key, number, scope = 'regional') {
+        const stats = getMatchStatsByScope(scope);
         const idx = stats[key].findIndex(n => n === number);
         if (idx === -1) return;
         stats[key].splice(idx, 1);
-        renderStatsEditorState();
+        renderStatsEditorState(scope);
     }
 
-    function changeSaveCount(key, delta) {
-        const stats = getActiveMatchStats();
+    function changeSaveCount(key, delta, scope = 'regional') {
+        const stats = getMatchStatsByScope(scope);
         const next = Math.max(0, normalizeSaveCount(stats[key]) + Number(delta || 0));
         stats[key] = next;
-        renderStatsEditorState();
+        renderStatsEditorState(scope);
     }
 
-    function addCardEvent(key, numberSelectId, reasonSelectId) {
+    function addCardEvent(key, numberSelectId, reasonSelectId, scope = 'regional') {
         const numberSelect = document.getElementById(numberSelectId);
         const reasonSelect = document.getElementById(reasonSelectId);
         const number = Number(numberSelect ? numberSelect.value : NaN);
@@ -1438,17 +1498,17 @@
             return;
         }
 
-        const stats = getActiveMatchStats();
+        const stats = getMatchStatsByScope(scope);
         stats[key].push({ number, reason });
-        renderStatsEditorState();
+        renderStatsEditorState(scope);
     }
 
-    function removeCardEvent(key, index) {
-        const stats = getActiveMatchStats();
+    function removeCardEvent(key, index, scope = 'regional') {
+        const stats = getMatchStatsByScope(scope);
         if (!Array.isArray(stats[key])) return;
         if (index < 0 || index >= stats[key].length) return;
         stats[key].splice(index, 1);
-        renderStatsEditorState();
+        renderStatsEditorState(scope);
     }
 
     window.addEventNumber = addEventNumber;
@@ -1691,18 +1751,18 @@
         editScore2.value = match.s2 != null ? match.s2 : '';
         editTeam1.value = match.t1 || '';
         editTeam2.value = match.t2 || '';
-        renderStatsEditorState();
+        renderStatsEditorState('regional');
         setSaveStatus('Loaded current match details.');
     }
 
-    function handlePrintMatchSheet() {
-        const regionData = tournamentData[activeRegion];
-        if (!regionData || !regionData.matches || !regionData.matches[activeMatchIndex]) {
+    function handlePrintMatchSheet(scope = 'regional') {
+        const regionLabel = scope === 'national' ? 'National Finals' : activeRegion;
+        const match = getMatchByScope(scope);
+        if (!match) {
             setSaveStatus('No match selected for printing.', false);
             return;
         }
 
-        const match = regionData.matches[activeMatchIndex];
         const stats = ensureMatchStats(match);
         const score1 = match.s1 != null ? match.s1 : '-';
         const score2 = match.s2 != null ? match.s2 : '-';
@@ -1717,7 +1777,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Result Sheet - ${escapeHtml(activeRegion)}</title>
+    <title>Result Sheet - ${escapeHtml(regionLabel)}</title>
     <style>
         * { box-sizing: border-box; }
         body { font-family: "Segoe UI", Arial, sans-serif; margin: 0; color: #111; background: #f5f6fa; }
@@ -1766,6 +1826,7 @@
             </div>
             <div class="meta-strip">
                 <div class="meta-box"><div class="meta-label">Region</div><div class="meta-value">${escapeHtml(activeRegion)}</div></div>
+                <div class="meta-box"><div class="meta-label">Region</div><div class="meta-value">${escapeHtml(regionLabel)}</div></div>
                 <div class="meta-box"><div class="meta-label">Date</div><div class="meta-value">${escapeHtml(match.d || 'TBD')}</div></div>
                 <div class="meta-box"><div class="meta-label">Kickoff</div><div class="meta-value">${escapeHtml(match.t || 'TBD')}</div></div>
                 <div class="meta-box"><div class="meta-label">Status</div><div class="meta-value">${escapeHtml(match.st || 'UPCOMING')}</div></div>
@@ -1815,6 +1876,10 @@
         opened.document.write(printHtml);
         opened.document.close();
         setSaveStatus('Result sheet opened. Use Print Sheet in the new tab.');
+    }
+
+    function handleNationalPrintSheet() {
+        handlePrintMatchSheet('national');
     }
 
     function populatePlayoffOptions() {
@@ -2080,6 +2145,8 @@
         const nationalData = tournamentData["National Finals"];
         const fixture = (nationalData.matches || [])[activeNationalIndex];
         if (fixture) {
+            ensureMatchStats(fixture);
+            initializeStatsEditorControls();
             nationalStatus.value = fixture.st || 'UPCOMING';
             nationalDate.value = fixture.d || '';
             nationalTime.value = fixture.t || '';
@@ -2105,6 +2172,7 @@
             nationalScore2.value = fixture.s2 != null ? fixture.s2 : '';
             document.getElementById('nationalPenalties1').value = fixture.ps1 != null ? fixture.ps1 : '';
             document.getElementById('nationalPenalties2').value = fixture.ps2 != null ? fixture.ps2 : '';
+            renderStatsEditorState('national');
             setNationalStatus('Loaded current National fixture.');
         } else {
             nationalStatus.value = 'UPCOMING';
@@ -2116,6 +2184,7 @@
             nationalScore2.value = '';
             document.getElementById('nationalPenalties1').value = '';
             document.getElementById('nationalPenalties2').value = '';
+            renderStatsEditorState('national');
             setNationalStatus('No National fixture selected.', false);
         }
     }
@@ -2141,6 +2210,7 @@
                 nationalData.matches.push(fixture);
                 activeNationalIndex = nationalData.matches.length - 1;
             }
+            ensureMatchStats(fixture);
             fixture.st = nationalStatus.value;
             fixture.d = nationalDate.value.trim();
             fixture.t = nationalTime.value.trim();
@@ -2156,6 +2226,7 @@
 
             await saveData();
             populateNationalOptions();
+            renderStatsEditorState('national');
             setNationalStatus('National fixture saved successfully. Refresh public page.');
         } catch (error) {
             setNationalStatus('Error saving National fixture.', false);
@@ -2330,6 +2401,7 @@
     playoffSelect.addEventListener('change', changePlayoff);
     nationalSelect.addEventListener('change', changeNational);
     saveNationalButton.addEventListener('click', handleNationalSave);
+    printNationalButton.addEventListener('click', handleNationalPrintSheet);
     addNationalButton.addEventListener('click', handleNationalAdd);
     deleteNationalButton.addEventListener('click', handleNationalDelete);
     (async () => {
