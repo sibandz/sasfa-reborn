@@ -479,6 +479,45 @@
             border-color: var(--lime);
         }
 
+        .finals-filter-row {
+            background: var(--card-bg-solid);
+            padding: 10px 20px 16px;
+            border-bottom: 1px solid var(--border);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .finals-filter-label {
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .finals-filter-select {
+            min-width: 220px;
+            max-width: min(92vw, 320px);
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            background: rgba(8, 12, 20, 0.96);
+            color: var(--text-main);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: none;
+            outline: none;
+        }
+
+        .finals-filter-select:focus {
+            border-color: var(--lime);
+            box-shadow: 0 0 0 1px rgba(198,255,51,0.24);
+        }
+
         .filter-btn {
             background: transparent;
             border: 2px solid var(--border);
@@ -1440,6 +1479,16 @@
             .watch-live-btn svg {
                 width: 12px;
                 height: 12px;
+            }
+
+            .finals-filter-row {
+                padding: 10px 16px 14px;
+                align-items: stretch;
+            }
+
+            .finals-filter-select {
+                min-width: 0;
+                width: min(100%, 320px);
             }
 
             .live-pulse-dot {
