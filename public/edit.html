@@ -26,6 +26,7 @@
             background: var(--bg);
             background-image: repeating-linear-gradient(115deg, rgba(125, 57, 235, 0.08) 0px, rgba(198, 255, 51, 0.06) 2px, transparent 2px, transparent 64px);
             color: var(--text-main);
+            overflow-x: hidden;
         }
         h1, .card-title {
             font-family: 'Anton', "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
@@ -47,6 +48,32 @@
         @media (max-width: 768px) {
             header {
                 padding: 14px 16px;
+            }
+            .header-top {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .logo-container {
+                width: 100%;
+                justify-content: space-between;
+                gap: 10px;
+            }
+            .header-top > div:last-child {
+                width: 100%;
+            }
+            .header-top .watch-live-btn {
+                width: 100%;
+                justify-content: center;
+                margin-top: 8px;
+            }
+            .header-top .watch-live-btn + .watch-live-btn,
+            .header-top .watch-live-btn + .theme-btn,
+            .header-top .theme-btn + .theme-btn {
+                margin-top: 8px;
+            }
+            .header-top .watch-live-btn,
+            .header-top .theme-btn {
+                min-height: 42px;
             }
         }
         .header-top {
@@ -143,40 +170,69 @@
         }
         @media (max-width: 720px) {
             .form-row { grid-template-columns: 1fr; }
-            .page-card { padding: 16px; }
-            label { font-size: 0.68rem; }
-            input, select { font-size: 0.72rem; }
-            button { font-size: 0.7rem; }
-            .hint { font-size: 0.68rem; }
-            .status-pill { font-size: 0.62rem; }
-            .card-title { font-size: 0.9rem; }
-            .note-box { font-size: 0.68rem; }
-            .small-copy { font-size: 0.64rem; }
+            .page-card { padding: 14px; }
+            .card-title { font-size: 0.88rem; margin-bottom: 16px; }
+            label { font-size: 0.64rem; }
+            input, select { font-size: 0.78rem; padding: 14px 12px; min-height: 46px; }
+            button { font-size: 0.72rem; padding: 14px 14px; min-height: 46px; }
+            .hint { font-size: 0.66rem; line-height: 1.5; }
+            .status-pill { font-size: 0.6rem; padding: 8px 12px; }
+            .note-box { font-size: 0.66rem; }
+            .small-copy { font-size: 0.62rem; }
             .stats-grid { grid-template-columns: 1fr; }
-            .stats-grid { gap: 12px; margin-bottom: 14px; }
-            .stats-card { padding: 12px; }
+            .stats-grid { gap: 14px; margin-bottom: 16px; }
+            .stats-card { padding: 14px; }
+            .stats-card h3 { font-size: 0.76rem; margin-bottom: 12px; }
+            .stats-card label { margin-bottom: 14px; }
             .event-row {
                 grid-template-columns: 1fr;
+                gap: 10px;
+                align-items: stretch;
             }
             .event-row button {
                 width: 100%;
+                min-height: 46px;
             }
             .event-chip {
                 width: 100%;
                 justify-content: space-between;
+                padding: 8px 10px;
+                font-size: 0.74rem;
             }
             .save-control {
                 width: 100%;
                 justify-content: space-between;
+                gap: 10px;
             }
             .save-value {
-                min-width: 34px;
+                min-width: 52px;
+                padding: 10px 12px;
+                font-size: 0.82rem;
             }
             .form-footer {
                 gap: 10px;
             }
-            .form-footer button { width: 100%; }
+            .form-footer button { width: 100%; min-height: 48px; }
             .status-pill { width: 100%; }
+            .form-row > label,
+            .stats-card > label {
+                margin-bottom: 14px;
+            }
+            .form-row > div[style*="display: flex"] {
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: 10px !important;
+            }
+            .form-row > div[style*="display: flex"] button {
+                width: 100%;
+            }
+            .form-row > div[style*="display: flex"] .watch-live-btn {
+                width: 100%;
+            }
+            .page-card[style*="margin-top"] {
+                margin-top: 18px !important;
+            }
         }
         label {
             display: block;
@@ -306,6 +362,10 @@
         .save-control button {
             min-width: 38px;
             padding: 8px 10px;
+        }
+        .stats-card select,
+        .stats-card input {
+            width: 100%;
         }
         .save-value {
             min-width: 40px;
