@@ -1,18 +1,7 @@
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
-const RAW_BIN_ID = process.env.JSONBIN_BIN_ID || process.env.JSONBIN_BIN || process.env.JSONBIN_ID || '';
-const API_KEY = process.env.JSONBIN_API_KEY || process.env.JSONBIN_MASTER_KEY || process.env.JSONBIN_KEY || '';
-
-function normalizeBinId(raw) {
-    const value = String(raw || '').trim();
-    if (!value) return '';
-    const urlMatch = value.match(/\/b\/([a-zA-Z0-9]+)/i);
-    if (urlMatch) return urlMatch[1];
-    return value;
-}
-
-const BIN_ID = normalizeBinId(RAW_BIN_ID);
+const { readTournamentData, writeTournamentData } = require('./api/_firebase');
 
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
@@ -29,19 +18,8 @@ app.use(express.static(__dirname));
 
 app.get('/api/get-data', async (req, res) => {
     try {
-        if (!BIN_ID || !API_KEY) {
-            return res.status(500).json({ message: 'Server cloud credentials are not configured (JSONBIN_BIN_ID / JSONBIN_API_KEY).' });
-        }
-
-        const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-            headers: { 'X-Master-Key': API_KEY }
-        });
-        if (!response.ok) {
-            const errorBody = await response.text();
-            throw new Error(`Failed to fetch from JSONBin: ${response.status} ${response.statusText} - ${errorBody}`);
-        }
-        const data = await response.json();
-        return res.json(data.record || {});
+        const data = await readTournamentData();
+        return res.json(data || {});
     } catch (error) {
         console.error('Error retrieving data:', error);
         res.status(500).json({ message: error.message || 'Error retrieving data.' });
@@ -56,23 +34,8 @@ app.post('/api/save-data', async (req, res) => {
             return res.status(400).json({ message: 'Invalid data provided.' });
         }
 
-        if (!BIN_ID || !API_KEY) {
-            return res.status(500).json({ message: 'Server cloud credentials are not configured (JSONBIN_BIN_ID / JSONBIN_API_KEY).' });
-        }
-
-        const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Master-Key': API_KEY,
-            },
-            body: JSON.stringify(newData),
-        });
-        if (!response.ok) {
-            const errorBody = await response.text();
-            throw new Error(`Failed to save to JSONBin: ${response.status} ${response.statusText} - ${errorBody}`);
-        }
-        return res.status(200).json({ message: 'Data saved successfully to cloud.' });
+        await writeTournamentData(newData);
+        return res.status(200).json({ message: 'Data saved successfully to Firebase.' });
     } catch (error) {
         console.error('Error saving data:', error);
         res.status(500).json({ message: error.message || 'Error saving data.' });

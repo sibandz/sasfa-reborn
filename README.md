@@ -27,16 +27,22 @@ npm start
 
 Then open `http://localhost:3000/public/index.html`.
 
-Without cloud credentials configured, data is read from and written to
-`tournament-data.json` on disk (created automatically on first save).
+The app now uses Firebase Realtime Database for persistence in both
+local and deployed environments.
 
-## Cloud data (JSONBin)
+## Cloud data (Firebase Realtime Database)
 
-To persist data across deployments instead of using local disk storage:
+To persist fixtures and results:
 
-1. Create a bin at [jsonbin.io](https://jsonbin.io)
-2. Copy `.env.example` to `.env` and fill in `JSONBIN_BIN_ID` and `JSONBIN_API_KEY`
-3. On Vercel, add the same two variables under Project Settings → Environment Variables
+1. Create a Firebase project and enable Realtime Database
+2. Create a service account key from Firebase Project Settings → Service Accounts
+3. Copy `.env.example` to `.env` and fill in:
+  - `FIREBASE_PROJECT_ID`
+  - `FIREBASE_CLIENT_EMAIL`
+  - `FIREBASE_PRIVATE_KEY`
+  - `FIREBASE_DATABASE_URL`
+  - `FIREBASE_DATA_PATH` (default `tournamentData`)
+4. On Vercel, add the same environment variables under Project Settings → Environment Variables
 
 ## Deploy
 
