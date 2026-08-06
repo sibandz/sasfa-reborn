@@ -1406,7 +1406,7 @@
             return;
         }
         el.innerHTML = summary.map(item =>
-            `<span class="event-chip">#${item.number} x${item.count} <button type="button" class="chip-remove" onclick="decrementEventNumber('${key}', ${item.number})">-1</button></span>`
+            `<span class="event-chip">#${item.number} x${item.count} <button type="button" class="chip-remove" aria-label="Remove one #${item.number} entry" onclick="decrementEventNumber('${key}', ${item.number}, '${scope}')">x</button></span>`
         ).join('');
     }
 
