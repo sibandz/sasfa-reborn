@@ -783,7 +783,7 @@
         .schedule-table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 860px;
+            min-width: 960px;
             background: #fbfcfd;
             border: 1px solid rgba(16, 24, 40, 0.08);
             border-radius: 16px;
@@ -824,6 +824,33 @@
         .schedule-table .ball-column { width: 78px; text-align: center; }
         .schedule-table .matchno-column { width: 110px; text-align: center; }
         .schedule-table .match-column { min-width: 340px; }
+        .schedule-table .score-column { width: 126px; text-align: center; }
+        .schedule-table .score-column .score-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 88px;
+            padding: 8px 10px;
+            border-radius: 999px;
+            background: #0f172a;
+            color: #ffffff;
+            font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Segoe UI Mono', monospace;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .schedule-table .score-column .score-pill.live {
+            background: var(--lime);
+            color: #111827;
+        }
+        .schedule-table .score-column .score-pill.final {
+            background: #111827;
+        }
+        .schedule-table .score-column .score-pill.upcoming {
+            background: rgba(15, 23, 42, 0.08);
+            color: #0f172a;
+        }
         .schedule-table .ball-cell {
             display: inline-flex;
             align-items: center;
@@ -1579,7 +1606,9 @@
             .schedule-table th:nth-child(6),
             .schedule-table td:nth-child(6),
             .schedule-table th:nth-child(7),
-            .schedule-table td:nth-child(7) {
+            .schedule-table td:nth-child(7),
+            .schedule-table th:nth-child(8),
+            .schedule-table td:nth-child(8) {
                 display: none;
             }
 
@@ -2780,6 +2809,7 @@ function renderDashboard() {
                             <th>Ball</th>
                             <th>Match No.</th>
                             <th>Match</th>
+                            <th>Score</th>
                             <th>Pool</th>
                             <th>Broadcaster</th>
                         </tr>
@@ -2825,6 +2855,7 @@ function renderDashboard() {
                                 <th>Ball</th>
                                 <th>Match No.</th>
                                 <th>Match</th>
+                                <th>Score</th>
                                 <th>Pool</th>
                                 <th>Broadcaster</th>
                             </tr>
@@ -3184,9 +3215,9 @@ function renderMatchRow(match) {
     const team2 = match.t2 || 'Team 2';
     const status = String(match.st || 'UPCOMING').toUpperCase();
     const showScoreline = (status === 'LIVE' || status === 'FINAL') && match.s1 != null && match.s2 != null;
-    const statusLabel = status === 'LIVE' ? 'LIVE' : 'FT';
-    const team1ScoreText = showScoreline ? `${statusLabel} ${match.s1}` : '';
-    const team2ScoreText = showScoreline ? `${statusLabel} ${match.s2}` : '';
+    const scoreLabel = status === 'LIVE' ? 'LIVE' : (status === 'FINAL' ? 'FT' : 'VS');
+    const scoreText = showScoreline ? `${match.s1} - ${match.s2}` : 'VS';
+    const scoreClass = status === 'LIVE' ? 'live' : (status === 'FINAL' ? 'final' : 'upcoming');
     const detailId = String(matchDetailCounter++);
     matchDetailRegistry.push({
         id: detailId,
@@ -3201,9 +3232,10 @@ function renderMatchRow(match) {
             <td class="ball-column"><div class="ball-cell"><img src="${ballImage}" alt="Match ball" class="ball-image" loading="eager" decoding="async" onerror="this.src='/images/ball-used.png'" /></div></td>
             <td class="matchno-column"><span class="matchno-value">${matchNumberLabel}</span></td>
             <td class="match-column">
-                <div class="team-line"><span class="team-line-main">${renderTeamLogoBadge(team1, 'badge')}<span class="team-name">${team1}</span></span>${showScoreline ? `<span class="team-scoreline">${team1ScoreText}</span>` : ''}</div>
-                <div class="team-line"><span class="team-line-main">${renderTeamLogoBadge(team2, 'badge')}<span class="team-name">${team2}</span></span>${showScoreline ? `<span class="team-scoreline">${team2ScoreText}</span>` : ''}</div>
+                <div class="team-line"><span class="team-line-main">${renderTeamLogoBadge(team1, 'badge')}<span class="team-name">${team1}</span></span></div>
+                <div class="team-line"><span class="team-line-main">${renderTeamLogoBadge(team2, 'badge')}<span class="team-name">${team2}</span></span></div>
             </td>
+            <td class="score-column"><span class="score-pill ${scoreClass}">${scoreLabel}${showScoreline ? ` ${scoreText}` : ''}</span></td>
             <td>${poolLabel}</td>
             <td>${broadcaster}</td>
         </tr>`;
