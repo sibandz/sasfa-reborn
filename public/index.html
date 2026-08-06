@@ -802,29 +802,25 @@
         .schedule-table .date-column,
         .schedule-table .datetime-column { width: 130px; text-align: center; }
         .schedule-table .ball-column { width: 78px; text-align: center; }
+        .schedule-table .matchno-column { width: 110px; text-align: center; }
         .schedule-table .match-column { min-width: 340px; }
         .schedule-table .ball-cell {
             display: inline-flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             width: 50px;
-            min-height: 66px;
+            height: 50px;
             flex-shrink: 0;
         }
         .schedule-table .ball-image {
             width: 42px;
             height: 42px;
-            border-radius: 50%;
             object-fit: contain;
-            background: #fff;
-            border: 1px solid rgba(15, 23, 42, 0.08);
             display: block;
         }
-        .schedule-table .ball-match-no {
-            margin-top: 6px;
+        .schedule-table .matchno-value {
             color: #0f172a;
-            font-size: 0.56rem;
+            font-size: 0.72rem;
             font-weight: 800;
             letter-spacing: 0.08em;
             text-transform: uppercase;
@@ -2572,6 +2568,7 @@ function renderDashboard() {
                             <th>Date</th>
                             <th>Time</th>
                             <th>Ball</th>
+                            <th>Match No.</th>
                             <th>Match</th>
                             <th>Pool</th>
                             <th>Broadcaster</th>
@@ -2611,6 +2608,7 @@ function renderDashboard() {
                                 <th>Date</th>
                                 <th>Time</th>
                                 <th>Ball</th>
+                                <th>Match No.</th>
                                 <th>Match</th>
                                 <th>Pool</th>
                                 <th>Broadcaster</th>
@@ -2817,10 +2815,10 @@ function renderMatch(match) {
 function renderMatchRow(match) {
     const matchDate = match.d || '--';
     const matchTime = match.t || '--:--';
-    const ballImage = match.ballImage || '/images/ball-used.png';
+    const ballImage = match.ballImage || '/images/broadcaster-ball.svg';
     const poolLabel = getFinalsPoolFromMatch(match) || match.pool || match.type || '-';
     const matchNumber = getMatchNumberFromType(match);
-    const matchNumberLabel = matchNumber != null ? `Match No. ${matchNumber}` : 'Match';
+    const matchNumberLabel = matchNumber != null ? `M${matchNumber}` : '-';
     const broadcasterUrl = 'https://live.supersportschools.com/category/606f65f91eea03755e56797c/sub-category/67ff624559d9be83280028c6/';
     const broadcasterLogo = match.broadcastLogo || '/images/ss schools.png';
     const broadcaster = `<a href="${broadcasterUrl}" target="_blank" rel="noopener noreferrer" class="broadcaster-link"><img src="${broadcasterLogo}" alt="Supersports Schools" class="broadcaster-logo" loading="lazy" decoding="async" data-fallback="/images/ss schools.png" onerror="if (this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; }" /><span class="broadcaster-label">Watch Live</span></a>`;
@@ -2835,7 +2833,8 @@ function renderMatchRow(match) {
         <tr>
             <td class="date-column">${matchDate}</td>
             <td class="datetime-column">${matchTime}</td>
-            <td class="ball-column"><div class="ball-cell"><img src="${ballImage}" alt="${matchNumberLabel}" class="ball-image" loading="lazy" decoding="async" onerror="this.src='/images/ball-used.png'" /><span class="ball-match-no">${matchNumberLabel}</span></div></td>
+            <td class="ball-column"><div class="ball-cell"><img src="${ballImage}" alt="Match ball" class="ball-image" loading="eager" decoding="async" onerror="this.src='/images/ball-used.png'" /></div></td>
+            <td class="matchno-column"><span class="matchno-value">${matchNumberLabel}</span></td>
             <td class="match-column">
                 <div class="team-line"><span class="team-line-main">${renderTeamLogoBadge(team1, 'badge')}<span class="team-name">${team1}</span></span>${showScoreline ? `<span class="team-scoreline">${team1ScoreText}</span>` : ''}</div>
                 <div class="team-line"><span class="team-line-main">${renderTeamLogoBadge(team2, 'badge')}<span class="team-name">${team2}</span></span>${showScoreline ? `<span class="team-scoreline">${team2ScoreText}</span>` : ''}</div>
