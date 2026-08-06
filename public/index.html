@@ -634,6 +634,8 @@
             border-radius: 0;
             overflow: hidden;
             border: 1px solid var(--frosted-border);
+            content-visibility: auto;
+            contain-intrinsic-size: 280px;
         }
 
         .league-header {
@@ -703,6 +705,8 @@
         .schedule-table-wrapper {
             overflow-x: auto;
             margin-top: 14px;
+            content-visibility: auto;
+            contain-intrinsic-size: 360px;
         }
         .schedule-table {
             width: 100%;
@@ -753,14 +757,19 @@
             font-weight: 800;
             flex-shrink: 0;
         }
-        .schedule-table .ball-image {
-            width: 42px;
-            height: 42px;
+        .schedule-table .ball-mark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
-            object-fit: contain;
-            background: #fff;
-            flex-shrink: 0;
-            display: block;
+            background: radial-gradient(circle at 30% 30%, #ffffff 0%, #f4f6f8 55%, #dce3ea 100%);
+            border: 1px solid rgba(15, 23, 42, 0.1);
+            color: #0f172a;
+            font-size: 0.62rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
         }
         .schedule-table .match-vs {
             display: inline-block;
@@ -852,8 +861,9 @@
             overflow: hidden;
             color: #F7F4E6;
             box-shadow: 0 16px 40px rgba(0,0,0,0.18);
-            backdrop-filter: blur(8px);
             font-family: "SF Pro Text", "SF Pro Display", "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            content-visibility: auto;
+            contain-intrinsic-size: 320px;
         }
         .standings-title {
             font-family: 'Anton', "SF Pro Display", "SF Pro Text", "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
@@ -1149,6 +1159,8 @@
             cursor: pointer;
             transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
             box-shadow: 0 18px 44px rgba(0,0,0,0.06);
+            content-visibility: auto;
+            contain-intrinsic-size: 220px;
         }
         .tournament-card:hover {
             border-left-color: var(--violet);
@@ -1243,6 +1255,8 @@
             border-top: 4px solid var(--lime);
             border-radius: 0;
             padding: 26px;
+            content-visibility: auto;
+            contain-intrinsic-size: 180px;
         }
         .about-card h3 {
             color: var(--text-main);
@@ -2014,6 +2028,28 @@ const TEAM_LOGO_MAP = {
     'Durban High School': '/images/schools/durban-high-school.png'
 };
 
+const STATIC_IMAGE_ASSETS = [
+    '/images/sasfa_logo-removebg-preview.png',
+    '/images/ball-used.png',
+    '/images/ss schools.png'
+];
+let imagePreloadStarted = false;
+
+function primeImageCache(urls) {
+    const uniqueUrls = [...new Set((urls || []).filter(Boolean))];
+    uniqueUrls.forEach(url => {
+        const img = new Image();
+        img.decoding = 'async';
+        img.src = url;
+    });
+}
+
+function startImagePreload() {
+    if (imagePreloadStarted) return;
+    imagePreloadStarted = true;
+    primeImageCache([...STATIC_IMAGE_ASSETS, ...Object.values(TEAM_LOGO_MAP)]);
+}
+
 // --- DOM ELEMENTS ---
 const regionFilters = document.getElementById('regionFilters');
 const phaseTabs = document.getElementById('phaseTabs');
@@ -2712,11 +2748,10 @@ function renderMatch(match) {
 function renderMatchRow(match) {
     const matchDate = match.d || '--';
     const matchTime = match.t || '--:--';
-    const ballImage = match.ballImage || '/images/ball-used.png';
     const referee = match.ref || match.type || '-';
     const broadcasterUrl = 'https://live.supersportschools.com/category/606f65f91eea03755e56797c/sub-category/67ff624559d9be83280028c6/';
     const broadcasterLogo = match.broadcastLogo || '/images/ss schools.png';
-    const broadcaster = `<a href="${broadcasterUrl}" target="_blank" rel="noopener noreferrer" class="broadcaster-link"><img src="${broadcasterLogo}" alt="Supersports Schools" class="broadcaster-logo" data-fallback="/images/ss schools.png" onerror="if (this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; }" /><span class="broadcaster-label">Watch Live</span></a>`;
+    const broadcaster = `<a href="${broadcasterUrl}" target="_blank" rel="noopener noreferrer" class="broadcaster-link"><img src="${broadcasterLogo}" alt="Supersports Schools" class="broadcaster-logo" loading="lazy" decoding="async" data-fallback="/images/ss schools.png" onerror="if (this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; }" /><span class="broadcaster-label">Watch Live</span></a>`;
     const team1 = match.t1 || 'Team 1';
     const team2 = match.t2 || 'Team 2';
     const status = String(match.st || 'UPCOMING').toUpperCase();
@@ -2728,7 +2763,7 @@ function renderMatchRow(match) {
         <tr>
             <td class="date-column">${matchDate}</td>
             <td class="datetime-column">${matchTime}</td>
-            <td class="ball-column"><div class="ball-cell"><img src="${ballImage}" alt="Match ball" class="ball-image" loading="lazy" onload="this.style.opacity='1'" onerror="this.src='/images/ball-used.png'; this.style.opacity='1'" style="opacity:0.8;" /></div></td>
+            <td class="ball-column"><div class="ball-cell"><span class="ball-mark">Match</span></div></td>
             <td class="match-column">
                 <div class="team-line"><span class="team-line-main">${renderTeamLogoBadge(team1, 'badge')}<span class="team-name">${team1}</span></span>${showScoreline ? `<span class="team-scoreline">${team1ScoreText}</span>` : ''}</div>
                 <div class="team-line"><span class="team-line-main">${renderTeamLogoBadge(team2, 'badge')}<span class="team-name">${team2}</span></span>${showScoreline ? `<span class="team-scoreline">${team2ScoreText}</span>` : ''}</div>
@@ -2919,8 +2954,9 @@ function renderTeamLogoBadge(teamName, variant = 'badge') {
     const nameLabel = String(teamName || 'Team').trim();
     const initial = nameLabel.charAt(0).toUpperCase() || '?';
     const logoUrl = getTeamLogoUrl(nameLabel);
+    const shouldEagerLoad = variant === 'badge' || variant === 'inline';
     const imageHtml = logoUrl
-        ? `<img src="${logoUrl}" alt="${nameLabel} logo" class="team-logo-image" loading="lazy" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'" />`
+        ? `<img src="${logoUrl}" alt="${nameLabel} logo" class="team-logo-image" loading="${shouldEagerLoad ? 'eager' : 'lazy'}" decoding="async" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'" />`
         : '';
 
     if (variant === 'crest') {
@@ -3218,6 +3254,7 @@ if (finalsTeamSelect) {
 // --- INITIALIZATION ---
 // 1. Fetch tournament data from server on page load.
 function initializeApp() {
+    startImagePreload();
     applyRouting(); 
     loadData(false); // Fetch silently in the background
     setInterval(() => loadData(false), 60000); // And continue to silently check every 60 seconds.
