@@ -3,7 +3,16 @@ const { getDatabase } = require('firebase-admin/database');
 
 function normalizePrivateKey(value) {
     if (!value) return '';
-    return String(value).replace(/\\n/g, '\n').trim();
+    let key = String(value).trim();
+
+    // Handle keys pasted as a JSON string literal with surrounding quotes.
+    if ((key.startsWith('"') && key.endsWith('"')) || (key.startsWith("'") && key.endsWith("'"))) {
+        key = key.slice(1, -1);
+    }
+
+    // Support both escaped and real line endings from env providers.
+    key = key.replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n').replace(/\r\n/g, '\n');
+    return key.trim();
 }
 
 function getFirebaseConfig() {
