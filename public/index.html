@@ -505,7 +505,7 @@
             padding: 10px 12px;
             border: 1px solid var(--border);
             background: rgba(8, 12, 20, 0.96);
-            color: var(--text-main);
+            color: #ffffff;
             font-size: 0.78rem;
             font-weight: 700;
             letter-spacing: 0.03em;
@@ -513,9 +513,29 @@
             outline: none;
         }
 
+        .finals-filter-select option {
+            background: #0f172a;
+            color: #ffffff;
+        }
+
         .finals-filter-select:focus {
             border-color: var(--lime);
             box-shadow: 0 0 0 1px rgba(198,255,51,0.24);
+        }
+
+        body[data-theme="light"] .finals-filter-label {
+            color: rgba(17, 18, 20, 0.72);
+        }
+
+        body[data-theme="light"] .finals-filter-select {
+            background: #ffffff;
+            color: #111214;
+            border-color: rgba(17, 18, 20, 0.14);
+        }
+
+        body[data-theme="light"] .finals-filter-select option {
+            background: #ffffff;
+            color: #111214;
         }
 
         .filter-btn {
