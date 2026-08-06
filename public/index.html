@@ -2852,6 +2852,12 @@ function getMatchNumberFromType(match) {
     return found ? Number(found[1]) : null;
 }
 
+function getFinalsPoolFromMatch(match) {
+    const label = String(match?.type || '');
+    const poolMatch = label.match(/pool\s+([a-d])/i);
+    return poolMatch ? `Pool ${poolMatch[1].toUpperCase()}` : null;
+}
+
 function toOrdinalLabel(value) {
     if (value === 1) return '1st';
     if (value === 2) return '2nd';
