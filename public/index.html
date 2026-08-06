@@ -1696,7 +1696,7 @@
     <div class="logo-area" onclick="selectTournament(null)" style="cursor: pointer;" title="Back to Tournaments">
         <img src="/images/sasfa_logo-removebg-preview.png" alt="SASFA">
         <span>SASFA</span>
-        <img id="halalaHeaderMark" class="halala-header-mark" src="/images/curro%20halala.png" alt="Halala Cup mark" loading="eager" decoding="async" />
+        <img id="halalaHeaderMark" class="halala-header-mark" src="/images/curro-halala.png" alt="Halala Cup mark" loading="eager" decoding="async" onerror="if (!this.dataset.step) { this.dataset.step='1'; this.src='../images/curro-halala.png'; } else if (this.dataset.step==='1') { this.dataset.step='2'; this.src='images/curro-halala.png'; } else { this.style.display='none'; }" />
     </div>
     <div class="header-actions">
         <a href="edit.html" class="watch-live-btn manager-btn" aria-label="Manager Login">
@@ -2273,7 +2273,7 @@ const STATIC_IMAGE_ASSETS = [
     '/images/sasfa_logo-removebg-preview.png',
     '/images/ball-used.png',
     '/images/ss schools.png',
-    '/images/curro%20halala.png'
+    '/images/curro-halala.png'
 ];
 let imagePreloadStarted = false;
 
@@ -3009,13 +3009,15 @@ function normalizeCardEvents(value) {
         if (item && typeof item === 'object' && !Array.isArray(item)) {
             const num = Number(item.number);
             if (Number.isInteger(num) && num >= 1 && num <= 99) {
-                normalized.push({ number: num, reason: String(item.reason || '').trim() || 'decent' });
+                const rawReason = String(item.reason || '').trim().toLowerCase();
+                const finalReason = rawReason === 'decent' ? 'descent' : (rawReason || 'descent');
+                normalized.push({ number: num, reason: finalReason });
             }
             return;
         }
         const num = Number(item);
         if (Number.isInteger(num) && num >= 1 && num <= 99) {
-            normalized.push({ number: num, reason: 'decent' });
+            normalized.push({ number: num, reason: 'descent' });
         }
     });
     return normalized;
