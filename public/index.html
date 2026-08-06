@@ -799,6 +799,13 @@
         }
         .schedule-table tbody tr:nth-child(even) { background: rgba(15, 23, 42, 0.02); }
         .schedule-table tbody tr:hover { background: rgba(15, 23, 42, 0.04); }
+        .schedule-table tbody tr.match-row-clickable {
+            cursor: pointer;
+        }
+        .schedule-table tbody tr.match-row-clickable:focus-visible {
+            outline: 2px solid var(--lime);
+            outline-offset: -2px;
+        }
         .schedule-table .date-column,
         .schedule-table .datetime-column { width: 130px; text-align: center; }
         .schedule-table .ball-column { width: 78px; text-align: center; }
@@ -905,6 +912,111 @@
             color: #111827;
         }
         .schedule-table .smaller-note { color: rgba(15, 23, 42, 0.6); font-size: 0.78rem; letter-spacing: 0.06em; }
+
+        .match-detail-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.68);
+            z-index: 130;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+        }
+        .match-detail-modal.open {
+            display: flex;
+        }
+        .match-detail-dialog {
+            width: min(860px, 100%);
+            max-height: 92vh;
+            overflow: auto;
+            background: #ffffff;
+            color: #111827;
+            border-radius: 14px;
+            border: 1px solid rgba(15, 23, 42, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+        }
+        .match-detail-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 18px;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.1);
+        }
+        .match-detail-title {
+            font-size: 1rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+        .match-detail-close {
+            border: 1px solid rgba(15, 23, 42, 0.2);
+            background: #fff;
+            color: #111827;
+            padding: 8px 12px;
+            font-size: 0.72rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+        .match-detail-body {
+            padding: 18px;
+        }
+        .match-detail-score {
+            background: #f3f4f6;
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            padding: 12px;
+            text-align: center;
+            font-size: 1.05rem;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+        .match-detail-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+            margin-bottom: 14px;
+            font-size: 0.78rem;
+        }
+        .match-detail-meta strong {
+            display: block;
+            font-size: 0.66rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #4b5563;
+            margin-bottom: 2px;
+        }
+        .match-detail-stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .match-detail-team-card {
+            border: 1px solid rgba(15, 23, 42, 0.1);
+            padding: 12px;
+            background: #fcfcfd;
+        }
+        .match-detail-team-card h3 {
+            font-size: 0.88rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 8px;
+        }
+        .match-detail-stat-label {
+            margin-top: 10px;
+            font-size: 0.66rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #4b5563;
+            font-weight: 700;
+        }
+        .match-detail-list {
+            margin-top: 4px;
+            font-size: 0.78rem;
+            color: #111827;
+            line-height: 1.35;
+        }
 
         /* --- STANDINGS --- */
         .standings-card {
@@ -1053,6 +1165,13 @@
 
         .match-item:hover {
             background: rgba(255,255,255,0.04);
+        }
+        .match-item.clickable {
+            cursor: pointer;
+        }
+        .match-item.clickable:focus-visible {
+            outline: 2px solid var(--lime);
+            outline-offset: -2px;
         }
 
         .match-time {
@@ -1426,8 +1545,8 @@
 
             .schedule-table .date-column,
             .schedule-table .datetime-column {
-                width: 72px;
-                min-width: 72px;
+                width: 64px;
+                min-width: 64px;
                 text-align: left;
             }
 
@@ -1439,16 +1558,18 @@
             .schedule-table .ball-column,
             .schedule-table th:nth-child(3),
             .schedule-table td:nth-child(3),
-            .schedule-table th:nth-child(5),
-            .schedule-table td:nth-child(5),
             .schedule-table th:nth-child(6),
-            .schedule-table td:nth-child(6) {
+            .schedule-table td:nth-child(6),
+            .schedule-table th:nth-child(7),
+            .schedule-table td:nth-child(7) {
                 display: none;
             }
 
             .schedule-table .team-name {
-                font-size: 0.7rem;
-                line-height: 1.2;
+                font-size: 0.64rem;
+                line-height: 1.15;
+                letter-spacing: 0.01em;
+                white-space: normal;
             }
 
             .schedule-table .team-badge {
@@ -1457,8 +1578,34 @@
             }
 
             .schedule-table .team-scoreline {
-                font-size: 0.58rem;
-                padding: 2px 6px;
+                font-size: 0.52rem;
+                padding: 2px 5px;
+            }
+
+            .schedule-table .matchno-column {
+                width: 58px;
+                min-width: 58px;
+            }
+
+            .schedule-table .matchno-value {
+                font-size: 0.56rem;
+            }
+
+            .schedule-table .team-line {
+                gap: 6px;
+                margin-bottom: 4px;
+            }
+
+            .schedule-table .team-line-main {
+                gap: 6px;
+            }
+
+            .match-detail-body {
+                padding: 14px;
+            }
+
+            .match-detail-stats-grid {
+                grid-template-columns: 1fr;
             }
 
             .standings-card {
@@ -1660,6 +1807,16 @@
         </div>
     </div>
 </div>
+</div>
+
+<div id="matchDetailModal" class="match-detail-modal" aria-hidden="true">
+    <div class="match-detail-dialog" role="dialog" aria-modal="true" aria-labelledby="matchDetailTitle">
+        <div class="match-detail-head">
+            <div id="matchDetailTitle" class="match-detail-title">Match Details</div>
+            <button id="matchDetailClose" class="match-detail-close" type="button">Close</button>
+        </div>
+        <div id="matchDetailBody" class="match-detail-body"></div>
+    </div>
 </div>
 
 <footer>
@@ -2122,6 +2279,12 @@ const finalsStageTabs = document.getElementById('finalsStageTabs');
 const finalsGroupTabs = document.getElementById('finalsGroupTabs');
 const finalsFilterRow = document.getElementById('finalsFilterRow');
 const finalsTeamSelect = document.getElementById('finalsTeamSelect');
+const matchDetailModal = document.getElementById('matchDetailModal');
+const matchDetailBody = document.getElementById('matchDetailBody');
+const matchDetailClose = document.getElementById('matchDetailClose');
+
+let matchDetailRegistry = [];
+let matchDetailCounter = 0;
 
 // --- THEME LOGIC ---
 document.getElementById('theme-toggle').addEventListener('click', () => {
@@ -2298,6 +2461,9 @@ function loadData(showLoading = false) {
 
 // --- MAIN RENDER LOGIC ---
 function updateView() {
+    matchDetailRegistry = [];
+    matchDetailCounter = 0;
+
     const allRegions = Object.keys(tournamentData);
     const hasNationalFinals = allRegions.includes('National Finals');
 
@@ -2769,8 +2935,100 @@ function renderDashboard() {
 }
 
 // --- HELPER FUNCTIONS ---
+function normalizeStatNumbers(value) {
+    if (Array.isArray(value)) {
+        return value
+            .map(item => Number(item))
+            .filter(num => Number.isInteger(num) && num >= 1 && num <= 99);
+    }
+    if (typeof value === 'number') {
+        return Number.isInteger(value) && value >= 1 && value <= 99 ? [value] : [];
+    }
+    if (typeof value === 'string') {
+        const found = value.match(/\d+/g) || [];
+        return found
+            .map(item => Number(item))
+            .filter(num => Number.isInteger(num) && num >= 1 && num <= 99);
+    }
+    return [];
+}
+
+function formatModalStatList(value) {
+    const numbers = normalizeStatNumbers(value);
+    if (!numbers.length) return '<span style="color:#6b7280;">None recorded</span>';
+    return numbers.map(n => `#${n}`).join(', ');
+}
+
+function closeMatchDetailModal() {
+    if (!matchDetailModal) return;
+    matchDetailModal.classList.remove('open');
+    matchDetailModal.setAttribute('aria-hidden', 'true');
+}
+
+function openMatchDetailModal(detailId) {
+    if (!matchDetailModal || !matchDetailBody) return;
+    const detail = matchDetailRegistry.find(item => item.id === String(detailId));
+    if (!detail || !detail.match) return;
+
+    const match = detail.match;
+    const stats = (match.stats && typeof match.stats === 'object') ? match.stats : {};
+    const score1 = match.s1 != null ? match.s1 : '-';
+    const score2 = match.s2 != null ? match.s2 : '-';
+    const poolLabel = getFinalsPoolFromMatch(match) || match.pool || match.type || '-';
+
+    matchDetailBody.innerHTML = `
+        <div class="match-detail-score">${match.t1 || 'Team 1'} ${score1} - ${score2} ${match.t2 || 'Team 2'}</div>
+        <div class="match-detail-meta">
+            <div><strong>Region</strong>${detail.region || activeRegion}</div>
+            <div><strong>Status</strong>${match.st || 'UPCOMING'}</div>
+            <div><strong>Date</strong>${match.d || '--'}</div>
+            <div><strong>Time</strong>${match.t || '--:--'}</div>
+            <div><strong>Phase</strong>${detail.phase || activePhase}</div>
+            <div><strong>Pool / Type</strong>${poolLabel}</div>
+        </div>
+        <div class="match-detail-stats-grid">
+            <div class="match-detail-team-card">
+                <h3>${match.t1 || 'Team 1'}</h3>
+                <div class="match-detail-stat-label">Scorers</div>
+                <div class="match-detail-list">${formatModalStatList(stats.homeScorers)}</div>
+                <div class="match-detail-stat-label">Assists</div>
+                <div class="match-detail-list">${formatModalStatList(stats.homeAssists)}</div>
+                <div class="match-detail-stat-label">Saves</div>
+                <div class="match-detail-list">${formatModalStatList(stats.homeSaves)}</div>
+                <div class="match-detail-stat-label">Yellow Cards</div>
+                <div class="match-detail-list">${formatModalStatList(stats.homeYellowCards)}</div>
+                <div class="match-detail-stat-label">Red Cards</div>
+                <div class="match-detail-list">${formatModalStatList(stats.homeRedCards)}</div>
+            </div>
+            <div class="match-detail-team-card">
+                <h3>${match.t2 || 'Team 2'}</h3>
+                <div class="match-detail-stat-label">Scorers</div>
+                <div class="match-detail-list">${formatModalStatList(stats.awayScorers)}</div>
+                <div class="match-detail-stat-label">Assists</div>
+                <div class="match-detail-list">${formatModalStatList(stats.awayAssists)}</div>
+                <div class="match-detail-stat-label">Saves</div>
+                <div class="match-detail-list">${formatModalStatList(stats.awaySaves)}</div>
+                <div class="match-detail-stat-label">Yellow Cards</div>
+                <div class="match-detail-list">${formatModalStatList(stats.awayYellowCards)}</div>
+                <div class="match-detail-stat-label">Red Cards</div>
+                <div class="match-detail-list">${formatModalStatList(stats.awayRedCards)}</div>
+            </div>
+        </div>`;
+
+    matchDetailModal.classList.add('open');
+    matchDetailModal.setAttribute('aria-hidden', 'false');
+}
+
 function renderMatch(match) {
     const status = match.st || 'UPCOMING';
+    const detailId = String(matchDetailCounter++);
+
+    matchDetailRegistry.push({
+        id: detailId,
+        region: match.region || activeRegion,
+        phase: activePhase,
+        match: { ...match, stats: match && match.stats ? JSON.parse(JSON.stringify(match.stats)) : undefined }
+    });
 
     let t1Class = '';
     let t2Class = '';
@@ -2792,7 +3050,7 @@ function renderMatch(match) {
     }
 
     return `
-        <div class="league-section"><div class="match-item">
+        <div class="league-section"><div class="match-item clickable" data-match-detail-id="${detailId}" tabindex="0" role="button" aria-label="Open details for ${match.t1 || 'Team 1'} vs ${match.t2 || 'Team 2'}">
             <div class="match-time">
                 ${status === 'LIVE' ? `<div style="color: var(--live); font-weight: 700;">LIVE</div>` : match.t || '--:--'}
                 <div style="font-size: 0.55rem; margin-top: 2px;">${match.d || ''}</div>
@@ -2815,7 +3073,7 @@ function renderMatch(match) {
 function renderMatchRow(match) {
     const matchDate = match.d || '--';
     const matchTime = match.t || '--:--';
-    const ballImage = match.ballImage || '/images/broadcaster-ball.svg';
+    const ballImage = match.ballImage || '/images/ball-used.png';
     const poolLabel = getFinalsPoolFromMatch(match) || match.pool || match.type || '-';
     const matchNumber = getMatchNumberFromType(match);
     const matchNumberLabel = matchNumber != null ? `M${matchNumber}` : '-';
@@ -2829,8 +3087,15 @@ function renderMatchRow(match) {
     const statusLabel = status === 'LIVE' ? 'LIVE' : 'FT';
     const team1ScoreText = showScoreline ? `${statusLabel} ${match.s1}` : '';
     const team2ScoreText = showScoreline ? `${statusLabel} ${match.s2}` : '';
+    const detailId = String(matchDetailCounter++);
+    matchDetailRegistry.push({
+        id: detailId,
+        region: activeRegion,
+        phase: activePhase,
+        match: { ...match, stats: match && match.stats ? JSON.parse(JSON.stringify(match.stats)) : undefined }
+    });
     return `
-        <tr>
+        <tr class="match-row-clickable" data-match-detail-id="${detailId}" tabindex="0" role="button" aria-label="Open details for ${team1} vs ${team2}">
             <td class="date-column">${matchDate}</td>
             <td class="datetime-column">${matchTime}</td>
             <td class="ball-column"><div class="ball-cell"><img src="${ballImage}" alt="Match ball" class="ball-image" loading="eager" decoding="async" onerror="this.src='/images/ball-used.png'" /></div></td>
@@ -3326,6 +3591,53 @@ if (finalsTeamSelect) {
         sessionStorage.setItem('activeFinalsTeam', activeFinalsTeam);
         if (activeTournament === 'halala' && activePhase === 'finals') updateView();
     });
+}
+
+document.addEventListener('click', e => {
+    const row = e.target.closest('tr.match-row-clickable');
+    if (row) {
+        if (e.target.closest('a')) return;
+        const detailId = row.dataset.matchDetailId;
+        if (detailId) {
+            openMatchDetailModal(detailId);
+        }
+        return;
+    }
+
+    const card = e.target.closest('.match-item[data-match-detail-id]');
+    if (card) {
+        const detailId = card.dataset.matchDetailId;
+        if (detailId) {
+            openMatchDetailModal(detailId);
+        }
+        return;
+    }
+
+    if (matchDetailModal && e.target === matchDetailModal) {
+        closeMatchDetailModal();
+    }
+});
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+        closeMatchDetailModal();
+        return;
+    }
+
+    const row = e.target && e.target.closest ? e.target.closest('tr.match-row-clickable') : null;
+    const card = e.target && e.target.closest ? e.target.closest('.match-item[data-match-detail-id]') : null;
+    if (!row && !card) return;
+    if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const detailId = row ? row.dataset.matchDetailId : card.dataset.matchDetailId;
+        if (detailId) {
+            openMatchDetailModal(detailId);
+        }
+    }
+});
+
+if (matchDetailClose) {
+    matchDetailClose.addEventListener('click', closeMatchDetailModal);
 }
 
 // --- INITIALIZATION ---

@@ -151,7 +151,7 @@
             .card-title { font-size: 0.9rem; }
             .note-box { font-size: 0.68rem; }
             .small-copy { font-size: 0.64rem; }
-            textarea { min-height: 84px; }
+            .shirt-select { min-height: 88px; }
             .stats-grid { grid-template-columns: 1fr; }
         }
         label {
@@ -174,24 +174,10 @@
             color: var(--text-main);
             font-family: "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
         }
-        textarea {
-            width: 100%;
-            margin-top: 8px;
-            border-radius: 0;
-            border: 2px solid var(--card-border);
-            background: var(--bg);
-            padding: 12px 14px;
-            font-size: 0.9rem;
-            color: var(--text-main);
-            font-family: "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-            min-height: 92px;
-            resize: vertical;
+        .shirt-select {
+            min-height: 96px;
         }
         input:focus, select:focus {
-            outline: none;
-            border-color: var(--lime);
-        }
-        textarea:focus {
             outline: none;
             border-color: var(--lime);
         }
@@ -244,6 +230,15 @@
         }
         .stats-card label {
             margin-bottom: 12px;
+        }
+        .field-note {
+            display: block;
+            margin-top: 6px;
+            font-size: 0.66rem;
+            text-transform: none;
+            letter-spacing: 0;
+            color: var(--text-muted);
+            font-weight: 500;
         }
         .note-box {
             margin-top: 24px;
@@ -355,31 +350,39 @@
                 <div class="stats-card">
                     <h3>Home Team Match Stats</h3>
                     <label>Scorers
-                        <textarea id="editHomeScorers" placeholder="One player per line or comma separated"></textarea>
+                        <select id="editHomeScorers" class="shirt-select" multiple></select>
+                        <span class="field-note">Select shirt numbers. Use Ctrl/Cmd + click for multiple selections.</span>
+                    </label>
+                    <label>Assists
+                        <select id="editHomeAssists" class="shirt-select" multiple></select>
                     </label>
                     <label>Saves
-                        <textarea id="editHomeSaves" placeholder="Goalkeeper saves or players (e.g. GK Name - 6)"></textarea>
+                        <select id="editHomeSaves" class="shirt-select" multiple></select>
                     </label>
                     <label>Yellow cards
-                        <textarea id="editHomeYellowCards" placeholder="Players who received yellow cards"></textarea>
+                        <select id="editHomeYellowCards" class="shirt-select" multiple></select>
                     </label>
                     <label>Red cards
-                        <textarea id="editHomeRedCards" placeholder="Players who received red cards"></textarea>
+                        <select id="editHomeRedCards" class="shirt-select" multiple></select>
                     </label>
                 </div>
                 <div class="stats-card">
                     <h3>Away Team Match Stats</h3>
                     <label>Scorers
-                        <textarea id="editAwayScorers" placeholder="One player per line or comma separated"></textarea>
+                        <select id="editAwayScorers" class="shirt-select" multiple></select>
+                        <span class="field-note">Select shirt numbers. Use Ctrl/Cmd + click for multiple selections.</span>
+                    </label>
+                    <label>Assists
+                        <select id="editAwayAssists" class="shirt-select" multiple></select>
                     </label>
                     <label>Saves
-                        <textarea id="editAwaySaves" placeholder="Goalkeeper saves or players (e.g. GK Name - 4)"></textarea>
+                        <select id="editAwaySaves" class="shirt-select" multiple></select>
                     </label>
                     <label>Yellow cards
-                        <textarea id="editAwayYellowCards" placeholder="Players who received yellow cards"></textarea>
+                        <select id="editAwayYellowCards" class="shirt-select" multiple></select>
                     </label>
                     <label>Red cards
-                        <textarea id="editAwayRedCards" placeholder="Players who received red cards"></textarea>
+                        <select id="editAwayRedCards" class="shirt-select" multiple></select>
                     </label>
                 </div>
             </div>
@@ -938,6 +941,8 @@
     const editTeam2 = document.getElementById('editTeam2');
     const editHomeScorers = document.getElementById('editHomeScorers');
     const editAwayScorers = document.getElementById('editAwayScorers');
+    const editHomeAssists = document.getElementById('editHomeAssists');
+    const editAwayAssists = document.getElementById('editAwayAssists');
     const editHomeSaves = document.getElementById('editHomeSaves');
     const editAwaySaves = document.getElementById('editAwaySaves');
     const editHomeYellowCards = document.getElementById('editHomeYellowCards');
@@ -978,37 +983,89 @@
     const deleteNationalButton = document.getElementById('deleteNationalButton');
     const nationalSaveStatus = document.getElementById('nationalSaveStatus');
 
+    const STAT_SELECTS = [
+        editHomeScorers,
+        editAwayScorers,
+        editHomeAssists,
+        editAwayAssists,
+        editHomeSaves,
+        editAwaySaves,
+        editHomeYellowCards,
+        editAwayYellowCards,
+        editHomeRedCards,
+        editAwayRedCards
+    ];
+
     const DEFAULT_MATCH_STATS = {
-        homeScorers: '',
-        awayScorers: '',
-        homeSaves: '',
-        awaySaves: '',
-        homeYellowCards: '',
-        awayYellowCards: '',
-        homeRedCards: '',
-        awayRedCards: ''
+        homeScorers: [],
+        awayScorers: [],
+        homeAssists: [],
+        awayAssists: [],
+        homeSaves: [],
+        awaySaves: [],
+        homeYellowCards: [],
+        awayYellowCards: [],
+        homeRedCards: [],
+        awayRedCards: []
     };
+
+    function normalizeShirtNumbers(value) {
+        if (Array.isArray(value)) {
+            const values = value
+                .map(item => Number(item))
+                .filter(num => Number.isInteger(num) && num >= 1 && num <= 99);
+            return [...new Set(values)];
+        }
+        if (typeof value === 'number') {
+            return Number.isInteger(value) && value >= 1 && value <= 99 ? [value] : [];
+        }
+        if (typeof value === 'string') {
+            const found = value.match(/\d+/g) || [];
+            const values = found
+                .map(item => Number(item))
+                .filter(num => Number.isInteger(num) && num >= 1 && num <= 99);
+            return [...new Set(values)];
+        }
+        return [];
+    }
+
+    function initializeShirtNumberSelects() {
+        const optionsMarkup = Array.from({ length: 99 }, (_, i) => {
+            const shirtNo = i + 1;
+            return `<option value="${shirtNo}">#${shirtNo}</option>`;
+        }).join('');
+        STAT_SELECTS.forEach(select => {
+            if (!select || select.dataset.initialized === 'true') return;
+            select.innerHTML = optionsMarkup;
+            select.dataset.initialized = 'true';
+        });
+    }
+
+    function setSelectedShirtNumbers(select, values) {
+        if (!select) return;
+        const normalized = normalizeShirtNumbers(values);
+        const selected = new Set(normalized.map(String));
+        Array.from(select.options).forEach(opt => {
+            opt.selected = selected.has(opt.value);
+        });
+    }
+
+    function getSelectedShirtNumbers(select) {
+        if (!select) return [];
+        return Array.from(select.selectedOptions)
+            .map(opt => Number(opt.value))
+            .filter(num => Number.isInteger(num) && num >= 1 && num <= 99);
+    }
 
     function ensureMatchStats(match) {
         if (!match || typeof match !== 'object') return { ...DEFAULT_MATCH_STATS };
         const safeStats = { ...DEFAULT_MATCH_STATS };
-        if (match.stats && typeof match.stats === 'object') {
-            Object.keys(safeStats).forEach(key => {
-                if (match.stats[key] != null) {
-                    safeStats[key] = String(match.stats[key]);
-                }
-            });
-        }
+        const currentStats = (match.stats && typeof match.stats === 'object') ? match.stats : {};
+        Object.keys(safeStats).forEach(key => {
+            safeStats[key] = normalizeShirtNumbers(currentStats[key]);
+        });
         match.stats = safeStats;
         return safeStats;
-    }
-
-    function splitStatList(value) {
-        if (!value) return [];
-        return String(value)
-            .split(/\r?\n|,/)
-            .map(item => item.trim())
-            .filter(Boolean);
     }
 
     function escapeHtml(value) {
@@ -1021,9 +1078,9 @@
     }
 
     function buildPrintList(value) {
-        const items = splitStatList(value);
+        const items = normalizeShirtNumbers(value);
         if (!items.length) return '<div class="empty">None recorded</div>';
-        return `<ul>${items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+        return `<ul>${items.map(item => `<li>${escapeHtml(`#${item}`)}</li>`).join('')}</ul>`;
     }
 
     function applySavedData(savedData) {
@@ -1226,20 +1283,23 @@
     function fillEditorForm() {
         const match = tournamentData[activeRegion].matches[activeMatchIndex];
         const stats = ensureMatchStats(match);
+        initializeShirtNumberSelects();
         editStatus.value = match.st || 'UPCOMING';
         editTime.value = match.t || '';
         editScore1.value = match.s1 != null ? match.s1 : '';
         editScore2.value = match.s2 != null ? match.s2 : '';
         editTeam1.value = match.t1 || '';
         editTeam2.value = match.t2 || '';
-        editHomeScorers.value = stats.homeScorers;
-        editAwayScorers.value = stats.awayScorers;
-        editHomeSaves.value = stats.homeSaves;
-        editAwaySaves.value = stats.awaySaves;
-        editHomeYellowCards.value = stats.homeYellowCards;
-        editAwayYellowCards.value = stats.awayYellowCards;
-        editHomeRedCards.value = stats.homeRedCards;
-        editAwayRedCards.value = stats.awayRedCards;
+        setSelectedShirtNumbers(editHomeScorers, stats.homeScorers);
+        setSelectedShirtNumbers(editAwayScorers, stats.awayScorers);
+        setSelectedShirtNumbers(editHomeAssists, stats.homeAssists);
+        setSelectedShirtNumbers(editAwayAssists, stats.awayAssists);
+        setSelectedShirtNumbers(editHomeSaves, stats.homeSaves);
+        setSelectedShirtNumbers(editAwaySaves, stats.awaySaves);
+        setSelectedShirtNumbers(editHomeYellowCards, stats.homeYellowCards);
+        setSelectedShirtNumbers(editAwayYellowCards, stats.awayYellowCards);
+        setSelectedShirtNumbers(editHomeRedCards, stats.homeRedCards);
+        setSelectedShirtNumbers(editAwayRedCards, stats.awayRedCards);
         setSaveStatus('Loaded current match details.');
     }
 
@@ -1305,6 +1365,8 @@
                 <h2 class="team">${escapeHtml(match.t1 || 'Home Team')}</h2>
                 <div class="label">Scorers</div>
                 ${buildPrintList(stats.homeScorers)}
+                <div class="label">Assists</div>
+                ${buildPrintList(stats.homeAssists)}
                 <div class="label">Saves</div>
                 ${buildPrintList(stats.homeSaves)}
                 <div class="label">Yellow Cards</div>
@@ -1316,6 +1378,8 @@
                 <h2 class="team">${escapeHtml(match.t2 || 'Away Team')}</h2>
                 <div class="label">Scorers</div>
                 ${buildPrintList(stats.awayScorers)}
+                <div class="label">Assists</div>
+                ${buildPrintList(stats.awayAssists)}
                 <div class="label">Saves</div>
                 ${buildPrintList(stats.awaySaves)}
                 <div class="label">Yellow Cards</div>
@@ -1764,14 +1828,16 @@
             match.ps2 = (editPenalties2 && editPenalties2.value !== '') ? Number(editPenalties2.value) : null;
             match.t1 = editTeam1.value.trim() || match.t1;
             match.t2 = editTeam2.value.trim() || match.t2;
-            stats.homeScorers = editHomeScorers.value.trim();
-            stats.awayScorers = editAwayScorers.value.trim();
-            stats.homeSaves = editHomeSaves.value.trim();
-            stats.awaySaves = editAwaySaves.value.trim();
-            stats.homeYellowCards = editHomeYellowCards.value.trim();
-            stats.awayYellowCards = editAwayYellowCards.value.trim();
-            stats.homeRedCards = editHomeRedCards.value.trim();
-            stats.awayRedCards = editAwayRedCards.value.trim();
+            stats.homeScorers = getSelectedShirtNumbers(editHomeScorers);
+            stats.awayScorers = getSelectedShirtNumbers(editAwayScorers);
+            stats.homeAssists = getSelectedShirtNumbers(editHomeAssists);
+            stats.awayAssists = getSelectedShirtNumbers(editAwayAssists);
+            stats.homeSaves = getSelectedShirtNumbers(editHomeSaves);
+            stats.awaySaves = getSelectedShirtNumbers(editAwaySaves);
+            stats.homeYellowCards = getSelectedShirtNumbers(editHomeYellowCards);
+            stats.awayYellowCards = getSelectedShirtNumbers(editAwayYellowCards);
+            stats.homeRedCards = getSelectedShirtNumbers(editHomeRedCards);
+            stats.awayRedCards = getSelectedShirtNumbers(editAwayRedCards);
 
             // Recalculate official standings for the entire region before saving
             calculateStandings(tournamentData[activeRegion]);
@@ -1863,6 +1929,7 @@
     addNationalButton.addEventListener('click', handleNationalAdd);
     deleteNationalButton.addEventListener('click', handleNationalDelete);
     (async () => {
+        initializeShirtNumberSelects();
         await loadSavedData();
         if (sessionStorage.getItem(AUTH_FLAG) === 'true') {
             showEditor();
