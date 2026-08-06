@@ -2728,7 +2728,7 @@ function renderDashboard() {
         standingsSectionEl.innerHTML = finalsStandingsHtml;
     }
 
-    // 2. Fixtures Feed (Live, Upcoming)
+    // 2. Live Feed + Fixtures Feed
 
     const projectedFinalsMatches = isFinalsPhase ? resolveNationalFinalsPlaceholders(regionData) : [];
     const stageMatchesBase = isFinalsPhase
@@ -2743,6 +2743,10 @@ function renderDashboard() {
     const liveMatches = selectedStageMatches.filter(m => m.st === 'LIVE');
     const upcomingMatches = selectedStageMatches.filter(m => m.st === 'UPCOMING');
     const finalMatches = selectedStageMatches.filter(m => m.st === 'FINAL').reverse();
+
+    const liveTitle = isFinalsPhase
+        ? `Live Now - National Finals ${finalsStageLabel}${finalsGroupSuffix}`
+        : (isPlayoffsPhase ? 'Live Now - Playoffs' : 'Live Now - Qualification Fixtures');
 
     const buildScheduleTable = (matches, title) => {
         if (matches.length === 0) {
@@ -2769,6 +2773,11 @@ function renderDashboard() {
                     </tbody>
                 </table>
             </div>`;
+    };
+
+    const buildLiveSection = (matches, title) => {
+        if (!matches.length) return '';
+        return buildScheduleTable(matches, title);
     };
 
     const buildFinalsGroupStageGroupedTables = (matches, title) => {
@@ -2844,12 +2853,17 @@ function renderDashboard() {
 
     const fixturesTitle = isFinalsPhase ? `National Finals ${finalsStageLabel}${finalsGroupSuffix} Fixtures` : (isPlayoffsPhase ? 'Playoff Fixtures' : 'Qualification Fixtures');
     const resultsTitle = isFinalsPhase ? `National Finals ${finalsStageLabel}${finalsGroupSuffix} Results` : (isPlayoffsPhase ? 'Playoff Results' : 'Qualification Results');
+    const liveHtml = liveMatches.length
+        ? (isFinalsGroupStage
+            ? buildFinalsGroupStageGroupedTables(liveMatches, liveTitle)
+            : buildLiveSection(liveMatches, liveTitle))
+        : '';
     let fixturesHtml = isFinalsGroupStage
-        ? buildFinalsGroupStageGroupedTables([...liveMatches, ...upcomingMatches], fixturesTitle)
-        : buildScheduleTable([...liveMatches, ...upcomingMatches], fixturesTitle);
+        ? buildFinalsGroupStageGroupedTables(upcomingMatches, fixturesTitle)
+        : buildScheduleTable(upcomingMatches, fixturesTitle);
     if (feedFixturesEl) {
         feedFixturesEl.style.display = 'block';
-        feedFixturesEl.innerHTML = fixturesHtml;
+        feedFixturesEl.innerHTML = `${liveHtml}${fixturesHtml}`;
     }
 
     // 3. Results Feed
