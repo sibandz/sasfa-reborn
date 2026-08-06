@@ -849,6 +849,8 @@
     let activeMatchIndex = 0;
     let activePlayoffIndex = 0;
     let activeNationalIndex = 0;
+    let lastSavedSnapshot = '';
+    let pendingSavePromise = null;
 
     const authSection = document.getElementById('authSection');
     const editorSection = document.getElementById('editorSection');
@@ -922,7 +924,7 @@
             .then(data => {
                 if (data && Object.keys(data).length > 0) {
                     applySavedData(data);
-                    return saveData().catch(e => console.error('Initial auto-save failed', e));
+                    lastSavedSnapshot = JSON.stringify(tournamentData);
                 }
             })
             .catch(err => {
@@ -932,10 +934,20 @@
     }
 
     function saveData() {
-        return fetch('/api/save-data', {
+        const snapshot = JSON.stringify(tournamentData);
+
+        if (snapshot === lastSavedSnapshot) {
+            return Promise.resolve({ message: 'No changes to save.' });
+        }
+
+        if (pendingSavePromise) {
+            return pendingSavePromise;
+        }
+
+        pendingSavePromise = fetch('/api/save-data', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(tournamentData)
+            body: snapshot
         })
         .then(async res => {
             let payload = null;
@@ -950,12 +962,18 @@
                 throw new Error(reason);
             }
 
+            lastSavedSnapshot = snapshot;
             return payload || { message: 'Saved' };
         })
         .catch(error => {
             console.error('Error saving data to server:', error);
             throw error;
+        })
+        .finally(() => {
+            pendingSavePromise = null;
         });
+
+        return pendingSavePromise;
     }
 
     /**
