@@ -2460,27 +2460,33 @@ function loadData(showLoading = false) {
                 if (!activeRegion || !tournamentData[activeRegion]) {
                     activeRegion = Object.keys(tournamentData)[0];
                 }
-                if (activeTournament === 'halala') {
-                    updateView();
-                    updateLiveStatus();
-                } else {
-                    renderHomePreviews();
-                    updateLiveStatus();
-                }
+                renderCurrentView();
                 if (lastUpdatedEl) lastUpdatedEl.textContent = `Last loaded: ${new Date().toLocaleTimeString()}`;
             } else {
                 if (lastUpdatedEl) {
                     lastUpdatedEl.textContent = 'No fixtures found on server.';
                 }
+                renderCurrentView();
             }
         })
         .catch(error => {
             console.error('Error loading fixture data from server:', error);
             if (lastUpdatedEl) lastUpdatedEl.textContent = 'Unable to load fixtures from server.';
+            renderCurrentView();
         })
         .finally(() => {
             if (showLoading) document.body.classList.remove('is-loading');
         });
+}
+
+function renderCurrentView() {
+    if (activeTournament === 'halala') {
+        updateView();
+        updateLiveStatus();
+        return;
+    }
+    renderHomePreviews();
+    updateLiveStatus();
 }
 
 // --- MAIN RENDER LOGIC ---
@@ -3739,6 +3745,7 @@ if (matchDetailClose) {
 function initializeApp() {
     startImagePreload();
     applyRouting(); 
+    renderCurrentView();
     loadData(false); // Fetch silently in the background
     setInterval(() => loadData(false), 60000); // And continue to silently check every 60 seconds.
 }
