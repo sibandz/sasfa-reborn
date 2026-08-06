@@ -228,6 +228,19 @@
             height: 30px;
             width: auto;
         }
+        .halala-header-mark {
+            height: 32px;
+            width: auto;
+            object-fit: contain;
+            display: none;
+            margin-left: 6px;
+            border: 1px solid rgba(17, 18, 20, 0.1);
+            background: rgba(255, 255, 255, 0.94);
+            padding: 2px 6px;
+        }
+        body[data-site="halala"] .halala-header-mark {
+            display: inline-block;
+        }
 
         .header-actions {
             display: flex;
@@ -1511,6 +1524,11 @@
             .logo-area {
                 font-size: 0.95rem;
             }
+            .halala-header-mark {
+                height: 24px;
+                margin-left: 4px;
+                padding: 1px 4px;
+            }
 
             .filters {
                 padding: 10px 16px;
@@ -1678,6 +1696,7 @@
     <div class="logo-area" onclick="selectTournament(null)" style="cursor: pointer;" title="Back to Tournaments">
         <img src="/images/sasfa_logo-removebg-preview.png" alt="SASFA">
         <span>SASFA</span>
+        <img id="halalaHeaderMark" class="halala-header-mark" src="/images/curro%20halala.png" alt="Halala Cup mark" loading="eager" decoding="async" />
     </div>
     <div class="header-actions">
         <a href="edit.html" class="watch-live-btn manager-btn" aria-label="Manager Login">
@@ -2253,7 +2272,8 @@ const TEAM_LOGO_MAP = {
 const STATIC_IMAGE_ASSETS = [
     '/images/sasfa_logo-removebg-preview.png',
     '/images/ball-used.png',
-    '/images/ss schools.png'
+    '/images/ss schools.png',
+    '/images/curro%20halala.png'
 ];
 let imagePreloadStarted = false;
 
@@ -2319,11 +2339,13 @@ function applyRouting() {
     const gdlView = document.getElementById('gdlView');
     const hRules = document.getElementById('halalaFooterRules');
     const watchLiveBtn = document.getElementById('watchLiveBtn');
+    const halalaHeaderMark = document.getElementById('halalaHeaderMark');
 
     if (activeTournament === 'halala') {
         document.body.setAttribute('data-site', 'halala');
         tList.style.display = 'none';
         tView.style.display = 'block';
+        if (halalaHeaderMark) halalaHeaderMark.style.display = 'inline-block';
         if (gdlView) gdlView.style.display = 'none';
         if (hRules) hRules.style.display = 'block';
         updateView();
@@ -2332,6 +2354,7 @@ function applyRouting() {
         document.body.setAttribute('data-site', 'sasfa');
         tList.style.display = 'none';
         tView.style.display = 'none';
+        if (halalaHeaderMark) halalaHeaderMark.style.display = 'none';
         if (gdlView) gdlView.style.display = 'block';
         if (hRules) hRules.style.display = 'none';
         if (watchLiveBtn) watchLiveBtn.style.display = 'none';
@@ -2339,6 +2362,7 @@ function applyRouting() {
         document.body.setAttribute('data-site', 'sasfa');
         tList.style.display = 'block';
         tView.style.display = 'none';
+        if (halalaHeaderMark) halalaHeaderMark.style.display = 'none';
         if (gdlView) gdlView.style.display = 'none';
         if (hRules) hRules.style.display = 'none';
         if (watchLiveBtn) watchLiveBtn.style.display = 'none';

@@ -670,6 +670,7 @@
     const STORAGE_KEY = 'halala-cup-data';
     const AUTH_FLAG = 'halalacup-auth';
     const EDIT_PASSWORD = 'NationalHalalaCup';
+    const HALALA_BRAND_IMAGE = '/images/curro%20halala.png';
 
     const DEFAULT_TOURNAMENT_DATA = {
         "Gauteng 1": {
@@ -1599,37 +1600,58 @@
     <title>Result Sheet - ${escapeHtml(activeRegion)}</title>
     <style>
         * { box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; margin: 0; color: #111; background: #fff; }
-        .sheet { max-width: 900px; margin: 0 auto; padding: 28px; }
-        .header { border-bottom: 3px solid #111; padding-bottom: 14px; margin-bottom: 20px; }
-        .title { font-size: 28px; font-weight: 800; margin: 0 0 8px; }
-        .sub { font-size: 14px; margin: 3px 0; }
-        .scoreline { margin: 16px 0 20px; padding: 16px; background: #f4f4f4; font-size: 22px; font-weight: 700; text-align: center; }
+        body { font-family: "Segoe UI", Arial, sans-serif; margin: 0; color: #111; background: #f5f6fa; }
+        .sheet { max-width: 960px; margin: 18px auto; padding: 0; background: #fff; border: 1px solid #d9dce6; }
+        .header { border-bottom: 3px solid #111; padding: 16px 22px 14px; background: linear-gradient(180deg, #ffffff 0%, #f7f8fb 100%); }
+        .brand-row { display: grid; grid-template-columns: 94px 1fr 94px; gap: 12px; align-items: center; }
+        .brand-logo-wrap { display: flex; justify-content: center; align-items: center; }
+        .brand-logo { width: 86px; height: 50px; object-fit: contain; border: 1px solid #d2d6e0; background: #fff; padding: 3px 6px; }
+        .brand-center { text-align: center; }
+        .title { font-size: 25px; font-weight: 800; margin: 0; letter-spacing: 0.04em; text-transform: uppercase; }
+        .subtitle { margin-top: 4px; color: #4b5563; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+        .meta-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+        .meta-box { border: 1px solid #d8dbe4; padding: 8px 10px; background: #fff; }
+        .meta-label { font-size: 10px; font-weight: 700; color: #5b6475; letter-spacing: 0.08em; text-transform: uppercase; }
+        .meta-value { margin-top: 3px; font-size: 13px; font-weight: 600; }
+        .body-wrap { padding: 20px 22px 22px; }
+        .scoreline { margin: 0 0 18px; padding: 14px 16px; background: #101828; color: #fff; font-size: 23px; font-weight: 700; text-align: center; letter-spacing: 0.02em; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-        .card { border: 1px solid #cfcfcf; padding: 14px; }
+        .card { border: 1px solid #cfd4df; padding: 14px; background: #fbfcff; }
         .team { font-size: 17px; font-weight: 700; margin: 0 0 10px; }
-        .label { margin-top: 10px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #333; font-weight: 700; }
+        .label { margin-top: 10px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #4b5563; font-weight: 700; }
         ul { margin: 8px 0 0 18px; padding: 0; }
         li { margin: 0 0 5px; font-size: 14px; }
         .empty { margin-top: 8px; color: #6b6b6b; font-size: 13px; font-style: italic; }
-        .meta { margin-top: 20px; font-size: 13px; color: #555; }
+        .meta { margin-top: 18px; font-size: 12px; color: #667085; border-top: 1px solid #d8dbe4; padding-top: 10px; }
         .actions { margin-top: 24px; display: flex; gap: 10px; }
         button { border: 1px solid #111; background: #111; color: #fff; padding: 10px 14px; font-size: 13px; cursor: pointer; }
         button.secondary { background: #fff; color: #111; }
         @media print {
             .actions { display: none; }
-            .sheet { padding: 0; max-width: 100%; }
-            body { margin: 16px; }
+            .sheet { margin: 0; max-width: 100%; }
+            body { margin: 10px; background: #fff; }
         }
     </style>
 </head>
 <body>
     <div class="sheet">
         <div class="header">
-            <h1 class="title">Official Match Result Sheet</h1>
-            <p class="sub"><strong>Region:</strong> ${escapeHtml(activeRegion)}</p>
-            <p class="sub"><strong>Date:</strong> ${escapeHtml(match.d || 'TBD')} | <strong>Time:</strong> ${escapeHtml(match.t || 'TBD')} | <strong>Status:</strong> ${escapeHtml(match.st || 'UPCOMING')}</p>
+            <div class="brand-row">
+                <div class="brand-logo-wrap"><img src="${HALALA_BRAND_IMAGE}" alt="Halala mark" class="brand-logo" /></div>
+                <div class="brand-center">
+                    <h1 class="title">Official Match Result Sheet</h1>
+                    <div class="subtitle">Halala Cup Match Report</div>
+                </div>
+                <div class="brand-logo-wrap"><img src="${HALALA_BRAND_IMAGE}" alt="Halala mark" class="brand-logo" /></div>
+            </div>
+            <div class="meta-strip">
+                <div class="meta-box"><div class="meta-label">Region</div><div class="meta-value">${escapeHtml(activeRegion)}</div></div>
+                <div class="meta-box"><div class="meta-label">Date</div><div class="meta-value">${escapeHtml(match.d || 'TBD')}</div></div>
+                <div class="meta-box"><div class="meta-label">Kickoff</div><div class="meta-value">${escapeHtml(match.t || 'TBD')}</div></div>
+                <div class="meta-box"><div class="meta-label">Status</div><div class="meta-value">${escapeHtml(match.st || 'UPCOMING')}</div></div>
+            </div>
         </div>
+        <div class="body-wrap">
         <div class="scoreline">${escapeHtml(match.t1 || 'Home Team')} ${score1} - ${score2} ${escapeHtml(match.t2 || 'Away Team')}</div>
         <div class="grid">
             <section class="card">
@@ -1659,10 +1681,11 @@
                 ${buildCardPrintList(stats.awayRedCards)}
             </section>
         </div>
-        <p class="meta">Generated from SASFA Admin Portal.</p>
+        <p class="meta">Generated from SASFA Admin Portal | Report prepared for team management review.</p>
         <div class="actions">
             <button onclick="window.print()">Print Sheet</button>
             <button class="secondary" onclick="window.close()">Close</button>
+        </div>
         </div>
     </div>
 </body>
