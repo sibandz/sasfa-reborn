@@ -2775,9 +2775,10 @@ function renderDashboard() {
     const selectedStageMatches = (isFinalsPhase && activeFinalsTeam !== 'ALL')
         ? stageMatches.filter(m => m.t1 === activeFinalsTeam || m.t2 === activeFinalsTeam)
         : stageMatches;
-    const liveMatches = selectedStageMatches.filter(m => m.st === 'LIVE');
-    const upcomingMatches = selectedStageMatches.filter(m => m.st === 'UPCOMING');
-    const finalMatches = selectedStageMatches.filter(m => m.st === 'FINAL').reverse();
+    const getMatchStatus = match => String(match?.st || 'UPCOMING').trim().toUpperCase();
+    const liveMatches = selectedStageMatches.filter(m => getMatchStatus(m) === 'LIVE');
+    const upcomingMatches = selectedStageMatches.filter(m => getMatchStatus(m) === 'UPCOMING');
+    const finalMatches = selectedStageMatches.filter(m => getMatchStatus(m) === 'FINAL').reverse();
 
     const finalsStageLabelMap = {
         groupstage: 'Group Stage',
@@ -2871,9 +2872,9 @@ function renderDashboard() {
 
     if (summarySectionEl && isFinalsPhase) {
         const summaryMatches = selectedStageMatches;
-        const summaryLive = summaryMatches.filter(m => m.st === 'LIVE').length;
-        const summaryUpcoming = summaryMatches.filter(m => m.st === 'UPCOMING').length;
-        const summaryFinal = summaryMatches.filter(m => m.st === 'FINAL').length;
+        const summaryLive = summaryMatches.filter(m => getMatchStatus(m) === 'LIVE').length;
+        const summaryUpcoming = summaryMatches.filter(m => getMatchStatus(m) === 'UPCOMING').length;
+        const summaryFinal = summaryMatches.filter(m => getMatchStatus(m) === 'FINAL').length;
         const selectedSchoolLabel = activeFinalsTeam === 'ALL' ? 'All schools' : activeFinalsTeam;
         summarySectionEl.innerHTML = `
             <div class="section-title">National Finals ${finalsStageLabel} Summary</div>
@@ -3215,8 +3216,8 @@ function renderMatchRow(match) {
     const team2 = match.t2 || 'Team 2';
     const status = String(match.st || 'UPCOMING').toUpperCase();
     const showScoreline = (status === 'LIVE' || status === 'FINAL') && match.s1 != null && match.s2 != null;
-    const scoreLabel = status === 'LIVE' ? 'LIVE' : (status === 'FINAL' ? 'FT' : 'VS');
-    const scoreText = showScoreline ? `${match.s1} - ${match.s2}` : 'VS';
+    const scoreLabel = status === 'LIVE' ? 'LIVE' : (status === 'FINAL' ? 'FT' : '');
+    const scoreText = showScoreline ? `${match.s1} - ${match.s2}` : '-';
     const scoreClass = status === 'LIVE' ? 'live' : (status === 'FINAL' ? 'final' : 'upcoming');
     const detailId = String(matchDetailCounter++);
     matchDetailRegistry.push({
@@ -3235,7 +3236,7 @@ function renderMatchRow(match) {
                 <div class="team-line"><span class="team-line-main">${renderTeamLogoBadge(team1, 'badge')}<span class="team-name">${team1}</span></span></div>
                 <div class="team-line"><span class="team-line-main">${renderTeamLogoBadge(team2, 'badge')}<span class="team-name">${team2}</span></span></div>
             </td>
-            <td class="score-column"><span class="score-pill ${scoreClass}">${scoreLabel}${showScoreline ? ` ${scoreText}` : ''}</span></td>
+            <td class="score-column"><span class="score-pill ${scoreClass}">${showScoreline ? `${scoreLabel ? `${scoreLabel} ` : ''}${scoreText}` : scoreText}</span></td>
             <td>${poolLabel}</td>
             <td>${broadcaster}</td>
         </tr>`;
