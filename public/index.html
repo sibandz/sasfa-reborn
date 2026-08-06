@@ -2744,6 +2744,16 @@ function renderDashboard() {
     const upcomingMatches = selectedStageMatches.filter(m => m.st === 'UPCOMING');
     const finalMatches = selectedStageMatches.filter(m => m.st === 'FINAL').reverse();
 
+    const finalsStageLabelMap = {
+        groupstage: 'Group Stage',
+        quarterfinal: 'Quarter-final',
+        semifinal: 'Semi-final',
+        final: 'Final'
+    };
+    const finalsStageLabel = finalsStageLabelMap[activeFinalsStage] || 'Finals';
+    const isFinalsGroupStage = isFinalsPhase && activeFinalsStage === 'groupstage';
+    const finalsGroupSuffix = isFinalsGroupStage && activeFinalsGroup !== 'ALL' ? ` - ${activeFinalsGroup}` : '';
+
     const liveTitle = isFinalsPhase
         ? `Live Now - National Finals ${finalsStageLabel}${finalsGroupSuffix}`
         : (isPlayoffsPhase ? 'Live Now - Playoffs' : 'Live Now - Qualification Fixtures');
@@ -2821,16 +2831,6 @@ function renderDashboard() {
         });
         return html;
     };
-
-    const finalsStageLabelMap = {
-        groupstage: 'Group Stage',
-        quarterfinal: 'Quarter-final',
-        semifinal: 'Semi-final',
-        final: 'Final'
-    };
-    const finalsStageLabel = finalsStageLabelMap[activeFinalsStage] || 'Finals';
-    const isFinalsGroupStage = isFinalsPhase && activeFinalsStage === 'groupstage';
-    const finalsGroupSuffix = isFinalsGroupStage && activeFinalsGroup !== 'ALL' ? ` - ${activeFinalsGroup}` : '';
 
     if (summarySectionEl && isFinalsPhase) {
         const summaryMatches = selectedStageMatches;
