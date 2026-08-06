@@ -2504,7 +2504,7 @@ function renderDashboard() {
                             <th>Datetime</th>
                             <th>Ball</th>
                             <th>Match</th>
-                            <th>Referee</th>
+                            <th>Pool</th>
                             <th>Broadcaster</th>
                         </tr>
                     </thead>
@@ -2543,7 +2543,7 @@ function renderDashboard() {
                                 <th>Datetime</th>
                                 <th>Ball</th>
                                 <th>Match</th>
-                                <th>Referee</th>
+                                <th>Pool</th>
                                 <th>Broadcaster</th>
                             </tr>
                         </thead>
@@ -2748,7 +2748,7 @@ function renderMatch(match) {
 function renderMatchRow(match) {
     const matchDate = match.d || '--';
     const matchTime = match.t || '--:--';
-    const referee = match.ref || match.type || '-';
+    const poolLabel = getFinalsPoolFromMatch(match) || match.pool || match.type || '-';
     const broadcasterUrl = 'https://live.supersportschools.com/category/606f65f91eea03755e56797c/sub-category/67ff624559d9be83280028c6/';
     const broadcasterLogo = match.broadcastLogo || '/images/ss schools.png';
     const broadcaster = `<a href="${broadcasterUrl}" target="_blank" rel="noopener noreferrer" class="broadcaster-link"><img src="${broadcasterLogo}" alt="Supersports Schools" class="broadcaster-logo" loading="lazy" decoding="async" data-fallback="/images/ss schools.png" onerror="if (this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; }" /><span class="broadcaster-label">Watch Live</span></a>`;
@@ -2768,7 +2768,7 @@ function renderMatchRow(match) {
                 <div class="team-line"><span class="team-line-main">${renderTeamLogoBadge(team1, 'badge')}<span class="team-name">${team1}</span></span>${showScoreline ? `<span class="team-scoreline">${team1ScoreText}</span>` : ''}</div>
                 <div class="team-line"><span class="team-line-main">${renderTeamLogoBadge(team2, 'badge')}<span class="team-name">${team2}</span></span>${showScoreline ? `<span class="team-scoreline">${team2ScoreText}</span>` : ''}</div>
             </td>
-            <td>${referee}</td>
+            <td>${poolLabel}</td>
             <td>${broadcaster}</td>
         </tr>`;
 }
