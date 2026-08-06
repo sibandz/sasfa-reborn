@@ -1789,7 +1789,7 @@
         .brand-center { text-align: center; }
         .title { font-size: 25px; font-weight: 800; margin: 0; letter-spacing: 0.04em; text-transform: uppercase; }
         .subtitle { margin-top: 4px; color: #4b5563; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
-        .meta-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+        .meta-strip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
         .meta-box { border: 1px solid #d8dbe4; padding: 8px 10px; background: #fff; }
         .meta-label { font-size: 10px; font-weight: 700; color: #5b6475; letter-spacing: 0.08em; text-transform: uppercase; }
         .meta-value { margin-top: 3px; font-size: 13px; font-weight: 600; }
@@ -1825,11 +1825,11 @@
                 <div class="brand-logo-wrap"><img src="${HALALA_BRAND_IMAGE}" alt="Halala mark" class="brand-logo" onerror="if (!this.dataset.step) { this.dataset.step='1'; this.src='../images/curro-halala.png'; } else if (this.dataset.step==='1') { this.dataset.step='2'; this.src='images/curro-halala.png'; } else { this.style.display='none'; }" /></div>
             </div>
             <div class="meta-strip">
-                <div class="meta-box"><div class="meta-label">Region</div><div class="meta-value">${escapeHtml(activeRegion)}</div></div>
                 <div class="meta-box"><div class="meta-label">Region</div><div class="meta-value">${escapeHtml(regionLabel)}</div></div>
                 <div class="meta-box"><div class="meta-label">Date</div><div class="meta-value">${escapeHtml(match.d || 'TBD')}</div></div>
                 <div class="meta-box"><div class="meta-label">Kickoff</div><div class="meta-value">${escapeHtml(match.t || 'TBD')}</div></div>
                 <div class="meta-box"><div class="meta-label">Status</div><div class="meta-value">${escapeHtml(match.st || 'UPCOMING')}</div></div>
+                <div class="meta-box"><div class="meta-label">Fixture</div><div class="meta-value">${escapeHtml(match.type || 'Match')}</div></div>
             </div>
         </div>
         <div class="body-wrap">
