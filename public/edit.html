@@ -1420,7 +1420,7 @@
             return;
         }
         el.innerHTML = events.map((event, index) =>
-            `<span class="event-chip">#${event.number} - ${escapeHtml(event.reason)} <button type="button" class="chip-remove" onclick="removeCardEvent('${key}', ${index})">x</button></span>`
+            `<span class="event-chip">#${event.number} - ${escapeHtml(event.reason)} <button type="button" class="chip-remove" aria-label="Remove #${event.number} card" onclick="removeCardEvent('${key}', ${index}, '${scope}')">x</button></span>`
         ).join('');
     }
 
