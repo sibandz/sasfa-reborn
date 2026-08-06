@@ -151,6 +151,8 @@
             .card-title { font-size: 0.9rem; }
             .note-box { font-size: 0.68rem; }
             .small-copy { font-size: 0.64rem; }
+            textarea { min-height: 84px; }
+            .stats-grid { grid-template-columns: 1fr; }
         }
         label {
             display: block;
@@ -172,7 +174,24 @@
             color: var(--text-main);
             font-family: "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
         }
+        textarea {
+            width: 100%;
+            margin-top: 8px;
+            border-radius: 0;
+            border: 2px solid var(--card-border);
+            background: var(--bg);
+            padding: 12px 14px;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            font-family: "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            min-height: 92px;
+            resize: vertical;
+        }
         input:focus, select:focus {
+            outline: none;
+            border-color: var(--lime);
+        }
+        textarea:focus {
             outline: none;
             border-color: var(--lime);
         }
@@ -206,6 +225,26 @@
         }
         .hidden { display: none; }
         .form-footer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px; margin-top: 12px; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+        .stats-card {
+            border: 1px solid var(--card-border);
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .stats-card h3 {
+            font-size: 0.82rem;
+            letter-spacing: 0.05em;
+            color: var(--lime);
+            margin-bottom: 10px;
+        }
+        .stats-card label {
+            margin-bottom: 12px;
+        }
         .note-box {
             margin-top: 24px;
             padding: 16px 18px;
@@ -312,13 +351,46 @@
                     <input id="editTeam2" type="text" placeholder="Team 2 name" />
                 </label>
             </div>
+            <div class="stats-grid">
+                <div class="stats-card">
+                    <h3>Home Team Match Stats</h3>
+                    <label>Scorers
+                        <textarea id="editHomeScorers" placeholder="One player per line or comma separated"></textarea>
+                    </label>
+                    <label>Saves
+                        <textarea id="editHomeSaves" placeholder="Goalkeeper saves or players (e.g. GK Name - 6)"></textarea>
+                    </label>
+                    <label>Yellow cards
+                        <textarea id="editHomeYellowCards" placeholder="Players who received yellow cards"></textarea>
+                    </label>
+                    <label>Red cards
+                        <textarea id="editHomeRedCards" placeholder="Players who received red cards"></textarea>
+                    </label>
+                </div>
+                <div class="stats-card">
+                    <h3>Away Team Match Stats</h3>
+                    <label>Scorers
+                        <textarea id="editAwayScorers" placeholder="One player per line or comma separated"></textarea>
+                    </label>
+                    <label>Saves
+                        <textarea id="editAwaySaves" placeholder="Goalkeeper saves or players (e.g. GK Name - 4)"></textarea>
+                    </label>
+                    <label>Yellow cards
+                        <textarea id="editAwayYellowCards" placeholder="Players who received yellow cards"></textarea>
+                    </label>
+                    <label>Red cards
+                        <textarea id="editAwayRedCards" placeholder="Players who received red cards"></textarea>
+                    </label>
+                </div>
+            </div>
             <div class="form-footer">
                 <button id="saveButton" type="button">Save update</button>
+                <button id="printMatchButton" type="button" style="background: var(--white); border-color: var(--white); color: var(--ink);">Print Result Sheet</button>
                 <button id="resetButton" type="button" style="background: var(--violet); border-color: var(--violet);">Reset to Defaults</button>
                 <button id="recoverButton" type="button" style="background: var(--lime); border-color: var(--lime); color: var(--ink);">Recover Local Data</button>
                 <div class="status-pill" id="saveStatus">Not saved</div>
             </div>
-            <p class="hint">After saving, refresh the public fixtures page to see the latest results.</p>
+            <p class="hint">After saving, refresh the public fixtures page to see the latest results. Use the print button to generate a manager result sheet for the selected match.</p>
 
             <div class="page-card" style="margin-top: 24px;">
             <h2 class="card-title">Regional Playoff Fixtures</h2>
@@ -864,9 +936,18 @@
     const editScore2 = document.getElementById('editScore2');
     const editTeam1 = document.getElementById('editTeam1');
     const editTeam2 = document.getElementById('editTeam2');
+    const editHomeScorers = document.getElementById('editHomeScorers');
+    const editAwayScorers = document.getElementById('editAwayScorers');
+    const editHomeSaves = document.getElementById('editHomeSaves');
+    const editAwaySaves = document.getElementById('editAwaySaves');
+    const editHomeYellowCards = document.getElementById('editHomeYellowCards');
+    const editAwayYellowCards = document.getElementById('editAwayYellowCards');
+    const editHomeRedCards = document.getElementById('editHomeRedCards');
+    const editAwayRedCards = document.getElementById('editAwayRedCards');
     const saveStatus = document.getElementById('saveStatus');
     const loginForm = document.getElementById('loginForm');
     const saveButton = document.getElementById('saveButton');
+    const printMatchButton = document.getElementById('printMatchButton');
     const resetButton = document.getElementById('resetButton');
     const recoverButton = document.getElementById('recoverButton');
     const playoffRegionSelect = document.getElementById('playoffRegionSelect');
@@ -896,6 +977,54 @@
     const addNationalButton = document.getElementById('addNationalButton');
     const deleteNationalButton = document.getElementById('deleteNationalButton');
     const nationalSaveStatus = document.getElementById('nationalSaveStatus');
+
+    const DEFAULT_MATCH_STATS = {
+        homeScorers: '',
+        awayScorers: '',
+        homeSaves: '',
+        awaySaves: '',
+        homeYellowCards: '',
+        awayYellowCards: '',
+        homeRedCards: '',
+        awayRedCards: ''
+    };
+
+    function ensureMatchStats(match) {
+        if (!match || typeof match !== 'object') return { ...DEFAULT_MATCH_STATS };
+        const safeStats = { ...DEFAULT_MATCH_STATS };
+        if (match.stats && typeof match.stats === 'object') {
+            Object.keys(safeStats).forEach(key => {
+                if (match.stats[key] != null) {
+                    safeStats[key] = String(match.stats[key]);
+                }
+            });
+        }
+        match.stats = safeStats;
+        return safeStats;
+    }
+
+    function splitStatList(value) {
+        if (!value) return [];
+        return String(value)
+            .split(/\r?\n|,/)
+            .map(item => item.trim())
+            .filter(Boolean);
+    }
+
+    function escapeHtml(value) {
+        return String(value || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function buildPrintList(value) {
+        const items = splitStatList(value);
+        if (!items.length) return '<div class="empty">None recorded</div>';
+        return `<ul>${items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+    }
 
     function applySavedData(savedData) {
         if (!savedData || typeof savedData !== 'object') return;
@@ -1096,13 +1225,118 @@
 
     function fillEditorForm() {
         const match = tournamentData[activeRegion].matches[activeMatchIndex];
+        const stats = ensureMatchStats(match);
         editStatus.value = match.st || 'UPCOMING';
         editTime.value = match.t || '';
         editScore1.value = match.s1 != null ? match.s1 : '';
         editScore2.value = match.s2 != null ? match.s2 : '';
         editTeam1.value = match.t1 || '';
         editTeam2.value = match.t2 || '';
+        editHomeScorers.value = stats.homeScorers;
+        editAwayScorers.value = stats.awayScorers;
+        editHomeSaves.value = stats.homeSaves;
+        editAwaySaves.value = stats.awaySaves;
+        editHomeYellowCards.value = stats.homeYellowCards;
+        editAwayYellowCards.value = stats.awayYellowCards;
+        editHomeRedCards.value = stats.homeRedCards;
+        editAwayRedCards.value = stats.awayRedCards;
         setSaveStatus('Loaded current match details.');
+    }
+
+    function handlePrintMatchSheet() {
+        const regionData = tournamentData[activeRegion];
+        if (!regionData || !regionData.matches || !regionData.matches[activeMatchIndex]) {
+            setSaveStatus('No match selected for printing.', false);
+            return;
+        }
+
+        const match = regionData.matches[activeMatchIndex];
+        const stats = ensureMatchStats(match);
+        const score1 = match.s1 != null ? match.s1 : '-';
+        const score2 = match.s2 != null ? match.s2 : '-';
+        const opened = window.open('', '_blank', 'width=960,height=1080');
+
+        if (!opened) {
+            setSaveStatus('Pop-up blocked. Allow pop-ups to print the result sheet.', false);
+            return;
+        }
+
+        const printHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Result Sheet - ${escapeHtml(activeRegion)}</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; margin: 0; color: #111; background: #fff; }
+        .sheet { max-width: 900px; margin: 0 auto; padding: 28px; }
+        .header { border-bottom: 3px solid #111; padding-bottom: 14px; margin-bottom: 20px; }
+        .title { font-size: 28px; font-weight: 800; margin: 0 0 8px; }
+        .sub { font-size: 14px; margin: 3px 0; }
+        .scoreline { margin: 16px 0 20px; padding: 16px; background: #f4f4f4; font-size: 22px; font-weight: 700; text-align: center; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .card { border: 1px solid #cfcfcf; padding: 14px; }
+        .team { font-size: 17px; font-weight: 700; margin: 0 0 10px; }
+        .label { margin-top: 10px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #333; font-weight: 700; }
+        ul { margin: 8px 0 0 18px; padding: 0; }
+        li { margin: 0 0 5px; font-size: 14px; }
+        .empty { margin-top: 8px; color: #6b6b6b; font-size: 13px; font-style: italic; }
+        .meta { margin-top: 20px; font-size: 13px; color: #555; }
+        .actions { margin-top: 24px; display: flex; gap: 10px; }
+        button { border: 1px solid #111; background: #111; color: #fff; padding: 10px 14px; font-size: 13px; cursor: pointer; }
+        button.secondary { background: #fff; color: #111; }
+        @media print {
+            .actions { display: none; }
+            .sheet { padding: 0; max-width: 100%; }
+            body { margin: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sheet">
+        <div class="header">
+            <h1 class="title">Official Match Result Sheet</h1>
+            <p class="sub"><strong>Region:</strong> ${escapeHtml(activeRegion)}</p>
+            <p class="sub"><strong>Date:</strong> ${escapeHtml(match.d || 'TBD')} | <strong>Time:</strong> ${escapeHtml(match.t || 'TBD')} | <strong>Status:</strong> ${escapeHtml(match.st || 'UPCOMING')}</p>
+        </div>
+        <div class="scoreline">${escapeHtml(match.t1 || 'Home Team')} ${score1} - ${score2} ${escapeHtml(match.t2 || 'Away Team')}</div>
+        <div class="grid">
+            <section class="card">
+                <h2 class="team">${escapeHtml(match.t1 || 'Home Team')}</h2>
+                <div class="label">Scorers</div>
+                ${buildPrintList(stats.homeScorers)}
+                <div class="label">Saves</div>
+                ${buildPrintList(stats.homeSaves)}
+                <div class="label">Yellow Cards</div>
+                ${buildPrintList(stats.homeYellowCards)}
+                <div class="label">Red Cards</div>
+                ${buildPrintList(stats.homeRedCards)}
+            </section>
+            <section class="card">
+                <h2 class="team">${escapeHtml(match.t2 || 'Away Team')}</h2>
+                <div class="label">Scorers</div>
+                ${buildPrintList(stats.awayScorers)}
+                <div class="label">Saves</div>
+                ${buildPrintList(stats.awaySaves)}
+                <div class="label">Yellow Cards</div>
+                ${buildPrintList(stats.awayYellowCards)}
+                <div class="label">Red Cards</div>
+                ${buildPrintList(stats.awayRedCards)}
+            </section>
+        </div>
+        <p class="meta">Generated from SASFA Admin Portal.</p>
+        <div class="actions">
+            <button onclick="window.print()">Print Sheet</button>
+            <button class="secondary" onclick="window.close()">Close</button>
+        </div>
+    </div>
+</body>
+</html>`;
+
+        opened.document.open();
+        opened.document.write(printHtml);
+        opened.document.close();
+        setSaveStatus('Result sheet opened. Use Print Sheet in the new tab.');
     }
 
     function populatePlayoffOptions() {
@@ -1518,6 +1752,7 @@
     async function handleSave() {
         try {
             const match = tournamentData[activeRegion].matches[activeMatchIndex];
+            const stats = ensureMatchStats(match);
             match.st = editStatus.value;
             match.t = editTime.value.trim() || match.t;
             match.s1 = Number(editScore1.value || 0);
@@ -1529,6 +1764,14 @@
             match.ps2 = (editPenalties2 && editPenalties2.value !== '') ? Number(editPenalties2.value) : null;
             match.t1 = editTeam1.value.trim() || match.t1;
             match.t2 = editTeam2.value.trim() || match.t2;
+            stats.homeScorers = editHomeScorers.value.trim();
+            stats.awayScorers = editAwayScorers.value.trim();
+            stats.homeSaves = editHomeSaves.value.trim();
+            stats.awaySaves = editAwaySaves.value.trim();
+            stats.homeYellowCards = editHomeYellowCards.value.trim();
+            stats.awayYellowCards = editAwayYellowCards.value.trim();
+            stats.homeRedCards = editHomeRedCards.value.trim();
+            stats.awayRedCards = editAwayRedCards.value.trim();
 
             // Recalculate official standings for the entire region before saving
             calculateStandings(tournamentData[activeRegion]);
@@ -1605,6 +1848,7 @@
 
     loginForm.addEventListener('submit', handleLogin);
     saveButton.addEventListener('click', handleSave);
+    printMatchButton.addEventListener('click', handlePrintMatchSheet);
     savePlayoffButton.addEventListener('click', handlePlayoffSave);
     addPlayoffButton.addEventListener('click', handlePlayoffAdd);
     deletePlayoffButton.addEventListener('click', handlePlayoffDelete);
