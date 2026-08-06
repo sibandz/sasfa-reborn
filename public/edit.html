@@ -652,6 +652,112 @@
                     <input id="nationalPenalties2" type="number" min="0" placeholder="0" />
                 </label>
             </div>
+            <div class="stats-grid">
+                <div class="stats-card">
+                    <h3>National Home Team Stats</h3>
+                    <label>Scorers
+                        <div class="event-row">
+                            <select id="nationalHomeScorerNumber"></select>
+                            <button type="button" onclick="addEventNumber('homeScorers', 'nationalHomeScorerNumber', 'national')">Add</button>
+                        </div>
+                        <div id="nationalHomeScorersList" class="event-list"></div>
+                    </label>
+                    <label>Assists
+                        <div class="event-row">
+                            <select id="nationalHomeAssistNumber"></select>
+                            <button type="button" onclick="addEventNumber('homeAssists', 'nationalHomeAssistNumber', 'national')">Add</button>
+                        </div>
+                        <div id="nationalHomeAssistsList" class="event-list"></div>
+                    </label>
+                    <label>Saves
+                        <div class="save-control">
+                            <button type="button" onclick="changeSaveCount('homeSaves', -1, 'national')">-</button>
+                            <div id="nationalHomeSaveValue" class="save-value">0</div>
+                            <button type="button" onclick="changeSaveCount('homeSaves', 1, 'national')">+</button>
+                        </div>
+                    </label>
+                    <label>Yellow cards
+                        <div class="event-row" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;">
+                            <select id="nationalHomeYellowNumber"></select>
+                            <select id="nationalHomeYellowReason">
+                                <option value="descent">descent</option>
+                                <option value="simulation">simulation</option>
+                                <option value="dangerous tackle">dangerous tackle</option>
+                                <option value="last man tackle">last man tackle</option>
+                                <option value="coach/manager">coach/manager</option>
+                            </select>
+                            <button type="button" onclick="addCardEvent('homeYellowCards', 'nationalHomeYellowNumber', 'nationalHomeYellowReason', 'national')">Add</button>
+                        </div>
+                        <div id="nationalHomeYellowList" class="event-list"></div>
+                    </label>
+                    <label>Red cards
+                        <div class="event-row" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;">
+                            <select id="nationalHomeRedNumber"></select>
+                            <select id="nationalHomeRedReason">
+                                <option value="descent">descent</option>
+                                <option value="simulation">simulation</option>
+                                <option value="dangerous tackle">dangerous tackle</option>
+                                <option value="last man tackle">last man tackle</option>
+                                <option value="coach/manager">coach/manager</option>
+                            </select>
+                            <button type="button" onclick="addCardEvent('homeRedCards', 'nationalHomeRedNumber', 'nationalHomeRedReason', 'national')">Add</button>
+                        </div>
+                        <div id="nationalHomeRedList" class="event-list"></div>
+                    </label>
+                </div>
+                <div class="stats-card">
+                    <h3>National Away Team Stats</h3>
+                    <label>Scorers
+                        <div class="event-row">
+                            <select id="nationalAwayScorerNumber"></select>
+                            <button type="button" onclick="addEventNumber('awayScorers', 'nationalAwayScorerNumber', 'national')">Add</button>
+                        </div>
+                        <div id="nationalAwayScorersList" class="event-list"></div>
+                    </label>
+                    <label>Assists
+                        <div class="event-row">
+                            <select id="nationalAwayAssistNumber"></select>
+                            <button type="button" onclick="addEventNumber('awayAssists', 'nationalAwayAssistNumber', 'national')">Add</button>
+                        </div>
+                        <div id="nationalAwayAssistsList" class="event-list"></div>
+                    </label>
+                    <label>Saves
+                        <div class="save-control">
+                            <button type="button" onclick="changeSaveCount('awaySaves', -1, 'national')">-</button>
+                            <div id="nationalAwaySaveValue" class="save-value">0</div>
+                            <button type="button" onclick="changeSaveCount('awaySaves', 1, 'national')">+</button>
+                        </div>
+                    </label>
+                    <label>Yellow cards
+                        <div class="event-row" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;">
+                            <select id="nationalAwayYellowNumber"></select>
+                            <select id="nationalAwayYellowReason">
+                                <option value="descent">descent</option>
+                                <option value="simulation">simulation</option>
+                                <option value="dangerous tackle">dangerous tackle</option>
+                                <option value="last man tackle">last man tackle</option>
+                                <option value="coach/manager">coach/manager</option>
+                            </select>
+                            <button type="button" onclick="addCardEvent('awayYellowCards', 'nationalAwayYellowNumber', 'nationalAwayYellowReason', 'national')">Add</button>
+                        </div>
+                        <div id="nationalAwayYellowList" class="event-list"></div>
+                    </label>
+                    <label>Red cards
+                        <div class="event-row" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;">
+                            <select id="nationalAwayRedNumber"></select>
+                            <select id="nationalAwayRedReason">
+                                <option value="descent">descent</option>
+                                <option value="simulation">simulation</option>
+                                <option value="dangerous tackle">dangerous tackle</option>
+                                <option value="last man tackle">last man tackle</option>
+                                <option value="coach/manager">coach/manager</option>
+                            </select>
+                            <button type="button" onclick="addCardEvent('awayRedCards', 'nationalAwayRedNumber', 'nationalAwayRedReason', 'national')">Add</button>
+                        </div>
+                        <div id="nationalAwayRedList" class="event-list"></div>
+                    </label>
+                </div>
+            </div>
             <div class="form-footer">
                 <button id="saveNationalButton" type="button">Save national fixture</button>
                 <div class="status-pill" id="nationalSaveStatus">Not saved</div>
@@ -1120,7 +1226,15 @@
         'homeYellowNumber',
         'awayYellowNumber',
         'homeRedNumber',
-        'awayRedNumber'
+        'awayRedNumber',
+        'nationalHomeScorerNumber',
+        'nationalAwayScorerNumber',
+        'nationalHomeAssistNumber',
+        'nationalAwayAssistNumber',
+        'nationalHomeYellowNumber',
+        'nationalAwayYellowNumber',
+        'nationalHomeRedNumber',
+        'nationalAwayRedNumber'
     ];
 
     const DEFAULT_MATCH_STATS = {
