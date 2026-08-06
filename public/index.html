@@ -2378,11 +2378,11 @@ function updateLiveStatus() {
     let isLive = false;
     if (tournamentData) {
         for (const r in tournamentData) {
-            if (tournamentData[r].matches && tournamentData[r].matches.some(m => m.st === 'LIVE')) {
+            if (tournamentData[r].matches && tournamentData[r].matches.some(m => String(m.st || '').trim().toUpperCase() === 'LIVE')) {
                 isLive = true;
                 break;
             }
-            if (tournamentData[r].playoffs && tournamentData[r].playoffs.some(m => m.st === 'LIVE')) {
+            if (tournamentData[r].playoffs && tournamentData[r].playoffs.some(m => String(m.st || '').trim().toUpperCase() === 'LIVE')) {
                 isLive = true;
                 break;
             }
@@ -2594,7 +2594,8 @@ function renderDashboard() {
         if (rData.matches) {
             totalMatches += rData.matches.length;
             rData.matches.forEach(m => {
-                if ((m.st === 'FINAL' || m.st === 'LIVE') && m.s1 != null && m.s2 != null) {
+                const status = String(m.st || '').trim().toUpperCase();
+                if ((status === 'FINAL' || status === 'LIVE') && m.s1 != null && m.s2 != null) {
                     totalGoals += (m.s1 + m.s2);
                 }
             });
@@ -2602,7 +2603,8 @@ function renderDashboard() {
         if (rData.playoffs) {
             totalMatches += rData.playoffs.length;
             rData.playoffs.forEach(m => {
-                if ((m.st === 'FINAL' || m.st === 'LIVE') && m.s1 != null && m.s2 != null) {
+                const status = String(m.st || '').trim().toUpperCase();
+                if ((status === 'FINAL' || status === 'LIVE') && m.s1 != null && m.s2 != null) {
                     totalGoals += (m.s1 + m.s2);
                 }
             });
@@ -2619,10 +2621,10 @@ function renderDashboard() {
     const upcomingMatchesAll = [];
     for (const [rName, rData] of Object.entries(tournamentData)) {
         if (rData.matches) {
-            upcomingMatchesAll.push(...rData.matches.filter(m => m.st === 'UPCOMING' || m.st === 'LIVE'));
+            upcomingMatchesAll.push(...rData.matches.filter(m => ['UPCOMING', 'LIVE'].includes(String(m.st || '').trim().toUpperCase())));
         }
         if (rData.playoffs) {
-            upcomingMatchesAll.push(...rData.playoffs.filter(m => m.st === 'UPCOMING' || m.st === 'LIVE'));
+            upcomingMatchesAll.push(...rData.playoffs.filter(m => ['UPCOMING', 'LIVE'].includes(String(m.st || '').trim().toUpperCase())));
         }
     }
     const parseTime = t => {
@@ -2658,7 +2660,7 @@ function renderDashboard() {
             const nextMatch = upcomingMatchesAll[0];
             const matchDate = nextMatch.d ? `${nextMatch.d} ` : '';
             const matchTime = nextMatch.t || nextMatch.time || 'TBD';
-            const formatted = nextMatch.st === 'LIVE'
+            const formatted = String(nextMatch.st || '').trim().toUpperCase() === 'LIVE'
                 ? `LIVE: ${nextMatch.t1} vs ${nextMatch.t2}`
                 : `${matchDate}${matchTime} ${nextMatch.t1} vs ${nextMatch.t2}`;
             statNextMatchEl.textContent = formatted;
@@ -3522,11 +3524,13 @@ function renderHomePreviews() {
                 allMatches = allMatches.concat(tournamentData[r].playoffs.map(m => ({...m, region: r})));
             }
         }
-        const activeMatches = allMatches.filter(m => m.st === 'LIVE' || m.st === 'FINAL');
+        const activeMatches = allMatches.filter(m => ['LIVE', 'FINAL'].includes(String(m.st || '').trim().toUpperCase()));
         
         activeMatches.sort((a, b) => {
-            if (a.st === 'LIVE' && b.st !== 'LIVE') return -1;
-            if (b.st === 'LIVE' && a.st !== 'LIVE') return 1;
+            const aStatus = String(a.st || '').trim().toUpperCase();
+            const bStatus = String(b.st || '').trim().toUpperCase();
+            if (aStatus === 'LIVE' && bStatus !== 'LIVE') return -1;
+            if (bStatus === 'LIVE' && aStatus !== 'LIVE') return 1;
             return 0; 
         });
         
@@ -3544,10 +3548,12 @@ function renderHomePreviews() {
         if (!regionData) return [];
         const playoffMatches = resolvePlayoffPlaceholders(regionData.playoffs || []);
         const nextPlayoffMatches = playoffMatches
-            .filter(m => m.st === 'LIVE' || m.st === 'UPCOMING')
+            .filter(m => ['LIVE', 'UPCOMING'].includes(String(m.st || '').trim().toUpperCase()))
             .sort((a, b) => {
                 const order = { LIVE: 0, UPCOMING: 1, FINAL: 2 };
-                return (order[a.st] || 3) - (order[b.st] || 3);
+                const aStatus = String(a.st || '').trim().toUpperCase();
+                const bStatus = String(b.st || '').trim().toUpperCase();
+                return (order[aStatus] || 3) - (order[bStatus] || 3);
             });
         if (nextPlayoffMatches.length > 0) {
             return nextPlayoffMatches.slice(0, 2);
