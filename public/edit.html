@@ -171,6 +171,43 @@
         @media (max-width: 720px) {
             .form-row { grid-template-columns: 1fr; }
             .page-card { padding: 14px; }
+            .national-card .form-row > label {
+                margin-bottom: 14px;
+            }
+            .national-card .national-actions-row {
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: 10px;
+            }
+            .national-card .national-actions-row button {
+                width: 100%;
+                min-height: 48px;
+            }
+            .national-card .form-row .national-actions-row + div {
+                display: none;
+            }
+            .national-card .form-row select {
+                min-height: 48px;
+            }
+            .national-card .stats-grid {
+                gap: 14px;
+            }
+            .national-card .stats-card {
+                padding: 12px;
+            }
+            .national-card .stats-card h3 {
+                font-size: 0.74rem;
+            }
+            .national-card .save-control button {
+                min-width: 44px;
+            }
+            .national-card .event-list {
+                gap: 10px;
+            }
+            .national-card .chip-remove {
+                font-size: 0.84rem;
+            }
             .card-title { font-size: 0.88rem; margin-bottom: 16px; }
             label { font-size: 0.64rem; }
             input, select { font-size: 0.78rem; padding: 14px 12px; min-height: 46px; }
@@ -678,13 +715,13 @@
             <p class="hint">Use this section to manage playoff matchups and results separately from pool matches.</p>
             </div>
 
-        <div class="page-card" style="margin-top: 24px;">
+        <div class="page-card national-card" style="margin-top: 24px;">
             <h2 class="card-title">National Finals (August)</h2>
             <div class="form-row">
                 <label>Fixture
                     <select id="nationalSelect"></select>
                 </label>
-                <div style="display: flex; gap: 10px; align-items: flex-end;">
+                <div class="national-actions-row" style="display: flex; gap: 10px; align-items: flex-end;">
                     <button id="addNationalButton" type="button">Add fixture</button>
                     <button id="deleteNationalButton" type="button" style="background: var(--violet); border-color: var(--violet);">Delete fixture</button>
                 </div>
