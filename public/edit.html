@@ -1374,6 +1374,101 @@
         return poolMatch ? poolMatch[0].replace(/pool/i, 'Pool') : '';
     }
 
+    function getNationalFixtureNumber(match) {
+        const type = String(match?.type || '');
+        const found = type.match(/\bM\s*(\d+)\b/i);
+        return found ? Number(found[1]) : null;
+    }
+
+    function getNationalFixtureStatus(match) {
+        return String(match?.st || 'UPCOMING').trim().toUpperCase();
+    }
+
+    function toOrdinalLabel(value) {
+        if (value === 1) return '1st';
+        if (value === 2) return '2nd';
+        if (value === 3) return '3rd';
+        return `${value}th`;
+    }
+
+    function buildNationalFinalsRankMap(regionData, matches) {
+        const poolsCopy = JSON.parse(JSON.stringify(regionData?.pools || {}));
+        calculateStandings({ pools: poolsCopy, matches: matches || regionData?.matches || [] });
+
+        const rankMap = {};
+        Object.entries(poolsCopy).forEach(([poolName, teams]) => {
+            const poolLetterMatch = poolName.match(/([A-Z])$/i);
+            const poolLetter = poolLetterMatch ? poolLetterMatch[1].toUpperCase() : poolName.replace('Pool ', '').trim().toUpperCase();
+            const sortedTeams = [...teams].sort((a, b) => (b.points - a.points) || (b.gd - a.gd) || a.name.localeCompare(b.name));
+            sortedTeams.forEach((team, idx) => {
+                const rankToken = `${toOrdinalLabel(idx + 1)} pool ${poolLetter}`.toLowerCase();
+                rankMap[rankToken] = team.name;
+            });
+        });
+
+        return rankMap;
+    }
+
+    function resolveNationalFinalsFixtures(regionData) {
+        if (!regionData || !Array.isArray(regionData.matches)) return [];
+
+        const resolvedMatches = regionData.matches.map(match => ({ ...match }));
+        const rankMap = buildNationalFinalsRankMap(regionData, resolvedMatches);
+        const matchIndexByNumber = {};
+
+        resolvedMatches.forEach((match, index) => {
+            const matchNumber = getNationalFixtureNumber(match);
+            if (matchNumber != null) {
+                matchIndexByNumber[matchNumber] = index;
+            }
+        });
+
+        const normalizeToken = value => String(value || '').trim().replace(/\s+/g, ' ').toLowerCase();
+        const outcomeTokenPattern = /^(winner|loser)\s*m\s*(\d+)$/i;
+
+        const resolvePoolRankToken = token => rankMap[normalizeToken(token)] || token;
+
+        const resolveOutcomeToken = token => {
+            const normalized = String(token || '').trim();
+            const match = normalized.match(outcomeTokenPattern);
+            if (!match) return token;
+
+            const side = match[1].toLowerCase();
+            const sourceMatchNo = Number(match[2]);
+            const sourceIndex = matchIndexByNumber[sourceMatchNo];
+            if (sourceIndex == null) return token;
+
+            const sourceOutcome = getMatchOutcome(resolvedMatches[sourceIndex]);
+            if (!sourceOutcome) return token;
+            return side === 'winner' ? sourceOutcome.winner : sourceOutcome.loser;
+        };
+
+        resolvedMatches.forEach(match => {
+            match.t1 = resolvePoolRankToken(match.t1);
+            match.t2 = resolvePoolRankToken(match.t2);
+        });
+
+        let updated = true;
+        let guard = 0;
+        while (updated && guard < 8) {
+            updated = false;
+            guard += 1;
+            resolvedMatches.forEach(match => {
+                const beforeT1 = match.t1;
+                const beforeT2 = match.t2;
+
+                match.t1 = resolvePoolRankToken(resolveOutcomeToken(match.t1));
+                match.t2 = resolvePoolRankToken(resolveOutcomeToken(match.t2));
+
+                if (match.t1 !== beforeT1 || match.t2 !== beforeT2) {
+                    updated = true;
+                }
+            });
+        }
+
+        return resolvedMatches;
+    }
+
     function renderNationalPoolTabs(poolNames) {
         if (!nationalPoolTabs) return;
         const availablePools = ['ALL', ...poolNames];
@@ -1807,8 +1902,8 @@
             });
         }
 
-        // 3. Iterate through FINAL matches only to calculate official points
-        const finishedMatches = matches.filter(m => m.st === 'FINAL');
+        // 3. Iterate through FINAL or LIVE matches to calculate official points
+        const finishedMatches = matches.filter(m => ['FINAL', 'LIVE'].includes(getNationalFixtureStatus(m)));
 
         finishedMatches.forEach(match => {
             const score1 = match.s1;
@@ -2142,7 +2237,7 @@
     }
 
     function getMatchOutcome(match) {
-        if (!match || match.st !== 'FINAL' || match.s1 == null || match.s2 == null) return null;
+        if (!match || !['FINAL', 'LIVE'].includes(getNationalFixtureStatus(match)) || match.s1 == null || match.s2 == null) return null;
         if (match.s1 === match.s2) {
             if (match.ps1 != null && match.ps2 != null && match.ps1 !== match.ps2) {
                 return match.ps1 > match.ps2
@@ -2286,6 +2381,7 @@
         populateQualifiedTeamsList();
         const nationalData = tournamentData["National Finals"];
         if (!nationalData) return;
+        nationalData.matches = resolveNationalFinalsFixtures(nationalData);
         const matches = nationalData.matches || [];
         const poolNames = [...new Set(matches.map(getNationalFixturePool).filter(Boolean))].sort((a, b) => a.localeCompare(b));
         renderNationalPoolTabs(poolNames);
@@ -2394,6 +2490,8 @@
             const nPen2 = document.getElementById('nationalPenalties2').value;
             fixture.ps1 = nPen1 !== '' ? Number(nPen1) : null;
             fixture.ps2 = nPen2 !== '' ? Number(nPen2) : null;
+
+            nationalData.matches = resolveNationalFinalsFixtures(nationalData);
 
             await saveData();
             populateNationalOptions();
