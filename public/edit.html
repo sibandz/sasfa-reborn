@@ -168,11 +168,34 @@
             margin-bottom: 18px;
             font-family: "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
         }
+        .national-card .national-pool-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .national-card .national-pool-tabs button {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: var(--text-main);
+            padding: 10px 12px;
+        }
+        .national-card .national-pool-tabs button.active {
+            background: var(--lime);
+            border-color: var(--lime);
+            color: var(--ink);
+        }
         @media (max-width: 720px) {
             .form-row { grid-template-columns: 1fr; }
             .page-card { padding: 14px; }
             .national-card .form-row > label {
                 margin-bottom: 14px;
+            }
+            .national-card .national-pool-tabs {
+                gap: 8px;
+            }
+            .national-card .national-pool-tabs button {
+                min-height: 42px;
+                padding: 10px 12px;
             }
             .national-card .national-actions-row {
                 width: 100%;
@@ -641,7 +664,7 @@
             </div>
             <p class="hint">After saving, refresh the public fixtures page to see the latest results. Use the print button to generate a manager result sheet for the selected match.</p>
 
-            <div class="page-card" style="margin-top: 24px;">
+            <div class="page-card" id="playoffCard" style="margin-top: 24px;">
             <h2 class="card-title">Regional Playoff Fixtures</h2>
             <div class="form-row">
                 <label>Province/Region
@@ -715,16 +738,22 @@
             <p class="hint">Use this section to manage playoff matchups and results separately from pool matches.</p>
             </div>
 
-        <div class="page-card national-card" style="margin-top: 24px;">
+        <div class="page-card national-card" id="nationalCard" style="margin-top: 24px;">
             <h2 class="card-title">National Finals (August)</h2>
             <div class="form-row">
-                <label>Fixture
-                    <select id="nationalSelect"></select>
+                <label>Pool
+                    <div id="nationalPoolTabs" class="national-pool-tabs"></div>
                 </label>
                 <div class="national-actions-row" style="display: flex; gap: 10px; align-items: flex-end;">
                     <button id="addNationalButton" type="button">Add fixture</button>
                     <button id="deleteNationalButton" type="button" style="background: var(--violet); border-color: var(--violet);">Delete fixture</button>
                 </div>
+            </div>
+            <div class="form-row">
+                <label>Fixture
+                    <select id="nationalSelect"></select>
+                </label>
+                <div></div>
             </div>
             <div class="form-row">
                 <label>Date
@@ -1279,6 +1308,7 @@
     let activeMatchIndex = 0;
     let activePlayoffIndex = 0;
     let activeNationalIndex = 0;
+    let activeNationalPool = sessionStorage.getItem('activeNationalPool') || 'ALL';
     let lastSavedSnapshot = '';
     let pendingSavePromise = null;
 
@@ -1326,6 +1356,7 @@
     const printNationalButton = document.getElementById('printNationalButton');
     const addNationalButton = document.getElementById('addNationalButton');
     const deleteNationalButton = document.getElementById('deleteNationalButton');
+    const nationalPoolTabs = document.getElementById('nationalPoolTabs');
     const nationalSaveStatus = document.getElementById('nationalSaveStatus');
 
     const CARD_REASON_OPTIONS = ['descent', 'simulation', 'dangerous tackle', 'last man tackle', 'coach/manager'];
@@ -1335,6 +1366,36 @@
         if (!raw) return CARD_REASON_OPTIONS[0];
         if (raw === 'decent') return 'descent';
         return CARD_REASON_OPTIONS.includes(raw) ? raw : CARD_REASON_OPTIONS[0];
+    }
+
+    function getNationalFixturePool(match) {
+        const type = String(match?.type || '').trim();
+        const poolMatch = type.match(/Pool\s+[A-D]/i);
+        return poolMatch ? poolMatch[0].replace(/pool/i, 'Pool') : '';
+    }
+
+    function renderNationalPoolTabs(poolNames) {
+        if (!nationalPoolTabs) return;
+        const availablePools = ['ALL', ...poolNames];
+        if (!availablePools.includes(activeNationalPool)) {
+            activeNationalPool = 'ALL';
+            sessionStorage.setItem('activeNationalPool', activeNationalPool);
+        }
+        nationalPoolTabs.innerHTML = availablePools.map(pool => {
+            const label = pool === 'ALL' ? 'All fixtures' : pool;
+            const activeClass = activeNationalPool === pool ? 'active' : '';
+            return `<button type="button" class="${activeClass}" data-national-pool="${pool}">${label}</button>`;
+        }).join('');
+        nationalPoolTabs.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', () => changeNationalPool(button.dataset.nationalPool || 'ALL'));
+        });
+    }
+
+    function changeNationalPool(pool) {
+        activeNationalPool = pool || 'ALL';
+        sessionStorage.setItem('activeNationalPool', activeNationalPool);
+        populateNationalOptions();
+        setNationalStatus(activeNationalPool === 'ALL' ? 'Showing all National fixtures.' : `Showing ${activeNationalPool} fixtures.`);
     }
     const STATS_NUMBER_SELECT_IDS = [
         'homeScorerNumber',
@@ -2226,11 +2287,24 @@
         const nationalData = tournamentData["National Finals"];
         if (!nationalData) return;
         const matches = nationalData.matches || [];
-        nationalSelect.innerHTML = matches.length > 0
-            ? matches.map((match, index) =>
+        const poolNames = [...new Set(matches.map(getNationalFixturePool).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+        renderNationalPoolTabs(poolNames);
+
+        const filteredMatches = activeNationalPool === 'ALL'
+            ? matches.map((match, index) => ({ match, index }))
+            : matches
+                .map((match, index) => ({ match, index }))
+                .filter(entry => getNationalFixturePool(entry.match) === activeNationalPool);
+
+        nationalSelect.innerHTML = filteredMatches.length > 0
+            ? filteredMatches.map(({ match, index }) =>
                 `<option value="${index}">${match.d || 'TBD'} ${match.t || 'TBD'} — ${match.t1 || 'TBD'} vs ${match.t2 || 'TBD'}</option>`
             ).join('')
-            : `<option value="0">No National fixtures yet</option>`;
+            : `<option value="0">No National fixtures in this pool</option>`;
+
+        if (filteredMatches.length > 0 && !filteredMatches.some(entry => entry.index === activeNationalIndex)) {
+            activeNationalIndex = filteredMatches[0].index;
+        }
         if (activeNationalIndex >= matches.length) {
             activeNationalIndex = 0;
         }
@@ -2504,6 +2578,11 @@
     (async () => {
         initializeStatsEditorControls();
         await loadSavedData();
+        const nationalCard = document.getElementById('nationalCard');
+        const playoffCard = document.getElementById('playoffCard');
+        if (nationalCard && playoffCard && nationalCard.parentElement === playoffCard.parentElement) {
+            playoffCard.before(nationalCard);
+        }
         if (sessionStorage.getItem(AUTH_FLAG) === 'true') {
             showEditor();
         } else {
