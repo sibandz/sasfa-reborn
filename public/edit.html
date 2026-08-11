@@ -173,12 +173,20 @@
             flex-wrap: wrap;
             gap: 8px;
         }
+        .national-card .national-stage-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .national-card .national-stage-tabs button,
         .national-card .national-pool-tabs button {
             background: transparent;
             border: 1px solid rgba(255, 255, 255, 0.18);
             color: var(--text-main);
             padding: 10px 12px;
         }
+        .national-card .national-stage-tabs button.active,
         .national-card .national-pool-tabs button.active {
             background: var(--lime);
             border-color: var(--lime);
@@ -741,6 +749,9 @@
         <div class="page-card national-card" id="nationalCard" style="margin-top: 24px;">
             <h2 class="card-title">National Finals (August)</h2>
             <div class="form-row">
+                <label>Section
+                    <div id="nationalStageTabs" class="national-stage-tabs"></div>
+                </label>
                 <label>Pool
                     <div id="nationalPoolTabs" class="national-pool-tabs"></div>
                 </label>
@@ -1308,6 +1319,7 @@
     let activeMatchIndex = 0;
     let activePlayoffIndex = 0;
     let activeNationalIndex = 0;
+    let activeNationalStage = sessionStorage.getItem('activeNationalStage') || 'quarterfinal';
     let activeNationalPool = sessionStorage.getItem('activeNationalPool') || 'ALL';
     let lastSavedSnapshot = '';
     let pendingSavePromise = null;
@@ -1356,6 +1368,7 @@
     const printNationalButton = document.getElementById('printNationalButton');
     const addNationalButton = document.getElementById('addNationalButton');
     const deleteNationalButton = document.getElementById('deleteNationalButton');
+    const nationalStageTabs = document.getElementById('nationalStageTabs');
     const nationalPoolTabs = document.getElementById('nationalPoolTabs');
     const nationalSaveStatus = document.getElementById('nationalSaveStatus');
 
@@ -1372,6 +1385,31 @@
         const type = String(match?.type || '').trim();
         const poolMatch = type.match(/Pool\s+[A-D]/i);
         return poolMatch ? poolMatch[0].replace(/pool/i, 'Pool') : '';
+    }
+
+    function getNationalFixtureStage(match) {
+        const type = String(match?.type || '').toLowerCase();
+        if (type.includes('quarter')) return 'quarterfinal';
+        if (type.includes('semi')) return 'semifinal';
+        if (type.includes('final')) return 'final';
+        return 'groupstage';
+    }
+
+    function getNationalFixtureTierPriority(match) {
+        const type = String(match?.type || '').toLowerCase();
+        if (type.includes('cup')) return 0;
+        if (type.includes('plate')) return 1;
+        if (type.includes('bowl')) return 2;
+        if (type.includes('play-off') || type.includes('playoff')) return 3;
+        return 4;
+    }
+
+    function compareNationalFixtures(a, b) {
+        const tierDiff = getNationalFixtureTierPriority(a) - getNationalFixtureTierPriority(b);
+        if (tierDiff !== 0) return tierDiff;
+        const numberDiff = (getNationalFixtureNumber(a) || 999) - (getNationalFixtureNumber(b) || 999);
+        if (numberDiff !== 0) return numberDiff;
+        return String(a?.type || '').localeCompare(String(b?.type || ''));
     }
 
     function getNationalFixtureNumber(match) {
@@ -1486,11 +1524,43 @@
         });
     }
 
+    function renderNationalStageTabs() {
+        if (!nationalStageTabs) return;
+        const stages = [
+            { value: 'quarterfinal', label: 'Quarter-finals' },
+            { value: 'semifinal', label: 'Semi-finals' },
+            { value: 'final', label: 'Finals' },
+            { value: 'groupstage', label: 'Group Stage' }
+        ];
+        if (!stages.some(stage => stage.value === activeNationalStage)) {
+            activeNationalStage = 'quarterfinal';
+            sessionStorage.setItem('activeNationalStage', activeNationalStage);
+        }
+        nationalStageTabs.innerHTML = stages.map(stage => {
+            const activeClass = activeNationalStage === stage.value ? 'active' : '';
+            return `<button type="button" class="${activeClass}" data-national-stage="${stage.value}">${stage.label}</button>`;
+        }).join('');
+        nationalStageTabs.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', () => changeNationalStage(button.dataset.nationalStage || 'quarterfinal'));
+        });
+    }
+
     function changeNationalPool(pool) {
         activeNationalPool = pool || 'ALL';
         sessionStorage.setItem('activeNationalPool', activeNationalPool);
         populateNationalOptions();
         setNationalStatus(activeNationalPool === 'ALL' ? 'Showing all National fixtures.' : `Showing ${activeNationalPool} fixtures.`);
+    }
+
+    function changeNationalStage(stage) {
+        activeNationalStage = stage || 'quarterfinal';
+        sessionStorage.setItem('activeNationalStage', activeNationalStage);
+        if (activeNationalStage !== 'groupstage') {
+            activeNationalPool = 'ALL';
+            sessionStorage.setItem('activeNationalPool', activeNationalPool);
+        }
+        populateNationalOptions();
+        setNationalStatus(activeNationalStage === 'groupstage' ? 'Showing group stage fixtures.' : `Showing ${activeNationalStage.replace('quarterfinal', 'quarter-final').replace('semifinal', 'semi-final').replace('final', 'final')} fixtures.`);
     }
     const STATS_NUMBER_SELECT_IDS = [
         'homeScorerNumber',
