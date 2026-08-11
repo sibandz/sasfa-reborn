@@ -3427,7 +3427,7 @@ function openMatchDetailModal(detailId) {
 }
 
 function renderMatch(match) {
-    const status = match.st || 'UPCOMING';
+    const status = getNormalizedMatchStatus(match);
     const detailId = String(matchDetailCounter++);
 
     matchDetailRegistry.push({
@@ -3489,7 +3489,7 @@ function renderMatchRow(match) {
     const broadcaster = `<a href="${broadcasterUrl}" target="_blank" rel="noopener noreferrer" class="broadcaster-link"><img src="${broadcasterLogo}" alt="Supersports Schools" class="broadcaster-logo" loading="lazy" decoding="async" data-fallback="/images/ss schools.png" onerror="if (this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; }" /><span class="broadcaster-label">Watch Live</span></a>`;
     const team1 = match.t1 || 'Team 1';
     const team2 = match.t2 || 'Team 2';
-    const status = String(match.st || 'UPCOMING').toUpperCase();
+    const status = getNormalizedMatchStatus(match);
     const showScoreline = (status === 'LIVE' || status === 'FINAL') && match.s1 != null && match.s2 != null;
     const scoreLabel = status === 'LIVE' ? 'LIVE' : (status === 'FINAL' ? 'FT' : '');
     const scoreText = showScoreline ? `${match.s1} - ${match.s2}` : '-';
@@ -3527,7 +3527,7 @@ function getPlayoffOutcome(match) {
 
 function getResolvedMatchOutcome(match) {
     if (!match || match.s1 == null || match.s2 == null) return null;
-    const status = (match.st || '').toUpperCase();
+    const status = getNormalizedMatchStatus(match);
     if (status !== 'FINAL' && status !== 'LIVE') return null;
 
     if (match.s1 > match.s2) return { winner: match.t1, loser: match.t2 };
@@ -3545,6 +3545,10 @@ function getMatchNumberFromType(match) {
     const typeLabel = String(match?.type || '');
     const found = typeLabel.match(/\bM\s*(\d+)\b/i);
     return found ? Number(found[1]) : null;
+}
+
+function getNormalizedMatchStatus(match) {
+    return String(match?.st || 'UPCOMING').trim().toUpperCase();
 }
 
 function getFinalsPoolFromMatch(match) {
@@ -3803,7 +3807,7 @@ function compareTeams(a, b, matches) {
         const normB = normalize(b.name);
         
         const h2hMatch = matches.find(m => 
-            (m.st === 'FINAL' || m.st === 'LIVE') && 
+            (getNormalizedMatchStatus(m) === 'FINAL' || getNormalizedMatchStatus(m) === 'LIVE') && 
             ((normalize(m.t1) === normA && normalize(m.t2) === normB) || 
              (normalize(m.t1) === normB && normalize(m.t2) === normA))
         );
@@ -3961,7 +3965,7 @@ function calculateStandings(pools, matches, statusesToInclude = ['FINAL']) {
     const allTeams = {};
     const normalize = name => (name || '').replace(/['\s]/g, '').toLowerCase();
     for (const poolName in pools) { pools[poolName].forEach(team => { allTeams[normalize(team.name)] = team; }); }
-    matches.filter(m => statusesToInclude.includes(m.st)).forEach(match => {
+    matches.filter(m => statusesToInclude.includes(getNormalizedMatchStatus(m))).forEach(match => {
         const t1 = allTeams[normalize(match.t1)], t2 = allTeams[normalize(match.t2)];
         if (t1 && t2) {
             t1.played += 1;
