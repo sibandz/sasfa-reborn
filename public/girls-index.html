@@ -2073,7 +2073,7 @@
         <a href="#feed-results">Results</a>
     </div>
 
-    <div class="phase-tabs" id="phaseTabs">
+    <div class="phase-tabs" id="phaseTabs" style="display: none;">
         <button class="phase-tab-btn active" data-phase="qualifications">Qualifications</button>
         <button class="phase-tab-btn" data-phase="playoffs">Playoffs</button>
         <button class="phase-tab-btn" data-phase="finals">National Finals</button>
@@ -2228,8 +2228,8 @@
 
 let tournamentData = JSON.parse(JSON.stringify(DEFAULT_TOURNAMENT_DATA));
 let activeTournament = sessionStorage.getItem('activeTournament') || 'halala';
-let activeRegion = sessionStorage.getItem('activeRegion') || 'National Finals';
-let activePhase = sessionStorage.getItem('activePhase') || 'finals';
+let activeRegion = 'National Finals';
+let activePhase = 'finals';
 let activeFinalsStage = sessionStorage.getItem('activeFinalsStage') || 'quarterfinal';
 let activeFinalsTeam = sessionStorage.getItem('activeFinalsTeam') || 'ALL';
 let activeFinalsGroup = sessionStorage.getItem('activeFinalsGroup') || 'ALL';
