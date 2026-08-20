@@ -2138,378 +2138,89 @@
 
 <script>
     const DEFAULT_TOURNAMENT_DATA = {
-        "Gauteng 1": {
+        "Regional Stage": {
             pools: {
-                "Pool A": [
-                    {name: "Clapham High School", seed: 1},
-                    {name: "Curro Cosmo City", seed: 12},
-                    {name: "The King's Linbro Park", seed: 13},
-                    {name: "Curro Parkdene", seed: 24}
-                ],
-                "Pool B": [
-                    {name: "Curro Thatchfield", seed: 4},
-                    {name: "Queens High School", seed: 9},
-                    {name: "HeronBridge College", seed: 16},
-                    {name: "Curro Clayville", seed: 21}
-                ]
+                "Pool A": [],
+                "Pool B": []
             },
-            matches: [
-                { d: "Friday 17 April", t: "11:00", t1: "Curro Cosmo City", t2: "Curro Parkdene", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "12:30", t1: "Clapham High School", t2: "The King's Linbro Park", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "14:00", t1: "Queens High School", t2: "Curro Clayville", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "15:30", t1: "Curro Thatchfield", t2: "HeronBridge College", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "11:00", t1: "Clapham High School", t2: "Curro Cosmo City", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "12:30", t1: "The King's Linbro Park", t2: "Curro Parkdene", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "14:00", t1: "Curro Thatchfield", t2: "Queens High School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "15:30", t1: "HeronBridge College", t2: "Curro Clayville", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "09:00", t1: "Clapham High School", t2: "Curro Parkdene", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "10:30", t1: "Curro Cosmo City", t2: "The King's Linbro Park", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "12:00", t1: "Curro Thatchfield", t2: "Curro Clayville", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "13:30", t1: "Queens High School", t2: "HeronBridge College", s1: 0, s2: 0, st: "UPCOMING" }
-            ]
-        },
-        "Gauteng 2": {
-            pools: {
-                "Pool A": [
-                    {name: "Rosina Sedibane Sport School", seed: 2},
-                    {name: "Curro Protea Glen", seed: 11},
-                    {name: "Curro Pretoria", seed: 14},
-                    {name: "Curro Hazeldean", seed: 23}
-                ],
-                "Pool B": [
-                    {name: "Mondeor High School", seed: 5},
-                    {name: "Curro Aurora", seed: 8},
-                    {name: "Curro Midrand", seed: 17},
-                    {name: "Vaal High School", seed: 20}
-                ]
-            },
-            matches: [
-                { d: "Friday 17 April", t: "11:00", t1: "Curro Protea Glen", t2: "Curro Hazeldean", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "12:30", t1: "Rosina Sedibane Sport School", t2: "Curro Pretoria", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "14:00", t1: "Curro Aurora", t2: "Vaal High School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "15:30", t1: "Mondeor High School", t2: "Curro Midrand", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "11:00", t1: "Rosina Sedibane Sport School", t2: "Curro Protea Glen", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "12:30", t1: "Curro Pretoria", t2: "Curro Hazeldean", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "14:00", t1: "Mondeor High School", t2: "Curro Aurora", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "15:30", t1: "Curro Midrand", t2: "Vaal High School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "09:00", t1: "Rosina Sedibane Sport School", t2: "Curro Hazeldean", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "10:30", t1: "Curro Protea Glen", t2: "Curro Pretoria", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "12:00", t1: "Mondeor High School", t2: "Vaal High School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "13:30", t1: "Curro Aurora", t2: "Curro Midrand", s1: 0, s2: 0, st: "UPCOMING" }
-            ]
-        },
-        "Western Cape": {
-            pools: {
-                "Pool A": [
-                    {name: "Reddam House Constantia", seed: 1},
-                    {name: "Milnerton High School", seed: 4},
-                    {name: "Curro Century City", seed: 5},
-                    {name: "Curro Somerset West", seed: 8}
-                ],
-                "Pool B": [
-                    {name: "Camps Bay High School", seed: 2},
-                    {name: "Meridian Pinehurst", seed: 2, origin: "Western Cape - Q1"},
-                    {name: "Curro Sandown", seed: 6},
-                    {name: "Somerset College", seed: 7}
-                ]
-            },
-            matches: [
-                { d: "Friday 17 April", t: "11:00", t1: "Milnerton High School", t2: "Curro Somerset West", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "12:30", t1: "Reddam House Constantia", t2: "Curro Century City", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "14:00", t1: "Meridian Pinehurst", t2: "Somerset College", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "15:30", t1: "Camps Bay High School", t2: "Curro Sandown", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "11:00", t1: "Reddam House Constantia", t2: "Milnerton High School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "12:30", t1: "Curro Century City", t2: "Curro Somerset West", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "14:00", t1: "Camps Bay High School", t2: "Meridian Pinehurst", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "15:30", t1: "Curro Sandown", t2: "Somerset College", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "09:00", t1: "Reddam House Constantia", t2: "Curro Somerset West", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "10:30", t1: "Milnerton High School", t2: "Curro Century City", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "12:00", t1: "Camps Bay High School", t2: "Somerset College", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "13:30", t1: "Meridian Pinehurst", t2: "Curro Sandown", s1: 0, s2: 0, st: "UPCOMING" }
-            ]
-        },
-        "KZN": {
-            pools: {
-                "Pool A": [
-                    {name: "Hillcrest High School", seed: 1},
-                    {name: "Durban High School", seed: 4},
-                    {name: "Kloof High School", seed: 5},
-                    {name: "Grantleigh College", seed: 8}
-                ],
-                "Pool B": [
-                    {name: "Glenwood High School", seed: 2},
-                    {name: "Pinetown Boys High School", seed: 3},
-                    {name: "Curro Hillcrest", seed: 6},
-                    {name: "Creston College", seed: 7}
-                ]
-            },
-            matches: [
-                { d: "Friday 17 April", t: "11:00", t1: "Durban High School", t2: "Grantleigh College", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "12:30", t1: "Hillcrest High School", t2: "Kloof High School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "14:00", t1: "Pinetown Boys High School", t2: "Creston College", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "15:30", t1: "Glenwood High School", t2: "Curro Hillcrest", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "11:00", t1: "Hillcrest High School", t2: "Durban High School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "12:30", t1: "Kloof High School", t2: "Grantleigh College", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "14:00", t1: "Glenwood High School", t2: "Pinetown Boys High School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "15:30", t1: "Curro Hillcrest", t2: "Creston College", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "09:00", t1: "Hillcrest High School", t2: "Grantleigh College", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "10:30", t1: "Durban High School", t2: "Kloof High School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "12:00", t1: "Glenwood High School", t2: "Creston College", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "13:30", t1: "Pinetown Boys High School", t2: "Curro Hillcrest", s1: 0, s2: 0, st: "UPCOMING" }
-            ]
-        },
-        "Free State": {
-            pools: {
-                "Pool A": [
-                    {name: "Saint Annes Technical High School", seed: 1},
-                    {name: "Brebner High School", seed: 4},
-                    {name: "Moroka High School", seed: 5},
-                    {name: "Bloemfontein High School", seed: 8}
-                ],
-                "Pool B": [
-                    {name: "Virginia High School", seed: 2},
-                    {name: "HTS Louis Botha", seed: 3},
-                    {name: "Hodisa Secondary School", seed: 6},
-                    {name: "Curro Bloemfontein", seed: 7}
-                ]
-            },
-            matches: [
-                { d: "Friday 17 April", t: "11:00", t1: "Brebner High School", t2: "Bloemfontein High School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "12:30", t1: "Saint Annes Technical High School", t2: "Moroka High School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "14:00", t1: "HTS Louis Botha", t2: "Curro Bloemfontein", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "15:30", t1: "Virginia High School", t2: "Hodisa Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "11:00", t1: "Saint Annes Technical High School", t2: "Brebner High School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "12:30", t1: "Moroka High School", t2: "Bloemfontein High School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "14:00", t1: "Virginia High School", t2: "HTS Louis Botha", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "15:30", t1: "Hodisa Secondary School", t2: "Curro Bloemfontein", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "09:00", t1: "Saint Annes Technical High School", t2: "Bloemfontein High School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "10:30", t1: "Brebner High School", t2: "Moroka High School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "12:00", t1: "Virginia High School", t2: "Curro Bloemfontein", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "13:30", t1: "HTS Louis Botha", t2: "Hodisa Secondary School", s1: 0, s2: 0, st: "UPCOMING" }
-            ]
-        },
-        "Limpopo": {
-            pools: {
-                "Pool A": [
-                    {name: "Flora Park High School", seed: 1},
-                    {name: "Capricorn High School", seed: 4},
-                    {name: "Sebitja Secondary School", seed: 5},
-                    {name: "Louis Trichardt High School", seed: 8}
-                ],
-                "Pool B": [
-                    {name: "Westenburg High School", seed: 2},
-                    {name: "Taxila Secondary School", seed: 3},
-                    {name: "The Future Comprehensive School", seed: 6},
-                    {name: "HTS Tom Naude", seed: 7}
-                ]
-            },
-            matches: [
-                { d: "Friday 17 April", t: "11:00", t1: "Capricorn High School", t2: "Louis Trichardt High School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "12:30", t1: "Flora Park High School", t2: "Sebitja Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "14:00", t1: "Taxila Secondary School", t2: "HTS Tom Naude", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "15:30", t1: "Westenburg High School", t2: "The Future Comprehensive School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "11:00", t1: "Flora Park High School", t2: "Capricorn High School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "12:30", t1: "Sebitja Secondary School", t2: "Louis Trichardt High School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "14:00", t1: "Westenburg High School", t2: "Taxila Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "15:30", t1: "The Future Comprehensive School", t2: "HTS Tom Naude", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "09:00", t1: "Flora Park High School", t2: "Louis Trichardt High School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "10:30", t1: "Capricorn High School", t2: "Sebitja Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "12:00", t1: "Westenburg High School", t2: "HTS Tom Naude", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "13:30", t1: "Taxila Secondary School", t2: "The Future Comprehensive School", s1: 0, s2: 0, st: "UPCOMING" }
-            ]
-        },
-        "Mpumalanga": {
-            pools: {
-                "Pool A": [
-                    {name: "St Mark's International School", seed: 1},
-                    {name: "Meridian Karino", seed: 4},
-                    {name: "Beacon College", seed: 5},
-                    {name: "Curro Nelspruit", seed: 8}
-                ],
-                "Pool B": [
-                    {name: "Barberton High School", seed: 2},
-                    {name: "Lowveld High School", seed: 3},
-                    {name: "Curro Mbombela", seed: 6},
-                    {name: "Portia Shabangu Secondary School", seed: 7}
-                ]
-            },
-            matches: [
-                { d: "Friday 17 April", t: "11:00", t1: "Meridian Karino", t2: "Curro Nelspruit", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "12:30", t1: "St Mark's International School", t2: "Beacon College", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "14:00", t1: "Lowveld High School", t2: "Portia Shabangu Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "15:30", t1: "Barberton High School", t2: "Curro Mbombela", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "11:00", t1: "St Mark's International School", t2: "Meridian Karino", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "12:30", t1: "Beacon College", t2: "Curro Nelspruit", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "14:00", t1: "Barberton High School", t2: "Lowveld High School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "15:30", t1: "Curro Mbombela", t2: "Portia Shabangu Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "09:00", t1: "St Mark's International School", t2: "Curro Nelspruit", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "10:30", t1: "Meridian Karino", t2: "Beacon College", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "12:00", t1: "Barberton High School", t2: "Portia Shabangu Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "13:30", t1: "Lowveld High School", t2: "Curro Mbombela", s1: 0, s2: 0, st: "UPCOMING" }
-            ]
-        },
-        "Gauteng 3": {
-            pools: {
-                "Pool A": [
-                    {name: "Curro Soshanguve", seed: 3},
-                    {name: "Randfontein High", seed: 10},
-                    {name: "CBC Mount Edmund", seed: 15},
-                    {name: "Curro Serengeti", seed: 22}
-                ],
-                "Pool B": [
-                    {name: "Curro Wilgeheuwel", seed: 6},
-                    {name: "Waterstone College", seed: 7},
-                    {name: "Steyn City School", seed: 18},
-                    {name: "Woodhill College", seed: 19}
-                ]
-            },
-            matches: [
-                { d: "Friday 17 April", t: "11:00", t1: "Randfontein High", t2: "Curro Serengeti", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "12:30", t1: "Curro Soshanguve", t2: "CBC Mount Edmund", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "14:00", t1: "Waterstone College", t2: "Woodhill College", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Friday 17 April", t: "15:30", t1: "Curro Wilgeheuwel", t2: "Steyn City School", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "11:00", t1: "Curro Soshanguve", t2: "Randfontein High", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "12:30", t1: "CBC Mount Edmund", t2: "Curro Serengeti", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "14:00", t1: "Curro Wilgeheuwel", t2: "Waterstone College", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Saturday 18 April", t: "15:30", t1: "Steyn City School", t2: "Woodhill College", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "09:00", t1: "Curro Soshanguve", t2: "Curro Serengeti", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "10:30", t1: "Randfontein High", t2: "CBC Mount Edmund", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "12:00", t1: "Curro Wilgeheuwel", t2: "Woodhill College", s1: 0, s2: 0, st: "UPCOMING" },
-                { d: "Sunday 19 April", t: "13:30", t1: "Waterstone College", t2: "Steyn City School", s1: 0, s2: 0, st: "UPCOMING" }
-            ]
+            matches: []
         },
         "National Finals": {
             pools: {
                 "Pool A": [
-                    {name: "Navalsig High School", seed: 1, origin: "Auto-qualifier"},
-                    {name: "Curro Thatchfield", seed: 6, origin: "Wildcard"},
-                    {name: "Flora Park High School", seed: 2, origin: "Limpopo - Q1"},
-                    {name: "Camps Bay High School", seed: 5, origin: "Western Cape - Q2"},
-                    {name: "Virginia High School", seed: 3, origin: "Free State - Q1"},
-                    {name: "Curro Soshanguve", seed: 4, origin: "Gauteng 3 - Q2"}
+                    {name: "Clapham High School", seed: 1},
+                    {name: "The King's School Linbro Park", seed: 2},
+                    {name: "Curro Protea Glen", seed: 3},
+                    {name: "Pretoria High School For Girls", seed: 4}
                 ],
                 "Pool B": [
-                    {name: "Grey College", seed: 1, origin: "Auto-qualifier"},
-                    {name: "Curro Century City", seed: 6, origin: "Wildcard"},
-                    {name: "CBC Mount Edmund", seed: 2, origin: "Gauteng 3 - Q1"},
-                    {name: "Meridian Cosmo City", seed: 5, origin: "Gauteng 1 - Q2"},
-                    {name: "Clapham High School", seed: 3, origin: "Gauteng 1 - Q1"},
-                    {name: "Barberton High School", seed: 4, origin: "Mpumalanga - Q2"}
+                    {name: "Norkem Park High", seed: 1},
+                    {name: "Meridian Cosmo City", seed: 2},
+                    {name: "Curro Soshanguve", seed: 3},
+                    {name: "HeronBridge College", seed: 4}
                 ],
                 "Pool C": [
-                    {name: "Northern Academy", seed: 1, origin: "Auto-qualifier"},
-                    {name: "Waterstone College", seed: 6, origin: "Wildcard"},
-                    {name: "Rosina Sedibane", seed: 2, origin: "Gauteng 2 - Q1"},
-                    {name: "St Anne's High School", seed: 5, origin: "Free State - Q2"},
-                    {name: "Glenwood High School", seed: 3, origin: "KwaZulu-Natal - Q1"},
-                    {name: "Westenburg High School", seed: 4, origin: "Limpopo - Q2"}
+                    {name: "Curro Wilgeheuwel", seed: 1},
+                    {name: "TrinityHouse Randpark", seed: 2},
+                    {name: "Parktown High School For Girls", seed: 3},
+                    {name: "Northern Academy", seed: 4}
                 ],
                 "Pool D": [
-                    {name: "Norkem Park High School", seed: 1, origin: "Auto-qualifier"},
-                    {name: "Mondeor High School", seed: 6, origin: "Wildcard"},
-                    {name: "Meridian Pinehurst", seed: 2, origin: "Western Cape - Q1"},
-                    {name: "Vaal High School", seed: 5, origin: "Gauteng 2 - Q2"},
-                    {name: "Curro Nelspruit", seed: 3, origin: "Mpumalanga - Q1"},
-                    {name: "Durban High School", seed: 4, origin: "KwaZulu-Natal - Q2"}
+                    {name: "Hoerskool FH Odendaal", seed: 1},
+                    {name: "Steyn City School", seed: 2},
+                    {name: "Waterstone College", seed: 3},
+                    {name: "Curro Nelspruit", seed: 4}
                 ]
             },
             matches: [
-                { d: "Friday 7 August", t: "08:00", t1: "Northern Academy", t2: "Waterstone College", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M1" },
-                { d: "Friday 7 August", t: "09:10", t1: "Rosina Sedibane", t2: "St Anne's High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M2" },
-                { d: "Friday 7 August", t: "10:20", t1: "Glenwood High School", t2: "Westenburg High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M3" },
-                { d: "Friday 7 August", t: "08:00", t1: "Navalsig High School", t2: "Curro Thatchfield", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M4" },
-                { d: "Friday 7 August", t: "09:10", t1: "Flora Park High School", t2: "Camps Bay High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M5" },
-                { d: "Friday 7 August", t: "10:20", t1: "Virginia High School", t2: "Curro Soshanguve", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M6" },
-                { d: "Friday 7 August", t: "08:00", t1: "Grey College", t2: "Curro Century City", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M7" },
-                { d: "Friday 7 August", t: "09:10", t1: "CBC Mount Edmund", t2: "Meridian Cosmo City", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M8" },
-                { d: "Friday 7 August", t: "10:20", t1: "Clapham High School", t2: "Barberton High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M9" },
-                { d: "Friday 7 August", t: "08:00", t1: "Norkem Park High School", t2: "Mondeor High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M10" },
-                { d: "Friday 7 August", t: "09:10", t1: "Meridian Pinehurst", t2: "Vaal High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M11" },
-                { d: "Friday 7 August", t: "10:20", t1: "Curro Nelspruit", t2: "Durban High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M12" },
-                { d: "Friday 7 August", t: "11:30", t1: "Northern Academy", t2: "St Anne's High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M13" },
-                { d: "Friday 7 August", t: "12:40", t1: "Waterstone College", t2: "Westenburg High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M14" },
-                { d: "Friday 7 August", t: "13:50", t1: "Rosina Sedibane", t2: "Glenwood High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M15" },
-                { d: "Friday 7 August", t: "15:00", t1: "Westenburg High School", t2: "Northern Academy", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M16" },
-                { d: "Friday 7 August", t: "16:10", t1: "St Anne's High School", t2: "Glenwood High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M17" },
-                { d: "Saturday 8 August", t: "09:10", t1: "Waterstone College", t2: "Rosina Sedibane", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M18" },
-                { d: "Friday 7 August", t: "11:30", t1: "Navalsig High School", t2: "Camps Bay High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M19" },
-                { d: "Friday 7 August", t: "12:40", t1: "Curro Thatchfield", t2: "Curro Soshanguve", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M20" },
-                { d: "Friday 7 August", t: "13:50", t1: "Flora Park High School", t2: "Virginia High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M21" },
-                { d: "Friday 7 August", t: "15:00", t1: "Curro Soshanguve", t2: "Navalsig High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M22" },
-                { d: "Friday 7 August", t: "16:10", t1: "Camps Bay High School", t2: "Virginia High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M23" },
-                { d: "Saturday 8 August", t: "09:10", t1: "Curro Thatchfield", t2: "Flora Park High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M24" },
-                { d: "Friday 7 August", t: "11:30", t1: "Grey College", t2: "Meridian Cosmo City", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M25" },
-                { d: "Friday 7 August", t: "12:40", t1: "Curro Century City", t2: "Barberton High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M26" },
-                { d: "Friday 7 August", t: "13:50", t1: "CBC Mount Edmund", t2: "Clapham High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M27" },
-                { d: "Friday 7 August", t: "15:00", t1: "Barberton High School", t2: "Grey College", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M28" },
-                { d: "Friday 7 August", t: "16:10", t1: "Meridian Cosmo City", t2: "Clapham High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M29" },
-                { d: "Saturday 8 August", t: "09:10", t1: "Curro Century City", t2: "CBC Mount Edmund", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M30" },
-                { d: "Friday 7 August", t: "11:30", t1: "Norkem Park High School", t2: "Vaal High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M31" },
-                { d: "Friday 7 August", t: "12:40", t1: "Mondeor High School", t2: "Durban High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M32" },
-                { d: "Friday 7 August", t: "13:50", t1: "Meridian Pinehurst", t2: "Curro Nelspruit", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M33" },
-                { d: "Friday 7 August", t: "15:00", t1: "Durban High School", t2: "Norkem Park High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M34" },
-                { d: "Friday 7 August", t: "16:10", t1: "Vaal High School", t2: "Curro Nelspruit", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M35" },
-                { d: "Saturday 8 August", t: "09:10", t1: "Mondeor High School", t2: "Meridian Pinehurst", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M36" },
-                { d: "Saturday 8 August", t: "10:20", t1: "Northern Academy", t2: "Glenwood High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M37" },
-                { d: "Saturday 8 August", t: "11:30", t1: "Rosina Sedibane", t2: "Westenburg High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M38" },
-                { d: "Saturday 8 August", t: "12:40", t1: "St Anne's High School", t2: "Waterstone College", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M39" },
-                { d: "Saturday 8 August", t: "13:50", t1: "Northern Academy", t2: "Rosina Sedibane", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M40" },
-                { d: "Saturday 8 August", t: "15:00", t1: "Glenwood High School", t2: "Waterstone College", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M41" },
-                { d: "Saturday 8 August", t: "16:10", t1: "Westenburg High School", t2: "St Anne's High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M42" },
-                { d: "Saturday 8 August", t: "10:20", t1: "Navalsig High School", t2: "Virginia High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M43" },
-                { d: "Saturday 8 August", t: "11:30", t1: "Flora Park High School", t2: "Curro Soshanguve", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M44" },
-                { d: "Saturday 8 August", t: "12:40", t1: "Camps Bay High School", t2: "Curro Thatchfield", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M45" },
-                { d: "Saturday 8 August", t: "13:50", t1: "Navalsig High School", t2: "Flora Park High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M46" },
-                { d: "Saturday 8 August", t: "15:00", t1: "Virginia High School", t2: "Curro Thatchfield", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M47" },
-                { d: "Saturday 8 August", t: "16:10", t1: "Curro Soshanguve", t2: "Camps Bay High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M48" },
-                { d: "Saturday 8 August", t: "10:20", t1: "Grey College", t2: "Clapham High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M49" },
-                { d: "Saturday 8 August", t: "11:30", t1: "CBC Mount Edmund", t2: "Barberton High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M50" },
-                { d: "Saturday 8 August", t: "12:40", t1: "Meridian Cosmo City", t2: "Curro Century City", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M51" },
-                { d: "Saturday 8 August", t: "13:50", t1: "Grey College", t2: "CBC Mount Edmund", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M52" },
-                { d: "Saturday 8 August", t: "15:00", t1: "Clapham High School", t2: "Curro Century City", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M53" },
-                { d: "Saturday 8 August", t: "16:10", t1: "Barberton High School", t2: "Meridian Cosmo City", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M54" },
-                { d: "Saturday 8 August", t: "10:20", t1: "Norkem Park High School", t2: "Curro Nelspruit", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M55" },
-                { d: "Saturday 8 August", t: "11:30", t1: "Meridian Pinehurst", t2: "Durban High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M56" },
-                { d: "Saturday 8 August", t: "12:40", t1: "Vaal High School", t2: "Mondeor High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M57" },
-                { d: "Saturday 8 August", t: "13:50", t1: "Norkem Park High School", t2: "Meridian Pinehurst", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M58" },
-                { d: "Saturday 8 August", t: "15:00", t1: "Curro Nelspruit", t2: "Mondeor High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M59" },
-                { d: "Saturday 8 August", t: "16:10", t1: "Durban High School", t2: "Vaal High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M60" },
-                { d: "Sunday 9 August", t: "08:00", t1: "5th Pool A", t2: "6th Pool B", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Bowl M61" },
-                { d: "Sunday 9 August", t: "08:00", t1: "6th Pool A", t2: "5th Pool B", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Bowl M62" },
-                { d: "Sunday 9 August", t: "08:00", t1: "5th Pool C", t2: "6th Pool D", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Bowl M63" },
-                { d: "Sunday 9 August", t: "08:00", t1: "6th Pool C", t2: "5th Pool D", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Bowl M64" },
-                { d: "Sunday 9 August", t: "09:10", t1: "3rd Pool A", t2: "4th Pool B", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Plate M65" },
-                { d: "Sunday 9 August", t: "09:10", t1: "4th Pool A", t2: "3rd Pool B", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Plate M66" },
-                { d: "Sunday 9 August", t: "09:10", t1: "3rd Pool C", t2: "4th Pool D", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Plate M67" },
-                { d: "Sunday 9 August", t: "09:10", t1: "4th Pool C", t2: "3rd Pool D", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Plate M68" },
-                { d: "Sunday 9 August", t: "10:20", t1: "1st Pool A", t2: "2nd Pool B", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Cup M69" },
-                { d: "Sunday 9 August", t: "10:20", t1: "2nd Pool A", t2: "1st Pool B", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Cup M70" },
-                { d: "Sunday 9 August", t: "10:20", t1: "1st Pool C", t2: "2nd Pool D", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Cup M71" },
-                { d: "Sunday 9 August", t: "10:20", t1: "2nd Pool C", t2: "1st Pool D", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Cup M72" },
-                { d: "Sunday 9 August", t: "11:30", t1: "Winner M61", t2: "Winner M64", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Bowl M73" },
-                { d: "Sunday 9 August", t: "11:30", t1: "Winner M62", t2: "Winner M63", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Bowl M74" },
-                { d: "Sunday 9 August", t: "11:30", t1: "Loser M62", t2: "Loser M63", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Bowl M75" },
-                { d: "Sunday 9 August", t: "11:30", t1: "Loser M61", t2: "Loser M64", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Bowl M76" },
-                { d: "Sunday 9 August", t: "12:40", t1: "Winner M65", t2: "Winner M68", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Plate M77" },
-                { d: "Sunday 9 August", t: "12:40", t1: "Winner M66", t2: "Winner M67", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Plate M78" },
-                { d: "Sunday 9 August", t: "12:40", t1: "Loser M66", t2: "Loser M67", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Plate M79" },
-                { d: "Sunday 9 August", t: "12:40", t1: "Loser M65", t2: "Loser M68", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Plate M80" },
-                { d: "Sunday 9 August", t: "13:50", t1: "Winner M69", t2: "Winner M72", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Cup M81" },
-                { d: "Sunday 9 August", t: "13:50", t1: "Winner M70", t2: "Winner M71", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Cup M82" },
-                { d: "Sunday 9 August", t: "13:50", t1: "Loser M70", t2: "Loser M71", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Cup M83" },
-                { d: "Sunday 9 August", t: "13:50", t1: "Loser M69", t2: "Loser M72", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Cup M84" },
-                { d: "Monday 10 August", t: "09:00", t1: "Winner M73", t2: "Winner M74", s1: null, s2: null, st: "UPCOMING", type: "Play-off Bowl M85 (17/18)" },
-                { d: "Monday 10 August", t: "09:00", t1: "Loser M73", t2: "Loser M74", s1: null, s2: null, st: "UPCOMING", type: "Play-off Bowl M86 (19/20)" },
-                { d: "Monday 10 August", t: "09:00", t1: "Winner M75", t2: "Winner M76", s1: null, s2: null, st: "UPCOMING", type: "Play-off Bowl M87 (21/22)" },
-                { d: "Monday 10 August", t: "09:00", t1: "Loser M75", t2: "Loser M76", s1: null, s2: null, st: "UPCOMING", type: "Play-off Bowl M88 (23/24)" },
-                { d: "Monday 10 August", t: "10:30", t1: "Winner M77", t2: "Winner M78", s1: null, s2: null, st: "UPCOMING", type: "Play-off Plate M89 (9/10)" },
-                { d: "Monday 10 August", t: "10:30", t1: "Loser M77", t2: "Loser M78", s1: null, s2: null, st: "UPCOMING", type: "Play-off Plate M90 (11/12)" },
-                { d: "Monday 10 August", t: "10:30", t1: "Winner M79", t2: "Winner M80", s1: null, s2: null, st: "UPCOMING", type: "Play-off Plate M91 (13/14)" },
-                { d: "Monday 10 August", t: "10:30", t1: "Loser M79", t2: "Loser M80", s1: null, s2: null, st: "UPCOMING", type: "Play-off Plate M92 (15/16)" },
-                { d: "Monday 10 August", t: "12:00", t1: "Loser M81", t2: "Loser M82", s1: null, s2: null, st: "UPCOMING", type: "Play-off Cup M93 (3/4)" },
-                { d: "Monday 10 August", t: "12:00", t1: "Winner M83", t2: "Winner M84", s1: null, s2: null, st: "UPCOMING", type: "Play-off Cup M94 (5/6)" },
-                { d: "Monday 10 August", t: "12:00", t1: "Loser M83", t2: "Loser M84", s1: null, s2: null, st: "UPCOMING", type: "Play-off Cup M95 (7/8)" },
-                { d: "Monday 10 August", t: "13:30", t1: "Winner M81", t2: "Winner M82", s1: null, s2: null, st: "UPCOMING", type: "Final Cup M97 (1/2)" }
+                { d: "Friday 14 August", t: "14:00", t1: "Clapham High School", t2: "Pretoria High School For Girls", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R1 Pool A M1" },
+                { d: "Friday 14 August", t: "14:00", t1: "The King's School Linbro Park", t2: "Curro Protea Glen", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R1 Pool A M2" },
+                { d: "Friday 14 August", t: "14:00", t1: "Norkem Park High", t2: "HeronBridge College", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R1 Pool B M3" },
+                { d: "Friday 14 August", t: "14:00", t1: "Meridian Cosmo City", t2: "Curro Soshanguve", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R1 Pool B M4" },
+                { d: "Friday 14 August", t: "15:10", t1: "Curro Wilgeheuwel", t2: "Northern Academy", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R1 Pool C M5" },
+                { d: "Friday 14 August", t: "15:10", t1: "TrinityHouse Randpark", t2: "Parktown High School For Girls", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R1 Pool C M6" },
+                { d: "Friday 14 August", t: "15:10", t1: "Hoerskool FH Odendaal", t2: "Curro Nelspruit", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R1 Pool D M7" },
+                { d: "Friday 14 August", t: "15:10", t1: "Steyn City School", t2: "Waterstone College", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R1 Pool D M8" },
+                { d: "Saturday 15 August", t: "09:00", t1: "Meridian Cosmo City", t2: "HeronBridge College", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R2 Pool B M9" },
+                { d: "Saturday 15 August", t: "09:00", t1: "Clapham High School", t2: "Curro Protea Glen", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R2 Pool A M10" },
+                { d: "Saturday 15 August", t: "09:00", t1: "The King's School Linbro Park", t2: "Pretoria High School For Girls", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R2 Pool A M11" },
+                { d: "Saturday 15 August", t: "09:00", t1: "Norkem Park High", t2: "Curro Soshanguve", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R2 Pool B M12" },
+                { d: "Saturday 15 August", t: "10:10", t1: "Steyn City School", t2: "Curro Nelspruit", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R2 Pool D M13" },
+                { d: "Saturday 15 August", t: "10:10", t1: "Curro Wilgeheuwel", t2: "Parktown High School For Girls", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R2 Pool C M14" },
+                { d: "Saturday 15 August", t: "10:10", t1: "TrinityHouse Randpark", t2: "Northern Academy", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R2 Pool C M15" },
+                { d: "Saturday 15 August", t: "10:10", t1: "Hoerskool FH Odendaal", t2: "Waterstone College", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R2 Pool D M16" },
+                { d: "Saturday 15 August", t: "11:20", t1: "Norkem Park High", t2: "Meridian Cosmo City", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R3 Pool B M17" },
+                { d: "Saturday 15 August", t: "11:20", t1: "Curro Soshanguve", t2: "HeronBridge College", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R3 Pool B M18" },
+                { d: "Saturday 15 August", t: "11:20", t1: "Clapham High School", t2: "The King's School Linbro Park", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R3 Pool A M19" },
+                { d: "Saturday 15 August", t: "11:20", t1: "Pretoria High School For Girls", t2: "Curro Protea Glen", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R3 Pool A M20" },
+                { d: "Saturday 15 August", t: "12:30", t1: "Hoerskool FH Odendaal", t2: "Steyn City School", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R3 Pool D M21" },
+                { d: "Saturday 15 August", t: "12:30", t1: "Curro Wilgeheuwel", t2: "TrinityHouse Randpark", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R3 Pool C M22" },
+                { d: "Saturday 15 August", t: "12:30", t1: "Curro Nelspruit", t2: "Waterstone College", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R3 Pool D M23" },
+                { d: "Saturday 15 August", t: "12:30", t1: "Parktown High School For Girls", t2: "Northern Academy", s1: null, s2: null, st: "UPCOMING", type: "Round Robin R3 Pool C M24" },
+                { d: "Saturday 15 August", t: "14:00", t1: "3rd Pool A", t2: "4th Pool B", s1: null, s2: null, st: "UPCOMING", type: "Plate Quarter-final M25" },
+                { d: "Saturday 15 August", t: "14:00", t1: "4th Pool A", t2: "3rd Pool B", s1: null, s2: null, st: "UPCOMING", type: "Plate Quarter-final M26" },
+                { d: "Saturday 15 August", t: "14:00", t1: "3rd Pool C", t2: "4th Pool D", s1: null, s2: null, st: "UPCOMING", type: "Plate Quarter-final M27" },
+                { d: "Saturday 15 August", t: "14:00", t1: "4th Pool C", t2: "3rd Pool D", s1: null, s2: null, st: "UPCOMING", type: "Plate Quarter-final M28" },
+                { d: "Saturday 15 August", t: "15:30", t1: "1st Pool A", t2: "2nd Pool B", s1: null, s2: null, st: "UPCOMING", type: "Cup Quarter-final M29" },
+                { d: "Saturday 15 August", t: "15:30", t1: "2nd Pool A", t2: "1st Pool B", s1: null, s2: null, st: "UPCOMING", type: "Cup Quarter-final M30" },
+                { d: "Saturday 15 August", t: "15:30", t1: "1st Pool C", t2: "2nd Pool D", s1: null, s2: null, st: "UPCOMING", type: "Cup Quarter-final M31" },
+                { d: "Saturday 15 August", t: "15:30", t1: "2nd Pool C", t2: "1st Pool D", s1: null, s2: null, st: "UPCOMING", type: "Cup Quarter-final M32" },
+                { d: "Sunday 16 August", t: "08:00", t1: "Winner M25", t2: "Winner M28", s1: null, s2: null, st: "UPCOMING", type: "Plate Semi-final M33" },
+                { d: "Sunday 16 August", t: "08:00", t1: "Winner M26", t2: "Winner M27", s1: null, s2: null, st: "UPCOMING", type: "Plate Semi-final M34" },
+                { d: "Sunday 16 August", t: "08:00", t1: "Loser M25", t2: "Loser M28", s1: null, s2: null, st: "UPCOMING", type: "Plate Semi-final M35" },
+                { d: "Sunday 16 August", t: "08:00", t1: "Loser M26", t2: "Loser M27", s1: null, s2: null, st: "UPCOMING", type: "Plate Semi-final M36" },
+                { d: "Sunday 16 August", t: "09:30", t1: "Winner M29", t2: "Winner M32", s1: null, s2: null, st: "UPCOMING", type: "Cup Semi-final M37" },
+                { d: "Sunday 16 August", t: "09:30", t1: "Winner M30", t2: "Winner M31", s1: null, s2: null, st: "UPCOMING", type: "Cup Semi-final M38" },
+                { d: "Sunday 16 August", t: "09:30", t1: "Loser M29", t2: "Loser M32", s1: null, s2: null, st: "UPCOMING", type: "Cup Semi-final M39" },
+                { d: "Sunday 16 August", t: "09:30", t1: "Loser M30", t2: "Loser M31", s1: null, s2: null, st: "UPCOMING", type: "Cup Semi-final M40" },
+                { d: "Sunday 16 August", t: "11:00", t1: "Winner M33", t2: "Winner M34", s1: null, s2: null, st: "UPCOMING", type: "Plate Play-off M41 (9/10)" },
+                { d: "Sunday 16 August", t: "11:00", t1: "Loser M33", t2: "Loser M34", s1: null, s2: null, st: "UPCOMING", type: "Plate Play-off M42 (11/12)" },
+                { d: "Sunday 16 August", t: "11:00", t1: "Winner M35", t2: "Winner M36", s1: null, s2: null, st: "UPCOMING", type: "Plate Play-off M43 (13/14)" },
+                { d: "Sunday 16 August", t: "11:00", t1: "Loser M35", t2: "Loser M36", s1: null, s2: null, st: "UPCOMING", type: "Plate Play-off M44 (15/16)" },
+                { d: "Sunday 16 August", t: "12:30", t1: "Loser M37", t2: "Loser M38", s1: null, s2: null, st: "UPCOMING", type: "Cup Play-off M45 (3/4)" },
+                { d: "Sunday 16 August", t: "12:30", t1: "Winner M39", t2: "Winner M40", s1: null, s2: null, st: "UPCOMING", type: "Cup Play-off M46 (5/6)" },
+                { d: "Sunday 16 August", t: "12:30", t1: "Loser M39", t2: "Loser M40", s1: null, s2: null, st: "UPCOMING", type: "Cup Play-off M47 (7/8)" },
+                { d: "Sunday 16 August", t: "14:00", t1: "Winner M37", t2: "Winner M38", s1: null, s2: null, st: "UPCOMING", type: "Final Cup M48 (1/2)" }
             ],
             playoffs: []
         }
