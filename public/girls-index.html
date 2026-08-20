@@ -2707,8 +2707,18 @@ function renderDashboard() {
         return 'groupstage';
     }
 
+    function getFinalsFixtureTierPriority(match) {
+        const label = String(match?.type || '').toLowerCase();
+        if (label.includes('cup')) return 0;
+        if (label.includes('plate')) return 1;
+        if (label.includes('bowl')) return 2;
+        return 3;
+    }
+
     function filterFinalsMatchesByStage(matches, stage) {
-        return (matches || []).filter(match => getFinalsMatchStage(match) === stage);
+        return (matches || [])
+            .filter(match => getFinalsMatchStage(match) === stage)
+            .sort((a, b) => getFinalsFixtureTierPriority(a) - getFinalsFixtureTierPriority(b));
     }
 
     function getFinalsPoolFromMatch(match) {
