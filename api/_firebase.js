@@ -48,25 +48,25 @@ function ensureFirebaseApp() {
     }
 }
 
-function getDataPath() {
-    const rawPath = process.env.FIREBASE_DATA_PATH || 'tournamentData';
+function getDataPath(envVar, fallback) {
+    const rawPath = process.env[envVar] || fallback;
     const cleaned = String(rawPath).replace(/^\/+|\/+$/g, '').trim();
-    return cleaned || 'tournamentData';
+    return cleaned || fallback;
 }
 
-async function readTournamentData() {
+async function readTournamentData(envVar = 'FIREBASE_DATA_PATH', fallback = 'tournamentData') {
     ensureFirebaseApp();
     const db = getDatabase();
-    const snapshot = await db.ref(getDataPath()).once('value');
+    const snapshot = await db.ref(getDataPath(envVar, fallback)).once('value');
     const value = snapshot.val();
     if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
     return value;
 }
 
-async function writeTournamentData(data) {
+async function writeTournamentData(data, envVar = 'FIREBASE_DATA_PATH', fallback = 'tournamentData') {
     ensureFirebaseApp();
     const db = getDatabase();
-    await db.ref(getDataPath()).set(data);
+    await db.ref(getDataPath(envVar, fallback)).set(data);
 }
 
 module.exports = {

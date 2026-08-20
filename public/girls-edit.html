@@ -1,0 +1,2764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manager Login - Halala Cup Girls</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #000000;
+            --navy: #000000;
+            --text-main: #FFFFFF;
+            --text-muted: rgba(255, 255, 255, 0.72);
+            --white: #FFFFFF;
+            --card-border: rgba(255, 122, 41, 0.18);
+            --lime: #FF7A29;
+            --violet: #7D39EB;
+            --bg: #000000;
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --card-bg-solid: rgba(255, 255, 255, 0.14);
+            --border: rgba(255, 122, 41, 0.18);
+            --navy-med: rgba(255, 255, 255, 0.12);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
+        body {
+            background: var(--bg);
+            background-image: repeating-linear-gradient(115deg, rgba(125, 57, 235, 0.08) 0px, rgba(255, 122, 41, 0.06) 2px, transparent 2px, transparent 64px);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+        h1, .card-title {
+            font-family: 'Anton', "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        }
+        h2, .logo-area {
+            font-family: "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        }
+        header {
+            padding: 12px 20px;
+            background-color: var(--white);
+            background: linear-gradient(180deg, var(--white) 0%, color-mix(in srgb, var(--white) 96%, var(--bg) 4%) 100%);
+            box-shadow: 0 2px 6px rgba(16,24,40,0.06);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            width: 100%;
+            color: var(--navy);
+        }
+        @media (max-width: 768px) {
+            header {
+                padding: 14px 16px;
+            }
+            .header-top {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .logo-container {
+                width: 100%;
+                justify-content: space-between;
+                gap: 10px;
+            }
+            .header-top > div:last-child {
+                width: 100%;
+            }
+            .header-top .watch-live-btn {
+                width: 100%;
+                justify-content: center;
+                margin-top: 8px;
+            }
+            .header-top .watch-live-btn + .watch-live-btn,
+            .header-top .watch-live-btn + .theme-btn,
+            .header-top .theme-btn + .theme-btn {
+                margin-top: 8px;
+            }
+            .header-top .watch-live-btn,
+            .header-top .theme-btn {
+                min-height: 42px;
+            }
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        .logo-container { display: flex; align-items: center; gap: 15px; }
+        @media (max-width: 768px) {
+            .header-top {
+                gap: 8px;
+            }
+            .logo-area {
+                font-size: 0.85rem;
+            }
+            .watch-live-btn {
+                padding: 8px 10px;
+                font-size: 0.6rem;
+            }
+        }
+        .sasfa-logo { height: 28px; width: auto; }
+        .logo-area {
+            font-size: 1.1rem;
+            letter-spacing: 0.03em;
+            color: var(--navy);
+        }
+        .logo-area span { color: var(--lime); }
+        .watch-live-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--navy);
+            background: transparent;
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            padding: 9px 14px;
+            border-radius: 0;
+            font-family: "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            font-size: 0.74rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: 0.15s;
+        }
+        .watch-live-btn svg { width: 15px; height: 15px; fill: var(--navy); }
+        .watch-live-btn:hover { border-color: var(--violet); background: rgba(125, 57, 235, 0.16); }
+        .page-title { padding: 28px 20px 0; max-width: 1300px; margin: 0 auto; }
+        .page-title h1 {
+            margin: 0;
+            font-size: 1.6rem;
+            letter-spacing: 0.02em;
+            color: var(--text-main);
+        }
+        .page-title p { margin: 8px 0 0; color: var(--text-muted); font-size: 0.9rem; font-family: "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
+        .main-container { max-width: 1300px; margin: 0 auto; padding: 20px 20px 40px; width: 100%; }
+        @media (max-width: 768px) {
+            .page-title {
+                padding: 20px 16px 0;
+            }
+            .page-title h1 {
+                font-size: 1.15rem;
+            }
+            .page-title p {
+                font-size: 0.72rem;
+            }
+            .main-container {
+                padding: 16px 16px 40px;
+            }
+        }
+        .page-card {
+            background: var(--card-bg-solid);
+            border: 1px solid var(--frosted-border);
+            border-radius: 8px;
+            padding: 24px;
+        }
+        .card-title {
+            margin: 0 0 20px;
+            font-size: 1.05rem;
+            letter-spacing: 0.02em;
+            color: var(--text-main);
+            padding-left: 12px;
+            border-left: 5px solid var(--violet);
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 18px;
+            font-family: "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        }
+        .national-card .national-pool-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .national-card .national-stage-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .national-card .national-stage-tabs button,
+        .national-card .national-pool-tabs button {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: var(--text-main);
+            padding: 10px 12px;
+        }
+        .national-card .national-stage-tabs button.active,
+        .national-card .national-pool-tabs button.active {
+            background: var(--lime);
+            border-color: var(--lime);
+            color: var(--ink);
+        }
+        @media (max-width: 720px) {
+            .form-row { grid-template-columns: 1fr; }
+            .page-card { padding: 14px; }
+            .national-card .form-row > label {
+                margin-bottom: 14px;
+            }
+            .national-card .national-pool-tabs {
+                gap: 8px;
+            }
+            .national-card .national-pool-tabs button {
+                min-height: 42px;
+                padding: 10px 12px;
+            }
+            .national-card .national-actions-row {
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: 10px;
+            }
+            .national-card .national-actions-row button {
+                width: 100%;
+                min-height: 48px;
+            }
+            .national-card .form-row .national-actions-row + div {
+                display: none;
+            }
+            .national-card .form-row select {
+                min-height: 48px;
+            }
+            .national-card .stats-grid {
+                gap: 14px;
+            }
+            .national-card .stats-card {
+                padding: 12px;
+            }
+            .national-card .stats-card h3 {
+                font-size: 0.74rem;
+            }
+            .national-card .save-control button {
+                min-width: 44px;
+            }
+            .national-card .event-list {
+                gap: 10px;
+            }
+            .national-card .chip-remove {
+                font-size: 0.84rem;
+            }
+            .card-title { font-size: 0.88rem; margin-bottom: 16px; }
+            label { font-size: 0.64rem; }
+            input, select { font-size: 0.78rem; padding: 14px 12px; min-height: 46px; }
+            button { font-size: 0.72rem; padding: 14px 14px; min-height: 46px; }
+            .hint { font-size: 0.66rem; line-height: 1.5; }
+            .status-pill { font-size: 0.6rem; padding: 8px 12px; }
+            .note-box { font-size: 0.66rem; }
+            .small-copy { font-size: 0.62rem; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .stats-grid { gap: 14px; margin-bottom: 16px; }
+            .stats-card { padding: 14px; }
+            .stats-card h3 { font-size: 0.76rem; margin-bottom: 12px; }
+            .stats-card label { margin-bottom: 14px; }
+            .event-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                align-items: stretch;
+            }
+            .event-row button {
+                width: 100%;
+                min-height: 46px;
+            }
+            .event-chip {
+                width: 100%;
+                justify-content: space-between;
+                padding: 8px 10px;
+                font-size: 0.74rem;
+            }
+            .save-control {
+                width: 100%;
+                justify-content: space-between;
+                gap: 10px;
+            }
+            .save-value {
+                min-width: 52px;
+                padding: 10px 12px;
+                font-size: 0.82rem;
+            }
+            .form-footer {
+                gap: 10px;
+            }
+            .form-footer button { width: 100%; min-height: 48px; }
+            .status-pill { width: 100%; }
+            .form-row > label,
+            .stats-card > label {
+                margin-bottom: 14px;
+            }
+            .form-row > div[style*="display: flex"] {
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: 10px !important;
+            }
+            .form-row > div[style*="display: flex"] button {
+                width: 100%;
+            }
+            .form-row > div[style*="display: flex"] .watch-live-btn {
+                width: 100%;
+            }
+            .page-card[style*="margin-top"] {
+                margin-top: 18px !important;
+            }
+        }
+        label {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-family: "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        }
+        input, select {
+            width: 100%;
+            margin-top: 8px;
+            border-radius: 0;
+            border: 2px solid var(--card-border);
+            background: var(--bg);
+            padding: 12px 14px;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            font-family: "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--lime);
+        }
+        button {
+            cursor: pointer;
+            border: 2px solid var(--ink);
+            border-radius: 0;
+            padding: 12px 18px;
+            color: #fff;
+            background: var(--ink);
+            font-family: "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: 0.15s;
+        }
+        button:hover { background: var(--navy-med); }
+        .hint { color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin-top: 14px; }
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 14px;
+            border-radius: 0;
+            background: var(--bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            font-family: "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+        .hidden { display: none; }
+        .form-footer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px; margin-top: 12px; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+        .stats-card {
+            border: 1px solid var(--card-border);
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .stats-card h3 {
+            font-size: 0.82rem;
+            letter-spacing: 0.05em;
+            color: var(--lime);
+            margin-bottom: 10px;
+        }
+        .stats-card label {
+            margin-bottom: 12px;
+        }
+        .field-note {
+            display: block;
+            margin-top: 6px;
+            font-size: 0.66rem;
+            text-transform: none;
+            letter-spacing: 0;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .event-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 8px;
+            align-items: end;
+        }
+        .event-row button {
+            padding: 10px 12px;
+            font-size: 0.66rem;
+            min-height: 43px;
+        }
+        .event-list {
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .event-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 9px;
+            border: 1px solid var(--card-border);
+            background: rgba(255, 255, 255, 0.08);
+            font-size: 0.7rem;
+            color: var(--text-main);
+        }
+        .chip-remove {
+            border: 0;
+            background: transparent;
+            color: var(--lime);
+            cursor: pointer;
+            padding: 0;
+            font-size: 0.76rem;
+            line-height: 1;
+        }
+        .save-control {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .save-control button {
+            min-width: 38px;
+            padding: 8px 10px;
+        }
+        .stats-card select,
+        .stats-card input {
+            width: 100%;
+        }
+        .save-value {
+            min-width: 40px;
+            text-align: center;
+            border: 1px solid var(--card-border);
+            padding: 8px 10px;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .empty-event-note {
+            color: var(--text-muted);
+            font-size: 0.68rem;
+            font-style: italic;
+            margin-top: 6px;
+        }
+        .note-box {
+            margin-top: 24px;
+            padding: 16px 18px;
+            border-radius: 0;
+            border-left: 4px solid var(--lime);
+            background: var(--bg);
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 0.85rem;
+        }
+        .small-copy { font-size: 0.8rem; color: var(--text-muted); }
+        footer {
+            padding: 30px 20px;
+            background: var(--ink);
+            border-top: 3px solid var(--lime);
+            text-align: center;
+            color: #fff;
+            margin-top: 40px;
+            width: 100%;
+        }
+        @media (max-width: 768px) {
+            footer {
+                padding: 24px 16px;
+            }
+        }
+    </style>
+    </head>
+<body>
+
+<header>
+    <div class="header-top">
+        <div class="logo-container">
+            <img src="images/sasfa_logo-removebg-preview.png" alt="SASFA Logo" class="sasfa-logo">
+            <div class="logo-area">HALALA<span>Cup</span></div>
+        </div>
+        <div>
+            <a href="girls-index.html" class="watch-live-btn">
+                <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-2-9.5l4.5 4.5-1.41 1.41-4.5-4.5-1.09 1.09L12 16.01l4.5-4.51-1.41-1.41-4.5 4.5-2.5-2.5L12 8.01l4.5 4.5-1.41 1.41-4.5-4.5z" opacity=".3"></path><path d="M12 4c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"></path></svg>
+                <span>Public Fixtures</span>
+            </a>
+            <a href="https://supersportschools.com/" class="watch-live-btn" target="_blank">
+                <svg viewBox="0 0 24 24"><path d="M10 16.5v-9l6 4.5-6 4.5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path></svg>
+                <span>Watch Live</span>
+            </a>
+        </div>
+    </div>
+</header>
+
+<div class="page-title">
+    <h1>Manager Login (Girls)</h1>
+    <p>Only authorized staff can update fixtures and results.<br>pty @sasfa ltd</p>
+</div>
+
+<div class="main-container">
+    <div class="page-card">
+        <div id="authSection">
+            <h2 class="card-title">Sign in to edit</h2>
+            <form id="loginForm">
+                <div style="margin-bottom: 18px;">
+                    <label for="password">Manager password</label>
+                    <input id="password" type="password" autocomplete="current-password" placeholder="Enter password" required />
+                </div>
+                <button type="submit">Login</button>
+                <div id="loginError" style="color: #8f1a1a; font-size: 0.9rem; margin-top: 10px; display: none;"></div>
+                <p class="hint">This editor writes fixture updates to the server database for shared public visibility.</p>
+            </form>
+        </div>
+
+        <div id="editorSection" class="hidden">
+            <h2 class="card-title">Editor Panel</h2>
+            <div class="form-row">
+                <label>Region
+                    <select id="regionSelect"></select>
+                </label>
+                <label>Match
+                    <select id="matchSelect"></select>
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Status
+                    <select id="editStatus">
+                        <option value="UPCOMING">UPCOMING</option>
+                        <option value="LIVE">LIVE</option>
+                        <option value="FINAL">FINAL</option>
+                    </select>
+                </label>
+                <label>Time
+                    <input id="editTime" type="text" placeholder="HH:MM" />
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Home score
+                    <input id="editScore1" type="number" min="0" />
+                </label>
+                <label>Away score
+                    <input id="editScore2" type="number" min="0" />
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Home team
+                    <input id="editTeam1" type="text" placeholder="Team 1 name" />
+                </label>
+                <label>Away team
+                    <input id="editTeam2" type="text" placeholder="Team 2 name" />
+                </label>
+            </div>
+            <div class="stats-grid">
+                <div class="stats-card">
+                    <h3>Home Team Match Stats</h3>
+                    <label>Scorers
+                        <div class="event-row">
+                            <select id="homeScorerNumber"></select>
+                            <button type="button" onclick="addEventNumber('homeScorers', 'homeScorerNumber')">Add</button>
+                        </div>
+                        <div id="homeScorersList" class="event-list"></div>
+                    </label>
+                    <label>Assists
+                        <div class="event-row">
+                            <select id="homeAssistNumber"></select>
+                            <button type="button" onclick="addEventNumber('homeAssists', 'homeAssistNumber')">Add</button>
+                        </div>
+                        <div id="homeAssistsList" class="event-list"></div>
+                    </label>
+                    <label>Saves
+                        <div class="save-control">
+                            <button type="button" onclick="changeSaveCount('homeSaves', -1)">-</button>
+                            <div id="homeSaveValue" class="save-value">0</div>
+                            <button type="button" onclick="changeSaveCount('homeSaves', 1)">+</button>
+                        </div>
+                        <span class="field-note">Use +/- during live games to update quickly.</span>
+                    </label>
+                    <label>Yellow cards
+                        <div class="event-row" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;">
+                            <select id="homeYellowNumber"></select>
+                            <select id="homeYellowReason">
+                                <option value="descent">descent</option>
+                                <option value="simulation">simulation</option>
+                                <option value="dangerous tackle">dangerous tackle</option>
+                                <option value="last man tackle">last man tackle</option>
+                                <option value="coach/manager">coach/manager</option>
+                            </select>
+                            <button type="button" onclick="addCardEvent('homeYellowCards', 'homeYellowNumber', 'homeYellowReason')">Add</button>
+                        </div>
+                        <div id="homeYellowList" class="event-list"></div>
+                    </label>
+                    <label>Red cards
+                        <div class="event-row" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;">
+                            <select id="homeRedNumber"></select>
+                            <select id="homeRedReason">
+                                <option value="descent">descent</option>
+                                <option value="simulation">simulation</option>
+                                <option value="dangerous tackle">dangerous tackle</option>
+                                <option value="last man tackle">last man tackle</option>
+                                <option value="coach/manager">coach/manager</option>
+                            </select>
+                            <button type="button" onclick="addCardEvent('homeRedCards', 'homeRedNumber', 'homeRedReason')">Add</button>
+                        </div>
+                        <div id="homeRedList" class="event-list"></div>
+                    </label>
+                </div>
+                <div class="stats-card">
+                    <h3>Away Team Match Stats</h3>
+                    <label>Scorers
+                        <div class="event-row">
+                            <select id="awayScorerNumber"></select>
+                            <button type="button" onclick="addEventNumber('awayScorers', 'awayScorerNumber')">Add</button>
+                        </div>
+                        <div id="awayScorersList" class="event-list"></div>
+                    </label>
+                    <label>Assists
+                        <div class="event-row">
+                            <select id="awayAssistNumber"></select>
+                            <button type="button" onclick="addEventNumber('awayAssists', 'awayAssistNumber')">Add</button>
+                        </div>
+                        <div id="awayAssistsList" class="event-list"></div>
+                    </label>
+                    <label>Saves
+                        <div class="save-control">
+                            <button type="button" onclick="changeSaveCount('awaySaves', -1)">-</button>
+                            <div id="awaySaveValue" class="save-value">0</div>
+                            <button type="button" onclick="changeSaveCount('awaySaves', 1)">+</button>
+                        </div>
+                        <span class="field-note">Use +/- during live games to update quickly.</span>
+                    </label>
+                    <label>Yellow cards
+                        <div class="event-row" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;">
+                            <select id="awayYellowNumber"></select>
+                            <select id="awayYellowReason">
+                                <option value="descent">descent</option>
+                                <option value="simulation">simulation</option>
+                                <option value="dangerous tackle">dangerous tackle</option>
+                                <option value="last man tackle">last man tackle</option>
+                                <option value="coach/manager">coach/manager</option>
+                            </select>
+                            <button type="button" onclick="addCardEvent('awayYellowCards', 'awayYellowNumber', 'awayYellowReason')">Add</button>
+                        </div>
+                        <div id="awayYellowList" class="event-list"></div>
+                    </label>
+                    <label>Red cards
+                        <div class="event-row" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;">
+                            <select id="awayRedNumber"></select>
+                            <select id="awayRedReason">
+                                <option value="descent">descent</option>
+                                <option value="simulation">simulation</option>
+                                <option value="dangerous tackle">dangerous tackle</option>
+                                <option value="last man tackle">last man tackle</option>
+                                <option value="coach/manager">coach/manager</option>
+                            </select>
+                            <button type="button" onclick="addCardEvent('awayRedCards', 'awayRedNumber', 'awayRedReason')">Add</button>
+                        </div>
+                        <div id="awayRedList" class="event-list"></div>
+                    </label>
+                </div>
+            </div>
+            <div class="form-footer">
+                <button id="saveButton" type="button">Save update</button>
+                <button id="printMatchButton" type="button" style="background: var(--white); border-color: var(--white); color: var(--ink);">Print Result Sheet</button>
+                <button id="resetButton" type="button" style="background: var(--violet); border-color: var(--violet);">Reset to Defaults</button>
+                <button id="recoverButton" type="button" style="background: var(--lime); border-color: var(--lime); color: var(--ink);">Recover Local Data</button>
+                <div class="status-pill" id="saveStatus">Not saved</div>
+            </div>
+            <p class="hint">After saving, refresh the public fixtures page to see the latest results. Use the print button to generate a manager result sheet for the selected match.</p>
+
+            <div class="page-card" id="playoffCard" style="margin-top: 24px;">
+            <h2 class="card-title">Regional Playoff Fixtures</h2>
+            <div class="form-row">
+                <label>Province/Region
+                    <select id="playoffRegionSelect"></select>
+                </label>
+                <label>Fixture
+                    <select id="playoffSelect"></select>
+                </label>
+            </div>
+            <div class="form-row">
+                <div style="display: flex; gap: 10px; align-items: flex-end;">
+                    <button id="addPlayoffButton" type="button">Add fixture</button>
+                    <button id="deletePlayoffButton" type="button" style="background: var(--violet); border-color: var(--violet);">Delete fixture</button>
+                </div>
+                <div></div>
+            </div>
+            <div class="form-row">
+                <label>Date
+                    <input id="playoffDate" type="text" placeholder="Saturday 23 May" />
+                </label>
+                <label>Time
+                    <input id="playoffTime" type="text" placeholder="HH:MM" />
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Status
+                    <select id="playoffStatus">
+                        <option value="UPCOMING">UPCOMING</option>
+                        <option value="LIVE">LIVE</option>
+                        <option value="FINAL">FINAL</option>
+                    </select>
+                </label>
+                <label>Match Type
+                    <input id="playoffType" type="text" list="playoffTypeOptions" placeholder="e.g. Semi-Final" />
+                    <datalist id="playoffTypeOptions">
+                        <option value="Semi-Final 1"></option>
+                        <option value="Semi-Final 2"></option>
+                        <option value="3rd Place (Losers)"></option>
+                        <option value="Final (Winners)"></option>
+                    </datalist>
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Home team
+                    <select id="playoffTeam1"></select>
+                </label>
+                <label>Away team
+                    <select id="playoffTeam2"></select>
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Home score
+                    <input id="playoffScore1" type="number" min="0" />
+                </label>
+                <label>Away score
+                    <input id="playoffScore2" type="number" min="0" />
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Home Penalties (if draw)
+                    <input id="playoffPenalties1" type="number" min="0" placeholder="0" />
+                </label>
+                <label>Away Penalties (if draw)
+                    <input id="playoffPenalties2" type="number" min="0" placeholder="0" />
+                </label>
+            </div>
+            <div class="form-footer">
+                <button id="savePlayoffButton" type="button">Save playoff fixture</button>
+                <div class="status-pill" id="playoffSaveStatus">Not saved</div>
+            </div>
+            <p class="hint">Use this section to manage playoff matchups and results separately from pool matches.</p>
+            </div>
+
+        <div class="page-card national-card" id="nationalCard" style="margin-top: 24px;">
+            <h2 class="card-title">National Finals (August)</h2>
+            <div class="form-row">
+                <label>Section
+                    <div id="nationalStageTabs" class="national-stage-tabs"></div>
+                </label>
+                <label>Pool
+                    <div id="nationalPoolTabs" class="national-pool-tabs"></div>
+                </label>
+                <div class="national-actions-row" style="display: flex; gap: 10px; align-items: flex-end;">
+                    <button id="addNationalButton" type="button">Add fixture</button>
+                    <button id="deleteNationalButton" type="button" style="background: var(--violet); border-color: var(--violet);">Delete fixture</button>
+                </div>
+            </div>
+            <div class="form-row">
+                <label>Fixture
+                    <select id="nationalSelect"></select>
+                </label>
+                <div></div>
+            </div>
+            <div class="form-row">
+                <label>Date
+                    <input id="nationalDate" type="text" placeholder="Saturday 8 August" />
+                </label>
+                <label>Time
+                    <input id="nationalTime" type="text" placeholder="HH:MM" />
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Status
+                    <select id="nationalStatus">
+                        <option value="UPCOMING">UPCOMING</option>
+                        <option value="LIVE">LIVE</option>
+                        <option value="FINAL">FINAL</option>
+                    </select>
+                </label>
+                <datalist id="qualifiedTeamsList"></datalist>
+            </div>
+            <div class="form-row">
+                <label>Home team
+                    <select id="nationalTeam1"></select>
+                </label>
+                <label>Away team
+                    <select id="nationalTeam2"></select>
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Home score
+                    <input id="nationalScore1" type="number" min="0" />
+                </label>
+                <label>Away score
+                    <input id="nationalScore2" type="number" min="0" />
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Home Penalties (if draw)
+                    <input id="nationalPenalties1" type="number" min="0" placeholder="0" />
+                </label>
+                <label>Away Penalties (if draw)
+                    <input id="nationalPenalties2" type="number" min="0" placeholder="0" />
+                </label>
+            </div>
+            <div class="stats-grid">
+                <div class="stats-card">
+                    <h3>National Home Team Stats</h3>
+                    <label>Scorers
+                        <div class="event-row">
+                            <select id="nationalHomeScorerNumber"></select>
+                            <button type="button" onclick="addEventNumber('homeScorers', 'nationalHomeScorerNumber', 'national')">Add</button>
+                        </div>
+                        <div id="nationalHomeScorersList" class="event-list"></div>
+                    </label>
+                    <label>Assists
+                        <div class="event-row">
+                            <select id="nationalHomeAssistNumber"></select>
+                            <button type="button" onclick="addEventNumber('homeAssists', 'nationalHomeAssistNumber', 'national')">Add</button>
+                        </div>
+                        <div id="nationalHomeAssistsList" class="event-list"></div>
+                    </label>
+                    <label>Saves
+                        <div class="save-control">
+                            <button type="button" onclick="changeSaveCount('homeSaves', -1, 'national')">-</button>
+                            <div id="nationalHomeSaveValue" class="save-value">0</div>
+                            <button type="button" onclick="changeSaveCount('homeSaves', 1, 'national')">+</button>
+                        </div>
+                    </label>
+                    <label>Yellow cards
+                        <div class="event-row" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;">
+                            <select id="nationalHomeYellowNumber"></select>
+                            <select id="nationalHomeYellowReason">
+                                <option value="descent">descent</option>
+                                <option value="simulation">simulation</option>
+                                <option value="dangerous tackle">dangerous tackle</option>
+                                <option value="last man tackle">last man tackle</option>
+                                <option value="coach/manager">coach/manager</option>
+                            </select>
+                            <button type="button" onclick="addCardEvent('homeYellowCards', 'nationalHomeYellowNumber', 'nationalHomeYellowReason', 'national')">Add</button>
+                        </div>
+                        <div id="nationalHomeYellowList" class="event-list"></div>
+                    </label>
+                    <label>Red cards
+                        <div class="event-row" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;">
+                            <select id="nationalHomeRedNumber"></select>
+                            <select id="nationalHomeRedReason">
+                                <option value="descent">descent</option>
+                                <option value="simulation">simulation</option>
+                                <option value="dangerous tackle">dangerous tackle</option>
+                                <option value="last man tackle">last man tackle</option>
+                                <option value="coach/manager">coach/manager</option>
+                            </select>
+                            <button type="button" onclick="addCardEvent('homeRedCards', 'nationalHomeRedNumber', 'nationalHomeRedReason', 'national')">Add</button>
+                        </div>
+                        <div id="nationalHomeRedList" class="event-list"></div>
+                    </label>
+                </div>
+                <div class="stats-card">
+                    <h3>National Away Team Stats</h3>
+                    <label>Scorers
+                        <div class="event-row">
+                            <select id="nationalAwayScorerNumber"></select>
+                            <button type="button" onclick="addEventNumber('awayScorers', 'nationalAwayScorerNumber', 'national')">Add</button>
+                        </div>
+                        <div id="nationalAwayScorersList" class="event-list"></div>
+                    </label>
+                    <label>Assists
+                        <div class="event-row">
+                            <select id="nationalAwayAssistNumber"></select>
+                            <button type="button" onclick="addEventNumber('awayAssists', 'nationalAwayAssistNumber', 'national')">Add</button>
+                        </div>
+                        <div id="nationalAwayAssistsList" class="event-list"></div>
+                    </label>
+                    <label>Saves
+                        <div class="save-control">
+                            <button type="button" onclick="changeSaveCount('awaySaves', -1, 'national')">-</button>
+                            <div id="nationalAwaySaveValue" class="save-value">0</div>
+                            <button type="button" onclick="changeSaveCount('awaySaves', 1, 'national')">+</button>
+                        </div>
+                    </label>
+                    <label>Yellow cards
+                        <div class="event-row" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;">
+                            <select id="nationalAwayYellowNumber"></select>
+                            <select id="nationalAwayYellowReason">
+                                <option value="descent">descent</option>
+                                <option value="simulation">simulation</option>
+                                <option value="dangerous tackle">dangerous tackle</option>
+                                <option value="last man tackle">last man tackle</option>
+                                <option value="coach/manager">coach/manager</option>
+                            </select>
+                            <button type="button" onclick="addCardEvent('awayYellowCards', 'nationalAwayYellowNumber', 'nationalAwayYellowReason', 'national')">Add</button>
+                        </div>
+                        <div id="nationalAwayYellowList" class="event-list"></div>
+                    </label>
+                    <label>Red cards
+                        <div class="event-row" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;">
+                            <select id="nationalAwayRedNumber"></select>
+                            <select id="nationalAwayRedReason">
+                                <option value="descent">descent</option>
+                                <option value="simulation">simulation</option>
+                                <option value="dangerous tackle">dangerous tackle</option>
+                                <option value="last man tackle">last man tackle</option>
+                                <option value="coach/manager">coach/manager</option>
+                            </select>
+                            <button type="button" onclick="addCardEvent('awayRedCards', 'nationalAwayRedNumber', 'nationalAwayRedReason', 'national')">Add</button>
+                        </div>
+                        <div id="nationalAwayRedList" class="event-list"></div>
+                    </label>
+                </div>
+            </div>
+            <div class="form-footer">
+                <button id="saveNationalButton" type="button">Save national fixture</button>
+                <button id="printNationalButton" type="button" style="background: var(--white); border-color: var(--white); color: var(--ink);">Print National Sheet</button>
+                <div class="status-pill" id="nationalSaveStatus">Not saved</div>
+            </div>
+            <p class="hint">Use this section to manage the ultimate National Finals knockout stages taking place in August.</p>
+        </div>
+        </div>
+
+        <div class="note-box">
+            <p class="small-copy"> </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const STORAGE_KEY = 'halala-cup-data';
+    const AUTH_FLAG = 'halalacup-auth';
+    const EDIT_PASSWORD = 'NationalHalalaGirls';
+    const HALALA_BRAND_IMAGE = '/images/curro-halala.png';
+
+    const DEFAULT_TOURNAMENT_DATA = {
+        "Gauteng 1": {
+            pools: {
+                "Pool A": [
+                    {name: "Clapham High School", seed: 1},
+                    {name: "Curro Cosmo City", seed: 12},
+                    {name: "The King's Linbro Park", seed: 13},
+                    {name: "Curro Parkdene", seed: 24}
+                ],
+                "Pool B": [
+                    {name: "Curro Thatchfield", seed: 4},
+                    {name: "Queens High School", seed: 9},
+                    {name: "HeronBridge College", seed: 16},
+                    {name: "Curro Clayville", seed: 21}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Curro Cosmo City", t2: "Curro Parkdene", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "Clapham High School", t2: "The King's Linbro Park", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "Queens High School", t2: "Curro Clayville", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Curro Thatchfield", t2: "HeronBridge College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "Clapham High School", t2: "Curro Cosmo City", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "The King's Linbro Park", t2: "Curro Parkdene", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Curro Thatchfield", t2: "Queens High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "HeronBridge College", t2: "Curro Clayville", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "Clapham High School", t2: "Curro Parkdene", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Curro Cosmo City", t2: "The King's Linbro Park", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Curro Thatchfield", t2: "Curro Clayville", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "Queens High School", t2: "HeronBridge College", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "Gauteng 2": {
+            pools: {
+                "Pool A": [
+                    {name: "Rosina Sedibane Sport School", seed: 2},
+                    {name: "Curro Protea Glen", seed: 11},
+                    {name: "Curro Pretoria", seed: 14},
+                    {name: "Curro Hazeldean", seed: 23}
+                ],
+                "Pool B": [
+                    {name: "Mondeor High School", seed: 5},
+                    {name: "Curro Aurora", seed: 8},
+                    {name: "Curro Midrand", seed: 17},
+                    {name: "Vaal High School", seed: 20}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Curro Protea Glen", t2: "Curro Hazeldean", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "Rosina Sedibane Sport School", t2: "Curro Pretoria", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "Curro Aurora", t2: "Vaal High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Mondeor High School", t2: "Curro Midrand", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "Rosina Sedibane Sport School", t2: "Curro Protea Glen", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "Curro Pretoria", t2: "Curro Hazeldean", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Mondeor High School", t2: "Curro Aurora", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "Curro Midrand", t2: "Vaal High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "Rosina Sedibane Sport School", t2: "Curro Hazeldean", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Curro Protea Glen", t2: "Curro Pretoria", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Mondeor High School", t2: "Vaal High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "Curro Aurora", t2: "Curro Midrand", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "Western Cape": {
+            pools: {
+                "Pool A": [
+                    {name: "Reddam House Constantia", seed: 1},
+                    {name: "Milnerton High School", seed: 4},
+                    {name: "Curro Century City", seed: 5},
+                    {name: "Curro Somerset West", seed: 8}
+                ],
+                "Pool B": [
+                    {name: "Camps Bay High School", seed: 2},
+                    {name: "Meridian Pinehurst", seed: 2, origin: "Western Cape - Q1"},
+                    {name: "Curro Sandown", seed: 6},
+                    {name: "Somerset College", seed: 7}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Milnerton High School", t2: "Curro Somerset West", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "Reddam House Constantia", t2: "Curro Century City", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "Meridian Pinehurst", t2: "Somerset College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Camps Bay High School", t2: "Curro Sandown", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "Reddam House Constantia", t2: "Milnerton High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "Curro Century City", t2: "Curro Somerset West", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Camps Bay High School", t2: "Meridian Pinehurst", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "Curro Sandown", t2: "Somerset College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "Reddam House Constantia", t2: "Curro Somerset West", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Milnerton High School", t2: "Curro Century City", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Camps Bay High School", t2: "Somerset College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "Meridian Pinehurst", t2: "Curro Sandown", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "KZN": {
+            pools: {
+                "Pool A": [
+                    {name: "Hillcrest High School", seed: 1},
+                    {name: "Durban High School", seed: 4},
+                    {name: "Kloof High School", seed: 5},
+                    {name: "Grantleigh College", seed: 8}
+                ],
+                "Pool B": [
+                    {name: "Glenwood High School", seed: 2},
+                    {name: "Pinetown Boys High School", seed: 3},
+                    {name: "Curro Hillcrest", seed: 6},
+                    {name: "Creston College", seed: 7}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Durban High School", t2: "Grantleigh College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "Hillcrest High School", t2: "Kloof High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "Pinetown Boys High School", t2: "Creston College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Glenwood High School", t2: "Curro Hillcrest", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "Hillcrest High School", t2: "Durban High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "Kloof High School", t2: "Grantleigh College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Glenwood High School", t2: "Pinetown Boys High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "Curro Hillcrest", t2: "Creston College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "Hillcrest High School", t2: "Grantleigh College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Durban High School", t2: "Kloof High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Glenwood High School", t2: "Creston College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "Pinetown Boys High School", t2: "Curro Hillcrest", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "Free State": {
+            pools: {
+                "Pool A": [
+                    {name: "Saint Annes Technical High School", seed: 1},
+                    {name: "Brebner High School", seed: 4},
+                    {name: "Moroka High School", seed: 5},
+                    {name: "Bloemfontein High School", seed: 8}
+                ],
+                "Pool B": [
+                    {name: "Virginia High School", seed: 2},
+                    {name: "HTS Louis Botha", seed: 3},
+                    {name: "Hodisa Secondary School", seed: 6},
+                    {name: "Curro Bloemfontein", seed: 7}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Brebner High School", t2: "Bloemfontein High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "Saint Annes Technical High School", t2: "Moroka High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "HTS Louis Botha", t2: "Curro Bloemfontein", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Virginia High School", t2: "Hodisa Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "Saint Annes Technical High School", t2: "Brebner High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "Moroka High School", t2: "Bloemfontein High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Virginia High School", t2: "HTS Louis Botha", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "Hodisa Secondary School", t2: "Curro Bloemfontein", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "Saint Annes Technical High School", t2: "Bloemfontein High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Brebner High School", t2: "Moroka High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Virginia High School", t2: "Curro Bloemfontein", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "HTS Louis Botha", t2: "Hodisa Secondary School", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "Limpopo": {
+            pools: {
+                "Pool A": [
+                    {name: "Flora Park High School", seed: 1},
+                    {name: "Capricorn High School", seed: 4},
+                    {name: "Sebitja Secondary School", seed: 5},
+                    {name: "Louis Trichardt High School", seed: 8}
+                ],
+                "Pool B": [
+                    {name: "Westenburg High School", seed: 2},
+                    {name: "Taxila Secondary School", seed: 3},
+                    {name: "The Future Comprehensive School", seed: 6},
+                    {name: "HTS Tom Naude", seed: 7}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Capricorn High School", t2: "Louis Trichardt High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "Flora Park High School", t2: "Sebitja Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "Taxila Secondary School", t2: "HTS Tom Naude", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Westenburg High School", t2: "The Future Comprehensive School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "Flora Park High School", t2: "Capricorn High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "Sebitja Secondary School", t2: "Louis Trichardt High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Westenburg High School", t2: "Taxila Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "The Future Comprehensive School", t2: "HTS Tom Naude", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "Flora Park High School", t2: "Louis Trichardt High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Capricorn High School", t2: "Sebitja Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Westenburg High School", t2: "HTS Tom Naude", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "Taxila Secondary School", t2: "The Future Comprehensive School", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "Mpumalanga": {
+            pools: {
+                "Pool A": [
+                    {name: "St Mark's International School", seed: 1},
+                    {name: "Meridian Karino", seed: 4},
+                    {name: "Beacon College", seed: 5},
+                    {name: "Curro Nelspruit", seed: 8}
+                ],
+                "Pool B": [
+                    {name: "Barberton High School", seed: 2},
+                    {name: "Lowveld High School", seed: 3},
+                    {name: "Curro Mbombela", seed: 6},
+                    {name: "Portia Shabangu Secondary School", seed: 7}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Meridian Karino", t2: "Curro Nelspruit", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "St Mark's International School", t2: "Beacon College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "Lowveld High School", t2: "Portia Shabangu Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Barberton High School", t2: "Curro Mbombela", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "St Mark's International School", t2: "Meridian Karino", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "Beacon College", t2: "Curro Nelspruit", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Barberton High School", t2: "Lowveld High School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "Curro Mbombela", t2: "Portia Shabangu Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "St Mark's International School", t2: "Curro Nelspruit", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Meridian Karino", t2: "Beacon College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Barberton High School", t2: "Portia Shabangu Secondary School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "Lowveld High School", t2: "Curro Mbombela", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "Gauteng 3": {
+            pools: {
+                "Pool A": [
+                    {name: "Curro Soshanguve", seed: 3},
+                    {name: "Randfontein High", seed: 10},
+                    {name: "CBC Mount Edmund", seed: 15},
+                    {name: "Curro Serengeti", seed: 22}
+                ],
+                "Pool B": [
+                    {name: "Curro Wilgeheuwel", seed: 6},
+                    {name: "Waterstone College", seed: 7},
+                    {name: "Steyn City School", seed: 18},
+                    {name: "Woodhill College", seed: 19}
+                ]
+            },
+            matches: [
+                { d: "Friday 17 April", t: "11:00", t1: "Randfontein High", t2: "Curro Serengeti", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "12:30", t1: "Curro Soshanguve", t2: "CBC Mount Edmund", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "14:00", t1: "Waterstone College", t2: "Woodhill College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Friday 17 April", t: "15:30", t1: "Curro Wilgeheuwel", t2: "Steyn City School", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "11:00", t1: "Curro Soshanguve", t2: "Randfontein High", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "12:30", t1: "CBC Mount Edmund", t2: "Curro Serengeti", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "14:00", t1: "Curro Wilgeheuwel", t2: "Waterstone College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Saturday 18 April", t: "15:30", t1: "Steyn City School", t2: "Woodhill College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "09:00", t1: "Curro Soshanguve", t2: "Curro Serengeti", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "10:30", t1: "Randfontein High", t2: "CBC Mount Edmund", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "12:00", t1: "Curro Wilgeheuwel", t2: "Woodhill College", s1: 0, s2: 0, st: "UPCOMING" },
+                { d: "Sunday 19 April", t: "13:30", t1: "Waterstone College", t2: "Steyn City School", s1: 0, s2: 0, st: "UPCOMING" }
+            ]
+        },
+        "National Finals": {
+            pools: {
+                "Pool A": [
+                    {name: "Navalsig High School", seed: 1, origin: "Auto-qualifier"},
+                    {name: "Curro Thatchfield", seed: 6, origin: "Wildcard"},
+                    {name: "Flora Park High School", seed: 2, origin: "Limpopo - Q1"},
+                    {name: "Camps Bay High School", seed: 5, origin: "Western Cape - Q2"},
+                    {name: "Virginia High School", seed: 3, origin: "Free State - Q1"},
+                    {name: "Curro Soshanguve", seed: 4, origin: "Gauteng 3 - Q2"}
+                ],
+                "Pool B": [
+                    {name: "Grey College", seed: 1, origin: "Auto-qualifier"},
+                    {name: "Curro Century City", seed: 6, origin: "Wildcard"},
+                    {name: "CBC Mount Edmund", seed: 2, origin: "Gauteng 3 - Q1"},
+                    {name: "Meridian Cosmo City", seed: 5, origin: "Gauteng 1 - Q2"},
+                    {name: "Clapham High School", seed: 3, origin: "Gauteng 1 - Q1"},
+                    {name: "Barberton High School", seed: 4, origin: "Mpumalanga - Q2"}
+                ],
+                "Pool C": [
+                    {name: "Northern Academy", seed: 1, origin: "Auto-qualifier"},
+                    {name: "Waterstone College", seed: 6, origin: "Wildcard"},
+                    {name: "Rosina Sedibane", seed: 2, origin: "Gauteng 2 - Q1"},
+                    {name: "St Anne's High School", seed: 5, origin: "Free State - Q2"},
+                    {name: "Glenwood High School", seed: 3, origin: "KwaZulu-Natal - Q1"},
+                    {name: "Westenburg High School", seed: 4, origin: "Limpopo - Q2"}
+                ],
+                "Pool D": [
+                    {name: "Norkem Park High School", seed: 1, origin: "Auto-qualifier"},
+                    {name: "Mondeor High School", seed: 6, origin: "Wildcard"},
+                    {name: "Meridian Pinehurst", seed: 2, origin: "Western Cape - Q1"},
+                    {name: "Vaal High School", seed: 5, origin: "Gauteng 2 - Q2"},
+                    {name: "Curro Nelspruit", seed: 3, origin: "Mpumalanga - Q1"},
+                    {name: "Durban High School", seed: 4, origin: "KwaZulu-Natal - Q2"}
+                ]
+            },
+            matches: [
+                { d: "Friday 7 August", t: "08:00", t1: "Northern Academy", t2: "Waterstone College", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M1" },
+                { d: "Friday 7 August", t: "09:10", t1: "Rosina Sedibane", t2: "St Anne's High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M2" },
+                { d: "Friday 7 August", t: "10:20", t1: "Glenwood High School", t2: "Westenburg High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M3" },
+                { d: "Friday 7 August", t: "08:00", t1: "Navalsig High School", t2: "Curro Thatchfield", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M4" },
+                { d: "Friday 7 August", t: "09:10", t1: "Flora Park High School", t2: "Camps Bay High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M5" },
+                { d: "Friday 7 August", t: "10:20", t1: "Virginia High School", t2: "Curro Soshanguve", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M6" },
+                { d: "Friday 7 August", t: "08:00", t1: "Grey College", t2: "Curro Century City", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M7" },
+                { d: "Friday 7 August", t: "09:10", t1: "CBC Mount Edmund", t2: "Meridian Cosmo City", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M8" },
+                { d: "Friday 7 August", t: "10:20", t1: "Clapham High School", t2: "Barberton High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M9" },
+                { d: "Friday 7 August", t: "08:00", t1: "Norkem Park High School", t2: "Mondeor High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M10" },
+                { d: "Friday 7 August", t: "09:10", t1: "Meridian Pinehurst", t2: "Vaal High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M11" },
+                { d: "Friday 7 August", t: "10:20", t1: "Curro Nelspruit", t2: "Durban High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M12" },
+                { d: "Friday 7 August", t: "11:30", t1: "Northern Academy", t2: "St Anne's High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M13" },
+                { d: "Friday 7 August", t: "12:40", t1: "Waterstone College", t2: "Westenburg High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M14" },
+                { d: "Friday 7 August", t: "13:50", t1: "Rosina Sedibane", t2: "Glenwood High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M15" },
+                { d: "Friday 7 August", t: "15:00", t1: "Westenburg High School", t2: "Northern Academy", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M16" },
+                { d: "Friday 7 August", t: "16:10", t1: "St Anne's High School", t2: "Glenwood High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M17" },
+                { d: "Saturday 8 August", t: "09:10", t1: "Waterstone College", t2: "Rosina Sedibane", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M18" },
+                { d: "Friday 7 August", t: "11:30", t1: "Navalsig High School", t2: "Camps Bay High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M19" },
+                { d: "Friday 7 August", t: "12:40", t1: "Curro Thatchfield", t2: "Curro Soshanguve", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M20" },
+                { d: "Friday 7 August", t: "13:50", t1: "Flora Park High School", t2: "Virginia High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M21" },
+                { d: "Friday 7 August", t: "15:00", t1: "Curro Soshanguve", t2: "Navalsig High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M22" },
+                { d: "Friday 7 August", t: "16:10", t1: "Camps Bay High School", t2: "Virginia High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M23" },
+                { d: "Saturday 8 August", t: "09:10", t1: "Curro Thatchfield", t2: "Flora Park High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M24" },
+                { d: "Friday 7 August", t: "11:30", t1: "Grey College", t2: "Meridian Cosmo City", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M25" },
+                { d: "Friday 7 August", t: "12:40", t1: "Curro Century City", t2: "Barberton High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M26" },
+                { d: "Friday 7 August", t: "13:50", t1: "CBC Mount Edmund", t2: "Clapham High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M27" },
+                { d: "Friday 7 August", t: "15:00", t1: "Barberton High School", t2: "Grey College", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M28" },
+                { d: "Friday 7 August", t: "16:10", t1: "Meridian Cosmo City", t2: "Clapham High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M29" },
+                { d: "Saturday 8 August", t: "09:10", t1: "Curro Century City", t2: "CBC Mount Edmund", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M30" },
+                { d: "Friday 7 August", t: "11:30", t1: "Norkem Park High School", t2: "Vaal High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M31" },
+                { d: "Friday 7 August", t: "12:40", t1: "Mondeor High School", t2: "Durban High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M32" },
+                { d: "Friday 7 August", t: "13:50", t1: "Meridian Pinehurst", t2: "Curro Nelspruit", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M33" },
+                { d: "Friday 7 August", t: "15:00", t1: "Durban High School", t2: "Norkem Park High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M34" },
+                { d: "Friday 7 August", t: "16:10", t1: "Vaal High School", t2: "Curro Nelspruit", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M35" },
+                { d: "Saturday 8 August", t: "09:10", t1: "Mondeor High School", t2: "Meridian Pinehurst", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M36" },
+                { d: "Saturday 8 August", t: "10:20", t1: "Northern Academy", t2: "Glenwood High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M37" },
+                { d: "Saturday 8 August", t: "11:30", t1: "Rosina Sedibane", t2: "Westenburg High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M38" },
+                { d: "Saturday 8 August", t: "12:40", t1: "St Anne's High School", t2: "Waterstone College", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M39" },
+                { d: "Saturday 8 August", t: "13:50", t1: "Northern Academy", t2: "Rosina Sedibane", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M40" },
+                { d: "Saturday 8 August", t: "15:00", t1: "Glenwood High School", t2: "Waterstone College", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M41" },
+                { d: "Saturday 8 August", t: "16:10", t1: "Westenburg High School", t2: "St Anne's High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool C M42" },
+                { d: "Saturday 8 August", t: "10:20", t1: "Navalsig High School", t2: "Virginia High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M43" },
+                { d: "Saturday 8 August", t: "11:30", t1: "Flora Park High School", t2: "Curro Soshanguve", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M44" },
+                { d: "Saturday 8 August", t: "12:40", t1: "Camps Bay High School", t2: "Curro Thatchfield", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M45" },
+                { d: "Saturday 8 August", t: "13:50", t1: "Navalsig High School", t2: "Flora Park High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M46" },
+                { d: "Saturday 8 August", t: "15:00", t1: "Virginia High School", t2: "Curro Thatchfield", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M47" },
+                { d: "Saturday 8 August", t: "16:10", t1: "Curro Soshanguve", t2: "Camps Bay High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool A M48" },
+                { d: "Saturday 8 August", t: "10:20", t1: "Grey College", t2: "Clapham High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M49" },
+                { d: "Saturday 8 August", t: "11:30", t1: "CBC Mount Edmund", t2: "Barberton High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M50" },
+                { d: "Saturday 8 August", t: "12:40", t1: "Meridian Cosmo City", t2: "Curro Century City", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M51" },
+                { d: "Saturday 8 August", t: "13:50", t1: "Grey College", t2: "CBC Mount Edmund", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M52" },
+                { d: "Saturday 8 August", t: "15:00", t1: "Clapham High School", t2: "Curro Century City", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M53" },
+                { d: "Saturday 8 August", t: "16:10", t1: "Barberton High School", t2: "Meridian Cosmo City", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool B M54" },
+                { d: "Saturday 8 August", t: "10:20", t1: "Norkem Park High School", t2: "Curro Nelspruit", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M55" },
+                { d: "Saturday 8 August", t: "11:30", t1: "Meridian Pinehurst", t2: "Durban High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M56" },
+                { d: "Saturday 8 August", t: "12:40", t1: "Vaal High School", t2: "Mondeor High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M57" },
+                { d: "Saturday 8 August", t: "13:50", t1: "Norkem Park High School", t2: "Meridian Pinehurst", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M58" },
+                { d: "Saturday 8 August", t: "15:00", t1: "Curro Nelspruit", t2: "Mondeor High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M59" },
+                { d: "Saturday 8 August", t: "16:10", t1: "Durban High School", t2: "Vaal High School", s1: null, s2: null, st: "UPCOMING", type: "Group Stage Pool D M60" },
+                { d: "Sunday 9 August", t: "08:00", t1: "5th Pool A", t2: "6th Pool B", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Bowl M61" },
+                { d: "Sunday 9 August", t: "08:00", t1: "6th Pool A", t2: "5th Pool B", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Bowl M62" },
+                { d: "Sunday 9 August", t: "08:00", t1: "5th Pool C", t2: "6th Pool D", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Bowl M63" },
+                { d: "Sunday 9 August", t: "08:00", t1: "6th Pool C", t2: "5th Pool D", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Bowl M64" },
+                { d: "Sunday 9 August", t: "09:10", t1: "3rd Pool A", t2: "4th Pool B", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Plate M65" },
+                { d: "Sunday 9 August", t: "09:10", t1: "4th Pool A", t2: "3rd Pool B", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Plate M66" },
+                { d: "Sunday 9 August", t: "09:10", t1: "3rd Pool C", t2: "4th Pool D", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Plate M67" },
+                { d: "Sunday 9 August", t: "09:10", t1: "4th Pool C", t2: "3rd Pool D", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Plate M68" },
+                { d: "Sunday 9 August", t: "10:20", t1: "1st Pool A", t2: "2nd Pool B", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Cup M69" },
+                { d: "Sunday 9 August", t: "10:20", t1: "2nd Pool A", t2: "1st Pool B", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Cup M70" },
+                { d: "Sunday 9 August", t: "10:20", t1: "1st Pool C", t2: "2nd Pool D", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Cup M71" },
+                { d: "Sunday 9 August", t: "10:20", t1: "2nd Pool C", t2: "1st Pool D", s1: null, s2: null, st: "UPCOMING", type: "Quarterfinal Cup M72" },
+                { d: "Sunday 9 August", t: "11:30", t1: "Winner M61", t2: "Winner M64", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Bowl M73" },
+                { d: "Sunday 9 August", t: "11:30", t1: "Winner M62", t2: "Winner M63", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Bowl M74" },
+                { d: "Sunday 9 August", t: "11:30", t1: "Loser M62", t2: "Loser M63", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Bowl M75" },
+                { d: "Sunday 9 August", t: "11:30", t1: "Loser M61", t2: "Loser M64", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Bowl M76" },
+                { d: "Sunday 9 August", t: "12:40", t1: "Winner M65", t2: "Winner M68", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Plate M77" },
+                { d: "Sunday 9 August", t: "12:40", t1: "Winner M66", t2: "Winner M67", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Plate M78" },
+                { d: "Sunday 9 August", t: "12:40", t1: "Loser M66", t2: "Loser M67", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Plate M79" },
+                { d: "Sunday 9 August", t: "12:40", t1: "Loser M65", t2: "Loser M68", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Plate M80" },
+                { d: "Sunday 9 August", t: "13:50", t1: "Winner M69", t2: "Winner M72", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Cup M81" },
+                { d: "Sunday 9 August", t: "13:50", t1: "Winner M70", t2: "Winner M71", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Cup M82" },
+                { d: "Sunday 9 August", t: "13:50", t1: "Loser M70", t2: "Loser M71", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Cup M83" },
+                { d: "Sunday 9 August", t: "13:50", t1: "Loser M69", t2: "Loser M72", s1: null, s2: null, st: "UPCOMING", type: "Semi-final Cup M84" },
+                { d: "Monday 10 August", t: "09:00", t1: "Winner M73", t2: "Winner M74", s1: null, s2: null, st: "UPCOMING", type: "Play-off Bowl M85 (17/18)" },
+                { d: "Monday 10 August", t: "09:00", t1: "Loser M73", t2: "Loser M74", s1: null, s2: null, st: "UPCOMING", type: "Play-off Bowl M86 (19/20)" },
+                { d: "Monday 10 August", t: "09:00", t1: "Winner M75", t2: "Winner M76", s1: null, s2: null, st: "UPCOMING", type: "Play-off Bowl M87 (21/22)" },
+                { d: "Monday 10 August", t: "09:00", t1: "Loser M75", t2: "Loser M76", s1: null, s2: null, st: "UPCOMING", type: "Play-off Bowl M88 (23/24)" },
+                { d: "Monday 10 August", t: "10:30", t1: "Winner M77", t2: "Winner M78", s1: null, s2: null, st: "UPCOMING", type: "Play-off Plate M89 (9/10)" },
+                { d: "Monday 10 August", t: "10:30", t1: "Loser M77", t2: "Loser M78", s1: null, s2: null, st: "UPCOMING", type: "Play-off Plate M90 (11/12)" },
+                { d: "Monday 10 August", t: "10:30", t1: "Winner M79", t2: "Winner M80", s1: null, s2: null, st: "UPCOMING", type: "Play-off Plate M91 (13/14)" },
+                { d: "Monday 10 August", t: "10:30", t1: "Loser M79", t2: "Loser M80", s1: null, s2: null, st: "UPCOMING", type: "Play-off Plate M92 (15/16)" },
+                { d: "Monday 10 August", t: "12:00", t1: "Loser M81", t2: "Loser M82", s1: null, s2: null, st: "UPCOMING", type: "Play-off Cup M93 (3/4)" },
+                { d: "Monday 10 August", t: "12:00", t1: "Winner M83", t2: "Winner M84", s1: null, s2: null, st: "UPCOMING", type: "Play-off Cup M94 (5/6)" },
+                { d: "Monday 10 August", t: "12:00", t1: "Loser M83", t2: "Loser M84", s1: null, s2: null, st: "UPCOMING", type: "Play-off Cup M95 (7/8)" },
+                { d: "Monday 10 August", t: "13:30", t1: "Winner M81", t2: "Winner M82", s1: null, s2: null, st: "UPCOMING", type: "Final Cup M97 (1/2)" }
+            ],
+            playoffs: []
+        }
+    };
+
+    let tournamentData = JSON.parse(JSON.stringify(DEFAULT_TOURNAMENT_DATA));
+    let activeRegion = Object.keys(tournamentData).filter(r => r !== "National Finals")[0];
+    let activePlayoffRegion = activeRegion;
+    let activeMatchIndex = 0;
+    let activePlayoffIndex = 0;
+    let activeNationalIndex = 0;
+    let activeNationalStage = sessionStorage.getItem('activeNationalStage') || 'quarterfinal';
+    let activeNationalPool = sessionStorage.getItem('activeNationalPool') || 'ALL';
+    let lastSavedSnapshot = '';
+    let pendingSavePromise = null;
+
+    const authSection = document.getElementById('authSection');
+    const editorSection = document.getElementById('editorSection');
+    const passwordInput = document.getElementById('password');
+    const regionSelect = document.getElementById('regionSelect');
+    const matchSelect = document.getElementById('matchSelect');
+    const editStatus = document.getElementById('editStatus');
+    const editTime = document.getElementById('editTime');
+    const editScore1 = document.getElementById('editScore1');
+    const editScore2 = document.getElementById('editScore2');
+    const editTeam1 = document.getElementById('editTeam1');
+    const editTeam2 = document.getElementById('editTeam2');
+    const saveStatus = document.getElementById('saveStatus');
+    const loginForm = document.getElementById('loginForm');
+    const saveButton = document.getElementById('saveButton');
+    const printMatchButton = document.getElementById('printMatchButton');
+    const resetButton = document.getElementById('resetButton');
+    const recoverButton = document.getElementById('recoverButton');
+    const playoffRegionSelect = document.getElementById('playoffRegionSelect');
+    const playoffSelect = document.getElementById('playoffSelect');
+    const playoffStatus = document.getElementById('playoffStatus');
+    const playoffType = document.getElementById('playoffType');
+    const playoffDate = document.getElementById('playoffDate');
+    const playoffTime = document.getElementById('playoffTime');
+    const playoffTeam1 = document.getElementById('playoffTeam1');
+    const playoffTeam2 = document.getElementById('playoffTeam2');
+    const playoffScore1 = document.getElementById('playoffScore1');
+    const playoffScore2 = document.getElementById('playoffScore2');
+    const savePlayoffButton = document.getElementById('savePlayoffButton');
+    const addPlayoffButton = document.getElementById('addPlayoffButton');
+    const deletePlayoffButton = document.getElementById('deletePlayoffButton');
+    const playoffSaveStatus = document.getElementById('playoffSaveStatus');
+    
+    const nationalSelect = document.getElementById('nationalSelect');
+    const nationalStatus = document.getElementById('nationalStatus');
+    const nationalDate = document.getElementById('nationalDate');
+    const nationalTime = document.getElementById('nationalTime');
+    const nationalTeam1 = document.getElementById('nationalTeam1');
+    const nationalTeam2 = document.getElementById('nationalTeam2');
+    const nationalScore1 = document.getElementById('nationalScore1');
+    const nationalScore2 = document.getElementById('nationalScore2');
+    const saveNationalButton = document.getElementById('saveNationalButton');
+    const printNationalButton = document.getElementById('printNationalButton');
+    const addNationalButton = document.getElementById('addNationalButton');
+    const deleteNationalButton = document.getElementById('deleteNationalButton');
+    const nationalStageTabs = document.getElementById('nationalStageTabs');
+    const nationalPoolTabs = document.getElementById('nationalPoolTabs');
+    const nationalSaveStatus = document.getElementById('nationalSaveStatus');
+
+    const CARD_REASON_OPTIONS = ['descent', 'simulation', 'dangerous tackle', 'last man tackle', 'coach/manager'];
+
+    function normalizeCardReason(value) {
+        const raw = String(value || '').trim().toLowerCase();
+        if (!raw) return CARD_REASON_OPTIONS[0];
+        if (raw === 'decent') return 'descent';
+        return CARD_REASON_OPTIONS.includes(raw) ? raw : CARD_REASON_OPTIONS[0];
+    }
+
+    function getNationalFixturePool(match) {
+        const type = String(match?.type || '').trim();
+        const poolMatch = type.match(/Pool\s+[A-D]/i);
+        return poolMatch ? poolMatch[0].replace(/pool/i, 'Pool') : '';
+    }
+
+    function getNationalFixtureStage(match) {
+        const type = String(match?.type || '').toLowerCase();
+        if (type.includes('quarter')) return 'quarterfinal';
+        if (type.includes('semi')) return 'semifinal';
+        if (type.includes('final')) return 'final';
+        return 'groupstage';
+    }
+
+    function getNationalFixtureTierPriority(match) {
+        const type = String(match?.type || '').toLowerCase();
+        if (type.includes('cup')) return 0;
+        if (type.includes('plate')) return 1;
+        if (type.includes('bowl')) return 2;
+        if (type.includes('play-off') || type.includes('playoff')) return 3;
+        return 4;
+    }
+
+    function compareNationalFixtures(a, b) {
+        const tierDiff = getNationalFixtureTierPriority(a) - getNationalFixtureTierPriority(b);
+        if (tierDiff !== 0) return tierDiff;
+        const numberDiff = (getNationalFixtureNumber(a) || 999) - (getNationalFixtureNumber(b) || 999);
+        if (numberDiff !== 0) return numberDiff;
+        return String(a?.type || '').localeCompare(String(b?.type || ''));
+    }
+
+    function getNationalFixtureNumber(match) {
+        const type = String(match?.type || '');
+        const found = type.match(/\bM\s*(\d+)\b/i);
+        return found ? Number(found[1]) : null;
+    }
+
+    function getNationalFixtureStatus(match) {
+        return String(match?.st || 'UPCOMING').trim().toUpperCase();
+    }
+
+    function toOrdinalLabel(value) {
+        if (value === 1) return '1st';
+        if (value === 2) return '2nd';
+        if (value === 3) return '3rd';
+        return `${value}th`;
+    }
+
+    function buildNationalFinalsRankMap(regionData, matches) {
+        const poolsCopy = JSON.parse(JSON.stringify(regionData?.pools || {}));
+        calculateStandings({ pools: poolsCopy, matches: matches || regionData?.matches || [] });
+
+        const rankMap = {};
+        Object.entries(poolsCopy).forEach(([poolName, teams]) => {
+            const poolLetterMatch = poolName.match(/([A-Z])$/i);
+            const poolLetter = poolLetterMatch ? poolLetterMatch[1].toUpperCase() : poolName.replace('Pool ', '').trim().toUpperCase();
+            const sortedTeams = [...teams].sort((a, b) => (b.points - a.points) || (b.gd - a.gd) || a.name.localeCompare(b.name));
+            sortedTeams.forEach((team, idx) => {
+                const rankToken = `${toOrdinalLabel(idx + 1)} pool ${poolLetter}`.toLowerCase();
+                rankMap[rankToken] = team.name;
+            });
+        });
+
+        return rankMap;
+    }
+
+    function resolveNationalFinalsFixtures(regionData) {
+        if (!regionData || !Array.isArray(regionData.matches)) return [];
+
+        const resolvedMatches = regionData.matches.map(match => ({ ...match }));
+        const rankMap = buildNationalFinalsRankMap(regionData, resolvedMatches);
+        const matchIndexByNumber = {};
+
+        resolvedMatches.forEach((match, index) => {
+            const matchNumber = getNationalFixtureNumber(match);
+            if (matchNumber != null) {
+                matchIndexByNumber[matchNumber] = index;
+            }
+        });
+
+        const normalizeToken = value => String(value || '').trim().replace(/\s+/g, ' ').toLowerCase();
+        const outcomeTokenPattern = /^(winner|loser)\s*m\s*(\d+)$/i;
+
+        const resolvePoolRankToken = token => rankMap[normalizeToken(token)] || token;
+
+        const resolveOutcomeToken = token => {
+            const normalized = String(token || '').trim();
+            const match = normalized.match(outcomeTokenPattern);
+            if (!match) return token;
+
+            const side = match[1].toLowerCase();
+            const sourceMatchNo = Number(match[2]);
+            const sourceIndex = matchIndexByNumber[sourceMatchNo];
+            if (sourceIndex == null) return token;
+
+            const sourceOutcome = getMatchOutcome(resolvedMatches[sourceIndex]);
+            if (!sourceOutcome) return token;
+            return side === 'winner' ? sourceOutcome.winner : sourceOutcome.loser;
+        };
+
+        resolvedMatches.forEach(match => {
+            match.t1 = resolvePoolRankToken(match.t1);
+            match.t2 = resolvePoolRankToken(match.t2);
+        });
+
+        let updated = true;
+        let guard = 0;
+        while (updated && guard < 8) {
+            updated = false;
+            guard += 1;
+            resolvedMatches.forEach(match => {
+                const beforeT1 = match.t1;
+                const beforeT2 = match.t2;
+
+                match.t1 = resolvePoolRankToken(resolveOutcomeToken(match.t1));
+                match.t2 = resolvePoolRankToken(resolveOutcomeToken(match.t2));
+
+                if (match.t1 !== beforeT1 || match.t2 !== beforeT2) {
+                    updated = true;
+                }
+            });
+        }
+
+        return resolvedMatches;
+    }
+
+    function renderNationalPoolTabs(poolNames) {
+        if (!nationalPoolTabs) return;
+        const availablePools = ['ALL', ...poolNames];
+        if (!availablePools.includes(activeNationalPool)) {
+            activeNationalPool = 'ALL';
+            sessionStorage.setItem('activeNationalPool', activeNationalPool);
+        }
+        nationalPoolTabs.innerHTML = availablePools.map(pool => {
+            const label = pool === 'ALL' ? 'All fixtures' : pool;
+            const activeClass = activeNationalPool === pool ? 'active' : '';
+            return `<button type="button" class="${activeClass}" data-national-pool="${pool}">${label}</button>`;
+        }).join('');
+        nationalPoolTabs.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', () => changeNationalPool(button.dataset.nationalPool || 'ALL'));
+        });
+    }
+
+    function renderNationalStageTabs() {
+        if (!nationalStageTabs) return;
+        const stages = [
+            { value: 'quarterfinal', label: 'Quarter-finals' },
+            { value: 'semifinal', label: 'Semi-finals' },
+            { value: 'final', label: 'Finals' },
+            { value: 'groupstage', label: 'Group Stage' }
+        ];
+        if (!stages.some(stage => stage.value === activeNationalStage)) {
+            activeNationalStage = 'quarterfinal';
+            sessionStorage.setItem('activeNationalStage', activeNationalStage);
+        }
+        nationalStageTabs.innerHTML = stages.map(stage => {
+            const activeClass = activeNationalStage === stage.value ? 'active' : '';
+            return `<button type="button" class="${activeClass}" data-national-stage="${stage.value}">${stage.label}</button>`;
+        }).join('');
+        nationalStageTabs.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', () => changeNationalStage(button.dataset.nationalStage || 'quarterfinal'));
+        });
+    }
+
+    function changeNationalPool(pool) {
+        activeNationalPool = pool || 'ALL';
+        sessionStorage.setItem('activeNationalPool', activeNationalPool);
+        populateNationalOptions();
+        setNationalStatus(activeNationalPool === 'ALL' ? 'Showing all National fixtures.' : `Showing ${activeNationalPool} fixtures.`);
+    }
+
+    function changeNationalStage(stage) {
+        activeNationalStage = stage || 'quarterfinal';
+        sessionStorage.setItem('activeNationalStage', activeNationalStage);
+        if (activeNationalStage !== 'groupstage') {
+            activeNationalPool = 'ALL';
+            sessionStorage.setItem('activeNationalPool', activeNationalPool);
+        }
+        populateNationalOptions();
+        setNationalStatus(activeNationalStage === 'groupstage' ? 'Showing group stage fixtures.' : `Showing ${activeNationalStage.replace('quarterfinal', 'quarter-final').replace('semifinal', 'semi-final').replace('final', 'final')} fixtures.`);
+    }
+    const STATS_NUMBER_SELECT_IDS = [
+        'homeScorerNumber',
+        'awayScorerNumber',
+        'homeAssistNumber',
+        'awayAssistNumber',
+        'homeYellowNumber',
+        'awayYellowNumber',
+        'homeRedNumber',
+        'awayRedNumber',
+        'nationalHomeScorerNumber',
+        'nationalAwayScorerNumber',
+        'nationalHomeAssistNumber',
+        'nationalAwayAssistNumber',
+        'nationalHomeYellowNumber',
+        'nationalAwayYellowNumber',
+        'nationalHomeRedNumber',
+        'nationalAwayRedNumber'
+    ];
+
+    const DEFAULT_MATCH_STATS = {
+        homeScorers: [],
+        awayScorers: [],
+        homeAssists: [],
+        awayAssists: [],
+        homeSaves: 0,
+        awaySaves: 0,
+        homeYellowCards: [],
+        awayYellowCards: [],
+        homeRedCards: [],
+        awayRedCards: []
+    };
+
+    function normalizeShirtNumbers(value) {
+        if (Array.isArray(value)) {
+            return value
+                .map(item => Number(item))
+                .filter(num => Number.isInteger(num) && num >= 1 && num <= 99);
+        }
+        if (typeof value === 'number') {
+            return Number.isInteger(value) && value >= 1 && value <= 99 ? [value] : [];
+        }
+        if (typeof value === 'string') {
+            const found = value.match(/\d+/g) || [];
+            return found
+                .map(item => Number(item))
+                .filter(num => Number.isInteger(num) && num >= 1 && num <= 99);
+        }
+        return [];
+    }
+
+    function normalizeSaveCount(value) {
+        if (typeof value === 'number' && Number.isFinite(value)) {
+            return Math.max(0, Math.floor(value));
+        }
+        if (Array.isArray(value)) {
+            return value.length;
+        }
+        const parsed = Number(value);
+        if (Number.isFinite(parsed)) {
+            return Math.max(0, Math.floor(parsed));
+        }
+        return 0;
+    }
+
+    function normalizeCardEvent(item) {
+        if (item && typeof item === 'object' && !Array.isArray(item)) {
+            const num = Number(item.number);
+            if (!Number.isInteger(num) || num < 1 || num > 99) return null;
+            const reason = normalizeCardReason(item.reason);
+            return { number: num, reason };
+        }
+        const num = Number(item);
+        if (Number.isInteger(num) && num >= 1 && num <= 99) {
+            return { number: num, reason: CARD_REASON_OPTIONS[0] };
+        }
+        return null;
+    }
+
+    function normalizeCardEvents(value) {
+        if (!Array.isArray(value)) return [];
+        return value.map(normalizeCardEvent).filter(Boolean);
+    }
+
+    function initializeStatsEditorControls() {
+        const optionsMarkup = Array.from({ length: 99 }, (_, i) => {
+            const shirtNo = i + 1;
+            return `<option value="${shirtNo}">#${shirtNo}</option>`;
+        }).join('');
+        STATS_NUMBER_SELECT_IDS.forEach(id => {
+            const select = document.getElementById(id);
+            if (!select || select.dataset.initialized === 'true') return;
+            select.innerHTML = optionsMarkup;
+            select.dataset.initialized = 'true';
+        });
+    }
+
+    function getMatchByScope(scope = 'regional') {
+        if (scope === 'national') {
+            const nationalData = tournamentData['National Finals'];
+            if (!nationalData || !Array.isArray(nationalData.matches)) return null;
+            return nationalData.matches[activeNationalIndex] || null;
+        }
+        const regionData = tournamentData[activeRegion];
+        if (!regionData || !Array.isArray(regionData.matches)) return null;
+        return regionData.matches[activeMatchIndex] || null;
+    }
+
+    function getMatchStatsByScope(scope = 'regional') {
+        const match = getMatchByScope(scope);
+        if (!match) return { ...DEFAULT_MATCH_STATS };
+        return ensureMatchStats(match);
+    }
+
+    function getScopedContainerIds(scope, key) {
+        if (scope === 'national') {
+            const nationalMap = {
+                homeScorers: 'nationalHomeScorersList',
+                awayScorers: 'nationalAwayScorersList',
+                homeAssists: 'nationalHomeAssistsList',
+                awayAssists: 'nationalAwayAssistsList',
+                homeYellowCards: 'nationalHomeYellowList',
+                awayYellowCards: 'nationalAwayYellowList',
+                homeRedCards: 'nationalHomeRedList',
+                awayRedCards: 'nationalAwayRedList'
+            };
+            return nationalMap[key];
+        }
+        const regionalMap = {
+            homeScorers: 'homeScorersList',
+            awayScorers: 'awayScorersList',
+            homeAssists: 'homeAssistsList',
+            awayAssists: 'awayAssistsList',
+            homeYellowCards: 'homeYellowList',
+            awayYellowCards: 'awayYellowList',
+            homeRedCards: 'homeRedList',
+            awayRedCards: 'awayRedList'
+        };
+        return regionalMap[key];
+    }
+
+    function getScopedSaveValueId(scope, side) {
+        if (scope === 'national') {
+            return side === 'home' ? 'nationalHomeSaveValue' : 'nationalAwaySaveValue';
+        }
+        return side === 'home' ? 'homeSaveValue' : 'awaySaveValue';
+    }
+
+    function summarizeNumberEvents(list) {
+        const counts = {};
+        list.forEach(num => {
+            counts[num] = (counts[num] || 0) + 1;
+        });
+        return Object.entries(counts)
+            .map(([num, count]) => ({ number: Number(num), count }))
+            .sort((a, b) => a.number - b.number);
+    }
+
+    function renderNumberEventList(containerId, key, scope = 'regional') {
+        const el = document.getElementById(containerId);
+        if (!el) return;
+        const stats = getMatchStatsByScope(scope);
+        const summary = summarizeNumberEvents(stats[key] || []);
+        if (!summary.length) {
+            el.innerHTML = '<div class="empty-event-note">No entries yet</div>';
+            return;
+        }
+        el.innerHTML = summary.map(item =>
+            `<span class="event-chip">#${item.number} x${item.count} <button type="button" class="chip-remove" aria-label="Remove one #${item.number} entry" onclick="decrementEventNumber('${key}', ${item.number}, '${scope}')">x</button></span>`
+        ).join('');
+    }
+
+    function renderCardEventList(containerId, key, scope = 'regional') {
+        const el = document.getElementById(containerId);
+        if (!el) return;
+        const stats = getMatchStatsByScope(scope);
+        const events = stats[key] || [];
+        if (!events.length) {
+            el.innerHTML = '<div class="empty-event-note">No cards recorded</div>';
+            return;
+        }
+        el.innerHTML = events.map((event, index) =>
+            `<span class="event-chip">#${event.number} - ${escapeHtml(event.reason)} <button type="button" class="chip-remove" aria-label="Remove #${event.number} card" onclick="removeCardEvent('${key}', ${index}, '${scope}')">x</button></span>`
+        ).join('');
+    }
+
+    function renderStatsEditorState(scope = 'regional') {
+        const stats = getMatchStatsByScope(scope);
+        const homeSaveValue = document.getElementById(getScopedSaveValueId(scope, 'home'));
+        const awaySaveValue = document.getElementById(getScopedSaveValueId(scope, 'away'));
+        if (homeSaveValue) homeSaveValue.textContent = String(stats.homeSaves || 0);
+        if (awaySaveValue) awaySaveValue.textContent = String(stats.awaySaves || 0);
+
+        renderNumberEventList(getScopedContainerIds(scope, 'homeScorers'), 'homeScorers', scope);
+        renderNumberEventList(getScopedContainerIds(scope, 'awayScorers'), 'awayScorers', scope);
+        renderNumberEventList(getScopedContainerIds(scope, 'homeAssists'), 'homeAssists', scope);
+        renderNumberEventList(getScopedContainerIds(scope, 'awayAssists'), 'awayAssists', scope);
+        renderCardEventList(getScopedContainerIds(scope, 'homeYellowCards'), 'homeYellowCards', scope);
+        renderCardEventList(getScopedContainerIds(scope, 'awayYellowCards'), 'awayYellowCards', scope);
+        renderCardEventList(getScopedContainerIds(scope, 'homeRedCards'), 'homeRedCards', scope);
+        renderCardEventList(getScopedContainerIds(scope, 'awayRedCards'), 'awayRedCards', scope);
+    }
+
+    function ensureMatchStats(match) {
+        if (!match || typeof match !== 'object') return { ...DEFAULT_MATCH_STATS };
+        const safeStats = JSON.parse(JSON.stringify(DEFAULT_MATCH_STATS));
+        const currentStats = (match.stats && typeof match.stats === 'object') ? match.stats : {};
+        safeStats.homeScorers = normalizeShirtNumbers(currentStats.homeScorers);
+        safeStats.awayScorers = normalizeShirtNumbers(currentStats.awayScorers);
+        safeStats.homeAssists = normalizeShirtNumbers(currentStats.homeAssists);
+        safeStats.awayAssists = normalizeShirtNumbers(currentStats.awayAssists);
+        safeStats.homeSaves = normalizeSaveCount(currentStats.homeSaves);
+        safeStats.awaySaves = normalizeSaveCount(currentStats.awaySaves);
+        safeStats.homeYellowCards = normalizeCardEvents(currentStats.homeYellowCards);
+        safeStats.awayYellowCards = normalizeCardEvents(currentStats.awayYellowCards);
+        safeStats.homeRedCards = normalizeCardEvents(currentStats.homeRedCards);
+        safeStats.awayRedCards = normalizeCardEvents(currentStats.awayRedCards);
+        match.stats = safeStats;
+        return safeStats;
+    }
+
+    function addEventNumber(key, selectId, scope = 'regional') {
+        const select = document.getElementById(selectId);
+        const number = Number(select ? select.value : NaN);
+        if (!Number.isInteger(number) || number < 1 || number > 99) return;
+        const stats = getMatchStatsByScope(scope);
+        stats[key].push(number);
+        renderStatsEditorState(scope);
+    }
+
+    function decrementEventNumber(key, number, scope = 'regional') {
+        const stats = getMatchStatsByScope(scope);
+        const idx = stats[key].findIndex(n => n === number);
+        if (idx === -1) return;
+        stats[key].splice(idx, 1);
+        renderStatsEditorState(scope);
+    }
+
+    function changeSaveCount(key, delta, scope = 'regional') {
+        const stats = getMatchStatsByScope(scope);
+        const next = Math.max(0, normalizeSaveCount(stats[key]) + Number(delta || 0));
+        stats[key] = next;
+        renderStatsEditorState(scope);
+    }
+
+    function addCardEvent(key, numberSelectId, reasonSelectId, scope = 'regional') {
+        const numberSelect = document.getElementById(numberSelectId);
+        const reasonSelect = document.getElementById(reasonSelectId);
+        const number = Number(numberSelect ? numberSelect.value : NaN);
+        const reason = String(reasonSelect ? reasonSelect.value : '').trim().toLowerCase();
+
+        if (!Number.isInteger(number) || number < 1 || number > 99) {
+            setSaveStatus('Select a valid shirt number for the card.', false);
+            return;
+        }
+        if (!reason) {
+            setSaveStatus('Select a reason for the card.', false);
+            return;
+        }
+
+        const stats = getMatchStatsByScope(scope);
+        stats[key].push({ number, reason });
+        renderStatsEditorState(scope);
+    }
+
+    function removeCardEvent(key, index, scope = 'regional') {
+        const stats = getMatchStatsByScope(scope);
+        if (!Array.isArray(stats[key])) return;
+        if (index < 0 || index >= stats[key].length) return;
+        stats[key].splice(index, 1);
+        renderStatsEditorState(scope);
+    }
+
+    window.addEventNumber = addEventNumber;
+    window.decrementEventNumber = decrementEventNumber;
+    window.changeSaveCount = changeSaveCount;
+    window.addCardEvent = addCardEvent;
+    window.removeCardEvent = removeCardEvent;
+
+    function escapeHtml(value) {
+        return String(value || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function buildPrintList(value) {
+        const items = normalizeShirtNumbers(value);
+        if (!items.length) return '<div class="empty">None recorded</div>';
+        const summary = summarizeNumberEvents(items);
+        return `<ul>${summary.map(item => `<li>${escapeHtml(`#${item.number} x${item.count}`)}</li>`).join('')}</ul>`;
+    }
+
+    function buildSavePrint(value) {
+        const count = normalizeSaveCount(value);
+        return `<div>${count}</div>`;
+    }
+
+    function buildCardPrintList(value) {
+        const events = normalizeCardEvents(value);
+        if (!events.length) return '<div class="empty">None recorded</div>';
+        return `<ul>${events.map(item => `<li>${escapeHtml(`#${item.number} - ${item.reason}`)}</li>`).join('')}</ul>`;
+    }
+
+    function applySavedData(savedData) {
+        if (!savedData || typeof savedData !== 'object') return;
+
+        Object.keys(savedData).forEach(region => {
+            if (tournamentData[region]) {
+                if (Array.isArray(savedData[region].matches)) {
+                    tournamentData[region].matches = savedData[region].matches.map(match => ({ ...match }));
+                }
+                if (Array.isArray(savedData[region].playoffs)) {
+                    tournamentData[region].playoffs = savedData[region].playoffs.map(match => ({ ...match }));
+                }
+                if (tournamentData[region].pools && tournamentData[region].matches) {
+                    tournamentData[region].playoffs = tournamentData[region].playoffs || generateDefaultPlayoffFixtures(tournamentData[region]);
+                }
+                updatePlayoffsFromStandings(tournamentData[region]);
+            }
+        });
+    }
+
+    function loadSavedData() {
+        return fetch('/api/get-girls-data')
+            .then(res => {
+                if (!res.ok) throw new Error(`Server error: ${res.status}`);
+                return res.json();
+            })
+            .then(data => {
+                if (data && Object.keys(data).length > 0) {
+                    applySavedData(data);
+                    lastSavedSnapshot = JSON.stringify(tournamentData);
+                }
+            })
+            .catch(err => {
+                console.error('Unable to load tournament data from server. Using default data.', err);
+                return Promise.resolve();
+            });
+    }
+
+    function saveData() {
+        const snapshot = JSON.stringify(tournamentData);
+
+        if (snapshot === lastSavedSnapshot) {
+            return Promise.resolve({ message: 'No changes to save.' });
+        }
+
+        if (pendingSavePromise) {
+            return pendingSavePromise;
+        }
+
+        pendingSavePromise = fetch('/api/save-girls-data', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: snapshot
+        })
+        .then(async res => {
+            let payload = null;
+            try {
+                payload = await res.json();
+            } catch (_) {
+                payload = null;
+            }
+
+            if (!res.ok) {
+                const reason = payload && payload.message ? payload.message : `Server error: ${res.status}`;
+                throw new Error(reason);
+            }
+
+            lastSavedSnapshot = snapshot;
+            return payload || { message: 'Saved' };
+        })
+        .catch(error => {
+            console.error('Error saving data to server:', error);
+            throw error;
+        })
+        .finally(() => {
+            pendingSavePromise = null;
+        });
+
+        return pendingSavePromise;
+    }
+
+    /**
+     * Calculates official standings (points and GD) for a region based on FINAL match results.
+     * This function modifies the regionData object directly.
+     * @param {object} regionData - The full data object for a single region.
+     */
+    function calculateStandings(regionData) {
+        const pools = regionData.pools;
+        const matches = regionData.matches;
+
+        // 1. Reset all pool stats
+        for (const poolName in pools) {
+            pools[poolName].forEach(team => {
+                team.points = 0;
+                team.gd = 0;
+            });
+        }
+
+        // 2. Create a quick-lookup map of all teams
+        const allTeams = {};
+        for (const poolName in pools) {
+            pools[poolName].forEach(team => {
+                allTeams[team.name] = team;
+            });
+        }
+
+        // 3. Iterate through FINAL or LIVE matches to calculate official points
+        const finishedMatches = matches.filter(m => ['FINAL', 'LIVE'].includes(getNationalFixtureStatus(m)));
+
+        finishedMatches.forEach(match => {
+            const score1 = match.s1;
+            const score2 = match.s2;
+            const team1 = allTeams[match.t1];
+            const team2 = allTeams[match.t2];
+
+            if (team1 && team2) {
+                team1.gd += score1 - score2;
+                team2.gd += score2 - score1;
+
+                if (score1 > score2) { team1.points += 3; } // Corrected: 3 points for a win
+                else if (score2 > score1) { team2.points += 3; } // Corrected: 3 points for a win
+                else { team1.points += 1; team2.points += 1; }
+            }
+        });
+    }
+
+    function updatePlayoffsFromStandings(regionData) {
+        if (!regionData || !regionData.pools || !regionData.pools["Pool A"] || !regionData.pools["Pool B"]) return;
+
+        const poolsCopy = JSON.parse(JSON.stringify(regionData.pools));
+        calculateStandings({ pools: poolsCopy, matches: regionData.matches || [] });
+
+        const poolA = (poolsCopy['Pool A'] || []).slice().sort((a, b) => (b.points - a.points) || (b.gd - a.gd) || a.name.localeCompare(b.name));
+        const poolB = (poolsCopy['Pool B'] || []).slice().sort((a, b) => (b.points - a.points) || (b.gd - a.gd) || a.name.localeCompare(b.name));
+        if (poolA.length < 2 || poolB.length < 2) return [];
+
+        return [
+            { d: 'Saturday 23 May', t: '09:00', t1: poolA[0].name, t2: poolB[1].name, s1: null, s2: null, st: 'UPCOMING', type: 'Semi-Final 1' },
+            { d: 'Saturday 23 May', t: '10:30', t1: poolB[0].name, t2: poolA[1].name, s1: null, s2: null, st: 'UPCOMING', type: 'Semi-Final 2' },
+            { d: 'Saturday 23 May', t: '14:00', t1: 'Loser Match 13', t2: 'Loser Match 14', s1: null, s2: null, st: 'UPCOMING', type: '3rd Place' },
+            { d: 'Saturday 23 May', t: '15:30', t1: 'Winner Match 13', t2: 'Winner Match 14', s1: null, s2: null, st: 'UPCOMING', type: 'Final' }
+        ];
+    }
+
+    function generateDefaultPlayoffFixtures(regionData) {
+        if (!regionData || !regionData.pools || !regionData.matches) return [];
+
+        const poolsCopy = JSON.parse(JSON.stringify(regionData.pools));
+        const standingsData = { pools: poolsCopy, matches: regionData.matches || [] };
+        calculateStandings(standingsData);
+
+        const poolA = (poolsCopy['Pool A'] || []).slice().sort((a, b) => (b.points - a.points) || (b.gd - a.gd) || a.name.localeCompare(b.name));
+        const poolB = (poolsCopy['Pool B'] || []).slice().sort((a, b) => (b.points - a.points) || (b.gd - a.gd) || a.name.localeCompare(b.name));
+        if (poolA.length < 2 || poolB.length < 2) return [];
+
+        return [
+            { d: 'Saturday 23 May', t: '09:00', t1: poolA[0].name, t2: poolB[1].name, s1: null, s2: null, st: 'UPCOMING', type: 'Semi-Final 1' },
+            { d: 'Saturday 23 May', t: '10:30', t1: poolB[0].name, t2: poolA[1].name, s1: null, s2: null, st: 'UPCOMING', type: 'Semi-Final 2' },
+            { d: 'Saturday 23 May', t: '14:00', t1: 'Loser Match 13', t2: 'Loser Match 14', s1: null, s2: null, st: 'UPCOMING', type: '3rd Place' },
+            { d: 'Saturday 23 May', t: '15:30', t1: 'Winner Match 13', t2: 'Winner Match 14', s1: null, s2: null, st: 'UPCOMING', type: 'Final' }
+        ];
+    }
+
+    function setSaveStatus(message, success = true) {
+        saveStatus.textContent = message;
+        saveStatus.style.background = success ? '#eef8f4' : '#ffe8e8';
+        saveStatus.style.color = success ? '#0f5a30' : '#8f1a1a';
+    }
+
+    function populateRegionOptions() {
+        const regions = Object.keys(tournamentData).filter(r => r !== "National Finals");
+        regionSelect.innerHTML = regions.map(region =>
+            `<option value="${region}">${region}</option>`
+        ).join('');
+        regionSelect.value = activeRegion;
+        
+        playoffRegionSelect.innerHTML = regions.map(region =>
+            `<option value="${region}">${region}</option>`
+        ).join('');
+        playoffRegionSelect.value = activePlayoffRegion;
+        
+        populateMatchOptions();
+        populatePlayoffOptions();
+        populateNationalOptions();
+    }
+
+    function populateMatchOptions() {
+        const matches = tournamentData[activeRegion].matches;
+        matchSelect.innerHTML = matches.map((match, index) =>
+            `<option value="${index}">${match.d} ${match.t} — ${match.t1} vs ${match.t2}</option>`
+        ).join('');
+        if (activeMatchIndex >= matches.length) {
+            activeMatchIndex = 0;
+        }
+        matchSelect.value = activeMatchIndex;
+        fillEditorForm();
+    }
+
+    function fillEditorForm() {
+        const match = tournamentData[activeRegion].matches[activeMatchIndex];
+        ensureMatchStats(match);
+        initializeStatsEditorControls();
+        editStatus.value = match.st || 'UPCOMING';
+        editTime.value = match.t || '';
+        editScore1.value = match.s1 != null ? match.s1 : '';
+        editScore2.value = match.s2 != null ? match.s2 : '';
+        editTeam1.value = match.t1 || '';
+        editTeam2.value = match.t2 || '';
+        renderStatsEditorState('regional');
+        setSaveStatus('Loaded current match details.');
+    }
+
+    function handlePrintMatchSheet(scope = 'regional') {
+        const regionLabel = scope === 'national' ? 'National Finals' : activeRegion;
+        const match = getMatchByScope(scope);
+        if (!match) {
+            setSaveStatus('No match selected for printing.', false);
+            return;
+        }
+
+        const stats = ensureMatchStats(match);
+        const score1 = match.s1 != null ? match.s1 : '-';
+        const score2 = match.s2 != null ? match.s2 : '-';
+        const opened = window.open('', '_blank', 'width=960,height=1080');
+
+        if (!opened) {
+            setSaveStatus('Pop-up blocked. Allow pop-ups to print the result sheet.', false);
+            return;
+        }
+
+        const printHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Result Sheet - ${escapeHtml(regionLabel)}</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: "Segoe UI", Arial, sans-serif; margin: 0; color: #111; background: #f5f6fa; }
+        .sheet { max-width: 960px; margin: 18px auto; padding: 0; background: #fff; border: 1px solid #d9dce6; }
+        .header { border-bottom: 3px solid #111; padding: 16px 22px 14px; background: linear-gradient(180deg, #ffffff 0%, #f7f8fb 100%); }
+        .brand-row { display: grid; grid-template-columns: 94px 1fr 94px; gap: 12px; align-items: center; }
+        .brand-logo-wrap { display: flex; justify-content: center; align-items: center; }
+        .brand-logo { width: 86px; height: 50px; object-fit: contain; border: 1px solid #d2d6e0; background: #fff; padding: 3px 6px; }
+        .brand-center { text-align: center; }
+        .title { font-size: 25px; font-weight: 800; margin: 0; letter-spacing: 0.04em; text-transform: uppercase; }
+        .subtitle { margin-top: 4px; color: #4b5563; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+        .meta-strip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+        .meta-box { border: 1px solid #d8dbe4; padding: 8px 10px; background: #fff; }
+        .meta-label { font-size: 10px; font-weight: 700; color: #5b6475; letter-spacing: 0.08em; text-transform: uppercase; }
+        .meta-value { margin-top: 3px; font-size: 13px; font-weight: 600; }
+        .body-wrap { padding: 20px 22px 22px; }
+        .scoreline { margin: 0 0 18px; padding: 14px 16px; background: #101828; color: #fff; font-size: 23px; font-weight: 700; text-align: center; letter-spacing: 0.02em; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .card { border: 1px solid #cfd4df; padding: 14px; background: #fbfcff; }
+        .team { font-size: 17px; font-weight: 700; margin: 0 0 10px; }
+        .label { margin-top: 10px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #4b5563; font-weight: 700; }
+        ul { margin: 8px 0 0 18px; padding: 0; }
+        li { margin: 0 0 5px; font-size: 14px; }
+        .empty { margin-top: 8px; color: #6b6b6b; font-size: 13px; font-style: italic; }
+        .meta { margin-top: 18px; font-size: 12px; color: #667085; border-top: 1px solid #d8dbe4; padding-top: 10px; }
+        .actions { margin-top: 24px; display: flex; gap: 10px; }
+        button { border: 1px solid #111; background: #111; color: #fff; padding: 10px 14px; font-size: 13px; cursor: pointer; }
+        button.secondary { background: #fff; color: #111; }
+        @media print {
+            .actions { display: none; }
+            .sheet { margin: 0; max-width: 100%; }
+            body { margin: 10px; background: #fff; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sheet">
+        <div class="header">
+            <div class="brand-row">
+                <div class="brand-logo-wrap"><img src="${HALALA_BRAND_IMAGE}" alt="Halala mark" class="brand-logo" onerror="if (!this.dataset.step) { this.dataset.step='1'; this.src='../images/curro-halala.png'; } else if (this.dataset.step==='1') { this.dataset.step='2'; this.src='images/curro-halala.png'; } else { this.style.display='none'; }" /></div>
+                <div class="brand-center">
+                    <h1 class="title">Official Match Result Sheet</h1>
+                    <div class="subtitle">Halala Cup Girls Match Report</div>
+                </div>
+                <div class="brand-logo-wrap"><img src="${HALALA_BRAND_IMAGE}" alt="Halala mark" class="brand-logo" onerror="if (!this.dataset.step) { this.dataset.step='1'; this.src='../images/curro-halala.png'; } else if (this.dataset.step==='1') { this.dataset.step='2'; this.src='images/curro-halala.png'; } else { this.style.display='none'; }" /></div>
+            </div>
+            <div class="meta-strip">
+                <div class="meta-box"><div class="meta-label">Region</div><div class="meta-value">${escapeHtml(regionLabel)}</div></div>
+                <div class="meta-box"><div class="meta-label">Date</div><div class="meta-value">${escapeHtml(match.d || 'TBD')}</div></div>
+                <div class="meta-box"><div class="meta-label">Kickoff</div><div class="meta-value">${escapeHtml(match.t || 'TBD')}</div></div>
+                <div class="meta-box"><div class="meta-label">Status</div><div class="meta-value">${escapeHtml(match.st || 'UPCOMING')}</div></div>
+                <div class="meta-box"><div class="meta-label">Fixture</div><div class="meta-value">${escapeHtml(match.type || 'Match')}</div></div>
+            </div>
+        </div>
+        <div class="body-wrap">
+        <div class="scoreline">${escapeHtml(match.t1 || 'Home Team')} ${score1} - ${score2} ${escapeHtml(match.t2 || 'Away Team')}</div>
+        <div class="grid">
+            <section class="card">
+                <h2 class="team">${escapeHtml(match.t1 || 'Home Team')}</h2>
+                <div class="label">Scorers</div>
+                ${buildPrintList(stats.homeScorers)}
+                <div class="label">Assists</div>
+                ${buildPrintList(stats.homeAssists)}
+                <div class="label">Saves</div>
+                ${buildSavePrint(stats.homeSaves)}
+                <div class="label">Yellow Cards</div>
+                ${buildCardPrintList(stats.homeYellowCards)}
+                <div class="label">Red Cards</div>
+                ${buildCardPrintList(stats.homeRedCards)}
+            </section>
+            <section class="card">
+                <h2 class="team">${escapeHtml(match.t2 || 'Away Team')}</h2>
+                <div class="label">Scorers</div>
+                ${buildPrintList(stats.awayScorers)}
+                <div class="label">Assists</div>
+                ${buildPrintList(stats.awayAssists)}
+                <div class="label">Saves</div>
+                ${buildSavePrint(stats.awaySaves)}
+                <div class="label">Yellow Cards</div>
+                ${buildCardPrintList(stats.awayYellowCards)}
+                <div class="label">Red Cards</div>
+                ${buildCardPrintList(stats.awayRedCards)}
+            </section>
+        </div>
+        <p class="meta">Generated from SASFA Admin Portal | Report prepared for team management review.</p>
+        <div class="actions">
+            <button onclick="window.print()">Print Sheet</button>
+            <button class="secondary" onclick="window.close()">Close</button>
+        </div>
+        </div>
+    </div>
+</body>
+</html>`;
+
+        opened.document.open();
+        opened.document.write(printHtml);
+        opened.document.close();
+        setSaveStatus('Result sheet opened. Use Print Sheet in the new tab.');
+    }
+
+    function handleNationalPrintSheet() {
+        handlePrintMatchSheet('national');
+    }
+
+    function populatePlayoffOptions() {
+        const regionData = tournamentData[activePlayoffRegion];
+        regionData.playoffs = regionData.playoffs || generateDefaultPlayoffFixtures(regionData);
+        playoffSelect.innerHTML = regionData.playoffs.length > 0
+            ? regionData.playoffs.map((fixture, index) =>
+                `<option value="${index}">${fixture.d || 'TBD'} ${fixture.t || 'TBD'} — ${fixture.t1 || 'TBD'} vs ${fixture.t2 || 'TBD'}</option>`
+            ).join('')
+            : `<option value="0">No playoff fixtures yet</option>`;
+        if (activePlayoffIndex >= regionData.playoffs.length) {
+            activePlayoffIndex = 0;
+        }
+        playoffSelect.value = activePlayoffIndex;
+        fillPlayoffForm();
+    }
+
+    function fillPlayoffForm() {
+        const regionData = tournamentData[activePlayoffRegion];
+        const fixture = (regionData.playoffs || [])[activePlayoffIndex];
+        if (fixture) {
+            playoffStatus.value = fixture.st || 'UPCOMING';
+            playoffType.value = fixture.type || '';
+            playoffDate.value = fixture.d || '';
+            playoffTime.value = fixture.t || '';
+
+            // Build smart dropdown list based on current region's QUALIFIED teams
+            let options = [];
+            if (regionData && regionData.pools) {
+                const poolsCopy = JSON.parse(JSON.stringify(regionData.pools));
+                calculateStandings({ pools: poolsCopy, matches: regionData.matches || [] });
+                
+                const poolA = (poolsCopy['Pool A'] || []).slice().sort((a, b) => (b.points - a.points) || (b.gd - a.gd) || a.name.localeCompare(b.name));
+                const poolB = (poolsCopy['Pool B'] || []).slice().sort((a, b) => (b.points - a.points) || (b.gd - a.gd) || a.name.localeCompare(b.name));
+                
+                if (poolA[0]) options.push(poolA[0].name);
+                if (poolA[1]) options.push(poolA[1].name);
+                if (poolB[0]) options.push(poolB[0].name);
+                if (poolB[1]) options.push(poolB[1].name);
+            }
+            
+            if (regionData && regionData.playoffs) {
+                regionData.playoffs.forEach(m => {
+                    const outcome = getMatchOutcome(m);
+                    if (outcome) {
+                        options.push(outcome.winner);
+                        options.push(outcome.loser);
+                    }
+                });
+            }
+            options.push("TBD", "1st Pool A", "2nd Pool B", "1st Pool B", "2nd Pool A", "Winner Match 13", "Winner Match 14", "Loser Match 13", "Loser Match 14");
+            options = [...new Set(options)];
+
+            function populateSelect(selectId, currentValue) {
+                const el = document.getElementById(selectId);
+                let hasValue = false;
+                el.innerHTML = options.map(opt => {
+                    const selected = (opt === currentValue) ? 'selected' : '';
+                    if (selected) hasValue = true;
+                    return `<option value="${opt}" ${selected}>${opt}</option>`;
+                }).join('');
+                if (!hasValue && currentValue) el.innerHTML += `<option value="${currentValue}" selected>${currentValue}</option>`;
+            }
+            
+            populateSelect('playoffTeam1', fixture.t1 || '');
+            populateSelect('playoffTeam2', fixture.t2 || '');
+            playoffScore1.value = fixture.s1 != null ? fixture.s1 : '';
+            playoffScore2.value = fixture.s2 != null ? fixture.s2 : '';
+            document.getElementById('playoffPenalties1').value = fixture.ps1 != null ? fixture.ps1 : '';
+            document.getElementById('playoffPenalties2').value = fixture.ps2 != null ? fixture.ps2 : '';
+            setPlayoffStatus('Loaded current playoff fixture.');
+        } else {
+            playoffStatus.value = 'UPCOMING';
+            playoffType.value = '';
+            playoffDate.value = '';
+            playoffTime.value = '';
+            document.getElementById('playoffTeam1').innerHTML = '';
+            document.getElementById('playoffTeam2').innerHTML = '';
+            playoffScore1.value = '';
+            playoffScore2.value = '';
+            document.getElementById('playoffPenalties1').value = '';
+            document.getElementById('playoffPenalties2').value = '';
+            setPlayoffStatus('No playoff fixture selected yet.', false);
+        }
+    }
+
+    function changePlayoffRegion() {
+        activePlayoffRegion = playoffRegionSelect.value;
+        activePlayoffIndex = 0;
+        populatePlayoffOptions();
+    }
+
+    function changePlayoff() {
+        activePlayoffIndex = parseInt(playoffSelect.value, 10) || 0;
+        fillPlayoffForm();
+    }
+
+    function setPlayoffStatus(message, success = true) {
+        playoffSaveStatus.textContent = message;
+        playoffSaveStatus.style.background = success ? '#eef8f4' : '#ffe8e8';
+        playoffSaveStatus.style.color = success ? '#0f5a30' : '#8f1a1a';
+    }
+
+    function getMatchOutcome(match) {
+        if (!match || !['FINAL', 'LIVE'].includes(getNationalFixtureStatus(match)) || match.s1 == null || match.s2 == null) return null;
+        if (match.s1 === match.s2) {
+            if (match.ps1 != null && match.ps2 != null && match.ps1 !== match.ps2) {
+                return match.ps1 > match.ps2
+                    ? { winner: match.t1, loser: match.t2 }
+                    : { winner: match.t2, loser: match.t1 };
+            }
+            return null; // No clear winner/loser in a draw
+        }
+        return match.s1 > match.s2
+            ? { winner: match.t1, loser: match.t2 }
+            : { winner: match.t2, loser: match.t1 };
+    }
+
+    function normalizeTeamName(name) {
+        return (name || '').replace(/['\s]/g, '').toLowerCase();
+    }
+
+    function isPlayoffPlaceholder(teamName) {
+        const normalized = normalizeTeamName(teamName);
+        return normalized.startsWith('winnerm') || normalized.startsWith('loserm');
+    }
+
+    async function handlePlayoffSave() {
+        try {
+            const regionData = tournamentData[activePlayoffRegion];
+            regionData.playoffs = regionData.playoffs || [];
+            let fixture = regionData.playoffs[activePlayoffIndex];
+            if (!fixture) {
+                fixture = { d: '', t: '', t1: '', t2: '', s1: 0, s2: 0, st: 'UPCOMING' };
+                regionData.playoffs.push(fixture);
+                activePlayoffIndex = regionData.playoffs.length - 1;
+            }
+            fixture.st = playoffStatus.value;
+            fixture.type = playoffType.value.trim();
+            fixture.d = playoffDate.value.trim();
+            fixture.t = playoffTime.value.trim();
+            fixture.t1 = document.getElementById('playoffTeam1').value.trim();
+            fixture.t2 = document.getElementById('playoffTeam2').value.trim();
+            fixture.s1 = playoffScore1.value !== '' ? Number(playoffScore1.value) : null;
+            fixture.s2 = playoffScore2.value !== '' ? Number(playoffScore2.value) : null;
+
+            const pPen1 = document.getElementById('playoffPenalties1').value;
+            const pPen2 = document.getElementById('playoffPenalties2').value;
+            fixture.ps1 = pPen1 !== '' ? Number(pPen1) : null;
+            fixture.ps2 = pPen2 !== '' ? Number(pPen2) : null;
+
+            // Auto-update subsequent playoff matches if this one is final and has an outcome
+            if (fixture.st === 'FINAL' && fixture.s1 != null && fixture.s2 != null && regionData.playoffs) {
+                const currentMatchId = activePlayoffIndex + 13; // Playoff matches start from 13
+                const outcome = getMatchOutcome(fixture);
+
+                if (outcome) {
+                    for (let i = 0; i < regionData.playoffs.length; i++) {
+                        if (i === activePlayoffIndex) continue; // Don't update self
+
+                        const subsequentMatch = regionData.playoffs[i];
+
+                        // Check home team for placeholder
+                        const t1Placeholder = `Winner Match ${currentMatchId}`;
+                        const t1LoserPlaceholder = `Loser Match ${currentMatchId}`;
+                        if (normalizeTeamName(subsequentMatch.t1) === normalizeTeamName(t1Placeholder)) {
+                            subsequentMatch.t1 = outcome.winner;
+                            console.log(`Updated T1 of Match ${i+13} to winner: ${outcome.winner}`);
+                        } else if (normalizeTeamName(subsequentMatch.t1) === normalizeTeamName(t1LoserPlaceholder)) {
+                            subsequentMatch.t1 = outcome.loser;
+                            console.log(`Updated T1 of Match ${i+13} to loser: ${outcome.loser}`);
+                        }
+
+                        // Check away team for placeholder
+                        const t2Placeholder = `Winner Match ${currentMatchId}`;
+                        const t2LoserPlaceholder = `Loser Match ${currentMatchId}`;
+                        if (normalizeTeamName(subsequentMatch.t2) === normalizeTeamName(t2Placeholder)) {
+                            subsequentMatch.t2 = outcome.winner;
+                            console.log(`Updated T2 of Match ${i+13} to winner: ${outcome.winner}`);
+                        } else if (normalizeTeamName(subsequentMatch.t2) === normalizeTeamName(t2LoserPlaceholder)) {
+                            subsequentMatch.t2 = outcome.loser;
+                            console.log(`Updated T2 of Match ${i+13} to loser: ${outcome.loser}`);
+                        }
+                    }
+                }
+            }
+            await saveData();
+            populatePlayoffOptions();
+            populateNationalOptions();
+            setPlayoffStatus('Playoff fixture saved successfully. Refresh public page.');
+        } catch (error) {
+            setPlayoffStatus('Error saving playoff fixture.', false);
+        }
+    }
+
+    function handlePlayoffAdd() {
+        const regionData = tournamentData[activePlayoffRegion];
+        regionData.playoffs = regionData.playoffs || [];
+        regionData.playoffs.push({ d: 'TBD', t: '00:00', t1: '', t2: '', s1: 0, s2: 0, st: 'UPCOMING' });
+        activePlayoffIndex = regionData.playoffs.length - 1;
+        populatePlayoffOptions();
+        setPlayoffStatus('New playoff fixture added. Edit details and save.');
+    }
+
+    async function handlePlayoffDelete() {
+        const regionData = tournamentData[activePlayoffRegion];
+        if (!regionData.playoffs || !regionData.playoffs.length) {
+            return setPlayoffStatus('No playoff fixture to delete.', false);
+        }
+        if (!confirm('Delete this playoff fixture?')) return;
+        regionData.playoffs.splice(activePlayoffIndex, 1);
+        if (activePlayoffIndex >= regionData.playoffs.length) {
+            activePlayoffIndex = Math.max(0, regionData.playoffs.length - 1);
+        }
+        try {
+            await saveData();
+            populatePlayoffOptions();
+            setPlayoffStatus('Playoff fixture deleted.');
+        } catch (error) {
+            setPlayoffStatus('Error deleting playoff fixture.', false);
+        }
+    }
+
+    function populateQualifiedTeamsList() {
+        const list = document.getElementById('qualifiedTeamsList');
+        if (!list) return;
+        let options = [];
+        Object.keys(tournamentData).forEach(region => {
+            if (region === 'National Finals') return;
+            const rData = tournamentData[region];
+            if (rData && rData.playoffs && rData.playoffs.length >= 4) {
+                const finalMatch = rData.playoffs[3];
+                const outcome = getMatchOutcome(finalMatch);
+                if (outcome) {
+                    options.push(outcome.winner);
+                    options.push(outcome.loser);
+                }
+            }
+        });
+        options = [...new Set(options)];
+        list.innerHTML = options.map(o => `<option value="${o}"></option>`).join('');
+    }
+
+    // --- National Finals Logic ---
+    function populateNationalOptions() {
+        populateQualifiedTeamsList();
+        const nationalData = tournamentData["National Finals"];
+        if (!nationalData) return;
+        nationalData.matches = resolveNationalFinalsFixtures(nationalData);
+        const matches = nationalData.matches || [];
+        const poolNames = [...new Set(matches.map(getNationalFixturePool).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+        renderNationalPoolTabs(poolNames);
+
+        const filteredMatches = activeNationalPool === 'ALL'
+            ? matches.map((match, index) => ({ match, index }))
+            : matches
+                .map((match, index) => ({ match, index }))
+                .filter(entry => getNationalFixturePool(entry.match) === activeNationalPool);
+
+        nationalSelect.innerHTML = filteredMatches.length > 0
+            ? filteredMatches.map(({ match, index }) =>
+                `<option value="${index}">${match.d || 'TBD'} ${match.t || 'TBD'} — ${match.t1 || 'TBD'} vs ${match.t2 || 'TBD'}</option>`
+            ).join('')
+            : `<option value="0">No National fixtures in this pool</option>`;
+
+        if (filteredMatches.length > 0 && !filteredMatches.some(entry => entry.index === activeNationalIndex)) {
+            activeNationalIndex = filteredMatches[0].index;
+        }
+        if (activeNationalIndex >= matches.length) {
+            activeNationalIndex = 0;
+        }
+        nationalSelect.value = activeNationalIndex;
+        fillNationalForm();
+    }
+
+    function fillNationalForm() {
+        const nationalData = tournamentData["National Finals"];
+        const fixture = (nationalData.matches || [])[activeNationalIndex];
+        if (fixture) {
+            ensureMatchStats(fixture);
+            initializeStatsEditorControls();
+            nationalStatus.value = fixture.st || 'UPCOMING';
+            nationalDate.value = fixture.d || '';
+            nationalTime.value = fixture.t || '';
+
+            let options = [];
+            const qList = document.getElementById('qualifiedTeamsList');
+            if (qList) {
+                options = Array.from(qList.options).map(o => o.value);
+            }
+            options.push("TBD", "Winner SF1", "Winner SF2", "Loser SF1", "Loser SF2");
+            options = [...new Set(options)];
+
+            function popSel(id, val) {
+                const el = document.getElementById(id);
+                let hasVal = false;
+                el.innerHTML = options.map(opt => { const sel = opt === val ? 'selected' : ''; if(sel) hasVal = true; return `<option value="${opt}" ${sel}>${opt}</option>`; }).join('');
+                if (!hasVal && val) el.innerHTML += `<option value="${val}" selected>${val}</option>`;
+            }
+            popSel('nationalTeam1', fixture.t1 || '');
+            popSel('nationalTeam2', fixture.t2 || '');
+
+            nationalScore1.value = fixture.s1 != null ? fixture.s1 : '';
+            nationalScore2.value = fixture.s2 != null ? fixture.s2 : '';
+            document.getElementById('nationalPenalties1').value = fixture.ps1 != null ? fixture.ps1 : '';
+            document.getElementById('nationalPenalties2').value = fixture.ps2 != null ? fixture.ps2 : '';
+            renderStatsEditorState('national');
+            setNationalStatus('Loaded current National fixture.');
+        } else {
+            nationalStatus.value = 'UPCOMING';
+            nationalDate.value = '';
+            nationalTime.value = '';
+            document.getElementById('nationalTeam1').innerHTML = '';
+            document.getElementById('nationalTeam2').innerHTML = '';
+            nationalScore1.value = '';
+            nationalScore2.value = '';
+            document.getElementById('nationalPenalties1').value = '';
+            document.getElementById('nationalPenalties2').value = '';
+            renderStatsEditorState('national');
+            setNationalStatus('No National fixture selected.', false);
+        }
+    }
+
+    function changeNational() {
+        activeNationalIndex = parseInt(nationalSelect.value, 10) || 0;
+        fillNationalForm();
+    }
+
+    function setNationalStatus(message, success = true) {
+        nationalSaveStatus.textContent = message;
+        nationalSaveStatus.style.background = success ? '#eef8f4' : '#ffe8e8';
+        nationalSaveStatus.style.color = success ? '#0f5a30' : '#8f1a1a';
+    }
+
+    async function handleNationalSave() {
+        try {
+            const nationalData = tournamentData["National Finals"];
+            nationalData.matches = nationalData.matches || [];
+            let fixture = nationalData.matches[activeNationalIndex];
+            if (!fixture) {
+                fixture = { d: '', t: '', t1: '', t2: '', s1: 0, s2: 0, st: 'UPCOMING' };
+                nationalData.matches.push(fixture);
+                activeNationalIndex = nationalData.matches.length - 1;
+            }
+            ensureMatchStats(fixture);
+            fixture.st = nationalStatus.value;
+            fixture.d = nationalDate.value.trim();
+            fixture.t = nationalTime.value.trim();
+            fixture.t1 = document.getElementById('nationalTeam1').value.trim();
+            fixture.t2 = document.getElementById('nationalTeam2').value.trim();
+            fixture.s1 = nationalScore1.value !== '' ? Number(nationalScore1.value) : null;
+            fixture.s2 = nationalScore2.value !== '' ? Number(nationalScore2.value) : null;
+
+            const nPen1 = document.getElementById('nationalPenalties1').value;
+            const nPen2 = document.getElementById('nationalPenalties2').value;
+            fixture.ps1 = nPen1 !== '' ? Number(nPen1) : null;
+            fixture.ps2 = nPen2 !== '' ? Number(nPen2) : null;
+
+            nationalData.matches = resolveNationalFinalsFixtures(nationalData);
+
+            await saveData();
+            populateNationalOptions();
+            renderStatsEditorState('national');
+            setNationalStatus('National fixture saved successfully. Refresh public page.');
+        } catch (error) {
+            setNationalStatus('Error saving National fixture.', false);
+        }
+    }
+
+    function handleNationalAdd() {
+        const nationalData = tournamentData["National Finals"];
+        nationalData.matches = nationalData.matches || [];
+        nationalData.matches.push({ d: 'TBD', t: '00:00', t1: '', t2: '', s1: 0, s2: 0, st: 'UPCOMING' });
+        activeNationalIndex = nationalData.matches.length - 1;
+        populateNationalOptions();
+        setNationalStatus('New National fixture added. Edit details and save.');
+    }
+
+    async function handleNationalDelete() {
+        const nationalData = tournamentData["National Finals"];
+        if (!nationalData.matches || !nationalData.matches.length) return;
+        if (!confirm('Delete this National fixture?')) return;
+        nationalData.matches.splice(activeNationalIndex, 1);
+        if (activeNationalIndex >= nationalData.matches.length) {
+            activeNationalIndex = Math.max(0, nationalData.matches.length - 1);
+        }
+        try {
+            await saveData();
+            populateNationalOptions();
+            setNationalStatus('National fixture deleted.');
+        } catch (error) {
+            setNationalStatus('Error deleting National fixture.', false);
+        }
+    }
+
+    function changeRegion() {
+        activeRegion = regionSelect.value;
+        activeMatchIndex = 0;
+        populateMatchOptions();
+    }
+
+    function changeMatch() {
+        activeMatchIndex = parseInt(matchSelect.value, 10) || 0;
+        fillEditorForm();
+    }
+
+    function showLogin() {
+        authSection.classList.remove('hidden');
+        editorSection.classList.add('hidden');
+    }
+
+    function showEditor() {
+        authSection.classList.add('hidden');
+        editorSection.classList.remove('hidden');
+        regionSelect.value = activeRegion;
+        populateMatchOptions();
+    }
+
+    function handleLogin(event) {
+        event.preventDefault();
+        const value = passwordInput.value.trim();
+        const loginError = document.getElementById('loginError');
+        if (value === EDIT_PASSWORD) {
+            loginError.style.display = 'none';
+            sessionStorage.setItem(AUTH_FLAG, 'true');
+            passwordInput.value = '';
+            showEditor();
+        } else {
+            loginError.textContent = 'Incorrect password. Please try again.';
+            loginError.style.display = 'block';
+            passwordInput.focus();
+        }
+    }
+
+    async function handleSave() {
+        try {
+            const match = tournamentData[activeRegion].matches[activeMatchIndex];
+            ensureMatchStats(match);
+            match.st = editStatus.value;
+            match.t = editTime.value.trim() || match.t;
+            match.s1 = Number(editScore1.value || 0);
+            match.s2 = Number(editScore2.value || 0);
+            
+            const editPenalties1 = document.getElementById('editPenalties1');
+            const editPenalties2 = document.getElementById('editPenalties2');
+            match.ps1 = (editPenalties1 && editPenalties1.value !== '') ? Number(editPenalties1.value) : null;
+            match.ps2 = (editPenalties2 && editPenalties2.value !== '') ? Number(editPenalties2.value) : null;
+            match.t1 = editTeam1.value.trim() || match.t1;
+            match.t2 = editTeam2.value.trim() || match.t2;
+
+            // Recalculate official standings for the entire region before saving
+            calculateStandings(tournamentData[activeRegion]);
+            updatePlayoffsFromStandings(tournamentData[activeRegion]);
+
+            await saveData();
+            populateMatchOptions(); // Repopulate to reflect any potential name changes
+            populatePlayoffOptions(); // Refresh playoff selections based on new standings
+            populateNationalOptions(); // Refresh national options
+            setSaveStatus('Saved to server successfully. Refresh public page.');
+        } catch (error) {
+            let msg = 'Error saving to server!';
+            if (error && error.message) {
+                msg += ' ' + error.message;
+            }
+            setSaveStatus(msg, false);
+            alert(msg);
+        }
+    }
+
+    async function handleReset() {
+        if (confirm("Are you sure you want to reset ALL tournament data back to defaults? This will overwrite the live database and cannot be undone.")) {
+            tournamentData = JSON.parse(JSON.stringify(DEFAULT_TOURNAMENT_DATA));
+            try {
+                await saveData();
+                populateRegionOptions(); // Reloads the UI with the fresh defaults
+                setSaveStatus('Database reset to defaults successfully.');
+            } catch (error) {
+                setSaveStatus('Error resetting database to server!', false);
+            }
+        }
+    }
+
+    async function handleRecover() {
+        if (!confirm("This will scan your browser's local storage for missing results and merge them into the server. Proceed?")) return;
+        
+        try {
+            let recoveredCount = 0;
+            const keys = ['sasfa-tournament-data', 'halala-cup-data'];
+            
+            keys.forEach(key => {
+                const localStr = localStorage.getItem(key);
+                if (localStr) {
+                    const localData = JSON.parse(localStr);
+                    Object.keys(localData).forEach(region => {
+                        if (tournamentData[region] && localData[region].matches) {
+                            localData[region].matches.forEach((localMatch, idx) => {
+                                if ((localMatch.st === 'FINAL' || localMatch.st === 'LIVE') && tournamentData[region].matches[idx]) {
+                                    if (tournamentData[region].matches[idx].st === 'UPCOMING') {
+                                        tournamentData[region].matches[idx] = { ...localMatch };
+                                        recoveredCount++;
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+
+            if (recoveredCount > 0) {
+                await saveData();
+                populateMatchOptions();
+                setSaveStatus(`Recovered ${recoveredCount} matches! Refresh public page.`);
+                alert(`Successfully recovered ${recoveredCount} missing matches from your browser's cache!`);
+            } else {
+                setSaveStatus('No recoverable browser backup data found.', false);
+                alert("No missing results were found in your browser's local storage.");
+            }
+        } catch (error) {
+            console.error(error);
+            setSaveStatus('Error recovering data.', false);
+        }
+    }
+
+    loginForm.addEventListener('submit', handleLogin);
+    saveButton.addEventListener('click', handleSave);
+    printMatchButton.addEventListener('click', handlePrintMatchSheet);
+    savePlayoffButton.addEventListener('click', handlePlayoffSave);
+    addPlayoffButton.addEventListener('click', handlePlayoffAdd);
+    deletePlayoffButton.addEventListener('click', handlePlayoffDelete);
+    resetButton.addEventListener('click', handleReset);
+    recoverButton.addEventListener('click', handleRecover);
+    regionSelect.addEventListener('change', changeRegion);
+    matchSelect.addEventListener('change', changeMatch);
+    playoffRegionSelect.addEventListener('change', changePlayoffRegion);
+    playoffSelect.addEventListener('change', changePlayoff);
+    nationalSelect.addEventListener('change', changeNational);
+    saveNationalButton.addEventListener('click', handleNationalSave);
+    printNationalButton.addEventListener('click', handleNationalPrintSheet);
+    addNationalButton.addEventListener('click', handleNationalAdd);
+    deleteNationalButton.addEventListener('click', handleNationalDelete);
+    (async () => {
+        initializeStatsEditorControls();
+        await loadSavedData();
+        const nationalCard = document.getElementById('nationalCard');
+        const playoffCard = document.getElementById('playoffCard');
+        if (nationalCard && playoffCard && nationalCard.parentElement === playoffCard.parentElement) {
+            playoffCard.before(nationalCard);
+        }
+        if (sessionStorage.getItem(AUTH_FLAG) === 'true') {
+            showEditor();
+        } else {
+            showLogin();
+        }
+        populateRegionOptions();
+    })();
+</script>
+
+</body>
+</html>
