@@ -754,7 +754,7 @@
                 <label>Section
                     <div id="nationalStageTabs" class="national-stage-tabs"></div>
                 </label>
-                <label>Pool
+                <label style="display: none;">Pool
                     <div id="nationalPoolTabs" class="national-pool-tabs"></div>
                 </label>
                 <div class="national-actions-row" style="display: flex; gap: 10px; align-items: flex-end;">
@@ -1032,7 +1032,7 @@
     let activeMatchIndex = 0;
     let activePlayoffIndex = 0;
     let activeNationalIndex = 0;
-    let activeNationalStage = sessionStorage.getItem('activeNationalStage') || 'quarterfinal';
+    let activeNationalStage = sessionStorage.getItem('activeNationalStage') || 'poolA';
     let activeNationalPool = sessionStorage.getItem('activeNationalPool') || 'ALL';
     let lastSavedSnapshot = '';
     let pendingSavePromise = null;
@@ -1104,7 +1104,7 @@
         const type = String(match?.type || '').toLowerCase();
         if (type.includes('quarter')) return 'quarterfinal';
         if (type.includes('semi')) return 'semifinal';
-        if (type.includes('final')) return 'final';
+        if (type.includes('play-off') || type.includes('playoff') || type.includes('final')) return 'final';
         return 'groupstage';
     }
 
@@ -1240,13 +1240,16 @@
     function renderNationalStageTabs() {
         if (!nationalStageTabs) return;
         const stages = [
-            { value: 'quarterfinal', label: 'Quarter-finals' },
-            { value: 'semifinal', label: 'Semi-finals' },
-            { value: 'final', label: 'Finals' },
-            { value: 'groupstage', label: 'Group Stage' }
+            { value: 'poolA', label: 'Pool A' },
+            { value: 'poolB', label: 'Pool B' },
+            { value: 'poolC', label: 'Pool C' },
+            { value: 'poolD', label: 'Pool D' },
+            { value: 'quarterfinal', label: 'Quarter-final' },
+            { value: 'semifinal', label: 'Semi-final' },
+            { value: 'final', label: 'Final' }
         ];
         if (!stages.some(stage => stage.value === activeNationalStage)) {
-            activeNationalStage = 'quarterfinal';
+            activeNationalStage = 'poolA';
             sessionStorage.setItem('activeNationalStage', activeNationalStage);
         }
         nationalStageTabs.innerHTML = stages.map(stage => {
@@ -1254,7 +1257,7 @@
             return `<button type="button" class="${activeClass}" data-national-stage="${stage.value}">${stage.label}</button>`;
         }).join('');
         nationalStageTabs.querySelectorAll('button').forEach(button => {
-            button.addEventListener('click', () => changeNationalStage(button.dataset.nationalStage || 'quarterfinal'));
+            button.addEventListener('click', () => changeNationalStage(button.dataset.nationalStage || 'poolA'));
         });
     }
 
@@ -1266,14 +1269,11 @@
     }
 
     function changeNationalStage(stage) {
-        activeNationalStage = stage || 'quarterfinal';
+        activeNationalStage = stage || 'poolA';
         sessionStorage.setItem('activeNationalStage', activeNationalStage);
-        if (activeNationalStage !== 'groupstage') {
-            activeNationalPool = 'ALL';
-            sessionStorage.setItem('activeNationalPool', activeNationalPool);
-        }
         populateNationalOptions();
-        setNationalStatus(activeNationalStage === 'groupstage' ? 'Showing group stage fixtures.' : `Showing ${activeNationalStage.replace('quarterfinal', 'quarter-final').replace('semifinal', 'semi-final').replace('final', 'final')} fixtures.`);
+        const labels = { poolA: 'Pool A', poolB: 'Pool B', poolC: 'Pool C', poolD: 'Pool D', quarterfinal: 'Quarter-final', semifinal: 'Semi-final', final: 'Final' };
+        setNationalStatus(`Showing ${labels[activeNationalStage] || activeNationalStage} fixtures.`);
     }
     const STATS_NUMBER_SELECT_IDS = [
         'homeScorerNumber',
@@ -2166,20 +2166,30 @@
         if (!nationalData) return;
         nationalData.matches = resolveNationalFinalsFixtures(nationalData);
         const matches = nationalData.matches || [];
-        const poolNames = [...new Set(matches.map(getNationalFixturePool).filter(Boolean))].sort((a, b) => a.localeCompare(b));
-        renderNationalPoolTabs(poolNames);
+        renderNationalStageTabs();
 
-        const filteredMatches = activeNationalPool === 'ALL'
-            ? matches.map((match, index) => ({ match, index }))
+        const poolStageMap = { poolA: 'Pool A', poolB: 'Pool B', poolC: 'Pool C', poolD: 'Pool D' };
+        const activePoolLabel = poolStageMap[activeNationalStage];
+
+        let filteredMatches = activePoolLabel
+            ? matches
+                .map((match, index) => ({ match, index }))
+                .filter(entry => getNationalFixturePool(entry.match) === activePoolLabel)
             : matches
                 .map((match, index) => ({ match, index }))
-                .filter(entry => getNationalFixturePool(entry.match) === activeNationalPool);
+                .filter(entry => getNationalFixtureStage(entry.match) === activeNationalStage);
+
+        if (!activePoolLabel) {
+            filteredMatches = filteredMatches
+                .map((entry, order) => ({ ...entry, order }))
+                .sort((a, b) => getNationalFixtureTierPriority(a.match) - getNationalFixtureTierPriority(b.match) || a.order - b.order);
+        }
 
         nationalSelect.innerHTML = filteredMatches.length > 0
             ? filteredMatches.map(({ match, index }) =>
                 `<option value="${index}">${match.d || 'TBD'} ${match.t || 'TBD'} — ${match.t1 || 'TBD'} vs ${match.t2 || 'TBD'}</option>`
             ).join('')
-            : `<option value="0">No National fixtures in this pool</option>`;
+            : `<option value="0">No National fixtures in this section</option>`;
 
         if (filteredMatches.length > 0 && !filteredMatches.some(entry => entry.index === activeNationalIndex)) {
             activeNationalIndex = filteredMatches[0].index;
