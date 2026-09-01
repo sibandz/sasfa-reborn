@@ -1684,6 +1684,11 @@
             margin-top: 10px;
             line-height: 1.5;
         }
+        .card-trophy-icon {
+            flex-shrink: 0;
+            color: var(--text-muted);
+            opacity: 0.85;
+        }
 
         /* --- SASFA HOMEPAGE COMPONENTS --- */
         .sasfa-hero {
@@ -2108,7 +2113,7 @@
         <div class="tournament-grid">
             <div class="tournament-card" id="halalaBoysCard" onclick="openNationalFinals()">
                 <div class="card-badge badge-upcoming" id="halalaBoysBadge">Loading</div>
-                <h3>🏆 Halala Cup 2026</h3>
+                <h3 style="display: flex; align-items: center; gap: 8px;"><svg class="card-trophy-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8v4a4 4 0 0 1-8 0V3z"/><path d="M8 4H4v2a4 4 0 0 0 4 4"/><path d="M16 4h4v2a4 4 0 0 1-4 4"/><path d="M12 11v4"/><path d="M9 19h6"/><path d="M10 15h4l1 4H9l1-4z"/></svg> Halala Cup 2026</h3>
                 <p class="card-meta" id="halalaBoysMeta">Loading current fixtures…</p>
                 <div style="margin-top: 16px;">
                     <span style="background: var(--lime); color: var(--navy); padding: 4px 10px; border-radius: 2px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase;">National Finals</span>
@@ -2116,7 +2121,7 @@
             </div>
             <div class="tournament-card" id="halalaGirlsCard" style="border-left-color: #FF7A29;" onclick="window.location.href='girls-index.html'">
                 <div class="card-badge badge-upcoming" id="halalaGirlsBadge">Loading</div>
-                <h3>🏆 Halala Cup Girls</h3>
+                <h3 style="display: flex; align-items: center; gap: 8px;"><svg class="card-trophy-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8v4a4 4 0 0 1-8 0V3z"/><path d="M8 4H4v2a4 4 0 0 0 4 4"/><path d="M16 4h4v2a4 4 0 0 1-4 4"/><path d="M12 11v4"/><path d="M9 19h6"/><path d="M10 15h4l1 4H9l1-4z"/></svg> Halala Cup Girls</h3>
                 <p class="card-meta" id="halalaGirlsMeta">Loading current fixtures…</p>
                 <div style="margin-top: 16px;">
                     <span style="background: #FF7A29; color: var(--navy); padding: 4px 10px; border-radius: 2px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase;">Girls Division</span>
