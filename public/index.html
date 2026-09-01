@@ -202,12 +202,12 @@
             font-weight: 700;
         }
 
-        /* --- HEADER (LaLiga-inspired: light, content-first) --- */
+        /* --- HEADER (dark broadcast bar) --- */
         header {
-            background-color: var(--white);
-            background: linear-gradient(180deg, var(--white) 0%, color-mix(in srgb, var(--white) 96%, var(--bg) 4%) 100%);
-            border-bottom: 1px solid rgba(16,24,40,0.06);
-            box-shadow: 0 2px 6px rgba(16,24,40,0.06);
+            background-color: var(--ink);
+            background: linear-gradient(180deg, var(--ink) 0%, color-mix(in srgb, var(--ink) 94%, black 6%) 100%);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
             padding: 10px 20px;
             display: flex;
             justify-content: space-between;
@@ -215,7 +215,8 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            color: var(--navy);
+            color: var(--text-main);
+            gap: 20px;
         }
 
         .logo-area {
@@ -225,7 +226,7 @@
             font-family: "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
             font-size: 1.05rem;
             letter-spacing: 0.02em;
-            color: var(--navy);
+            color: var(--text-main);
             font-weight: 600;
         }
 
@@ -305,14 +306,14 @@
         .watch-live-btn:hover { filter: brightness(1.15); transform: translateY(-2px); box-shadow: 0 20px 42px rgba(198,255,51,0.18); }
 
         .manager-btn {
-            background-color: rgba(255,255,255,0.98) !important;
-            border: 1px solid rgba(17, 18, 20, 0.14) !important;
-            color: var(--navy) !important;
-            box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+            background-color: rgba(255,255,255,0.08) !important;
+            border: 1px solid rgba(255,255,255,0.18) !important;
+            color: var(--text-main) !important;
+            box-shadow: none;
         }
 
         .manager-btn svg {
-            fill: var(--navy) !important;
+            fill: var(--text-main) !important;
         }
 
         .header-actions .watch-live-btn {
@@ -1544,6 +1545,69 @@
             50% { opacity: 0.4; }
         }
 
+        /* --- HEADER NAV LINKS (SASFA site nav) --- */
+        .site-nav {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+        .site-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding-bottom: 4px;
+            border-bottom: 2px solid transparent;
+            transition: color 0.18s ease, border-color 0.18s ease;
+        }
+        .site-nav a:hover, .site-nav a.active {
+            color: var(--text-main);
+            border-bottom-color: var(--lime);
+        }
+        @media (max-width: 900px) {
+            .site-nav { display: none; }
+        }
+
+        /* --- HERO + SPOTLIGHT SIDE-BY-SIDE --- */
+        .hero-spotlight-row {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 20px;
+            align-items: stretch;
+        }
+        .hero-spotlight-row .homepage-spotlight,
+        .hero-spotlight-row .spotlight-panel {
+            max-width: none;
+            margin: 0;
+            padding: 18px;
+            height: 100%;
+        }
+        .hero-spotlight-row .spotlight-grid {
+            grid-template-columns: 1fr;
+        }
+        .hero-spotlight-row .spotlight-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .hero-spotlight-row .spotlight-copy h2 {
+            font-size: 1.2rem;
+            line-height: 1.2;
+        }
+        .hero-spotlight-row .spotlight-copy p {
+            font-size: 0.78rem;
+        }
+        .hero-spotlight-row .spotlight-actions a,
+        .hero-spotlight-row .spotlight-actions button {
+            width: 100%;
+        }
+        @media (max-width: 900px) {
+            .hero-spotlight-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* --- TOURNAMENT SELECTION --- */
         .tournament-grid {
             display: grid;
@@ -1557,6 +1621,7 @@
             border-left: 8px solid var(--lime);
             border-radius: 10px;
             padding: 24px;
+            position: relative;
             cursor: pointer;
             transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
             box-shadow: 0 18px 44px rgba(0,0,0,0.06);
@@ -1592,6 +1657,32 @@
         .tournament-card.add-tournament:hover {
             border-color: var(--lime);
             transform: none;
+        }
+        .card-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 3px;
+            color: #fff;
+            background: #6b7280;
+        }
+        .card-badge.badge-live {
+            background: #e53946;
+        }
+        .card-badge.badge-upcoming {
+            background: #2f6fed;
+        }
+        .tournament-card .card-meta {
+            color: var(--text-main);
+            font-size: 0.82rem;
+            font-weight: 600;
+            margin-top: 10px;
+            line-height: 1.5;
         }
 
         /* --- SASFA HOMEPAGE COMPONENTS --- */
@@ -1972,6 +2063,14 @@
         <span>SASFA</span>
         <img id="halalaHeaderMark" class="halala-header-mark" src="/images/curro-halala.png" alt="Halala Cup mark" loading="eager" decoding="async" onerror="if (!this.dataset.step) { this.dataset.step='1'; this.src='../images/curro-halala.png'; } else if (this.dataset.step==='1') { this.dataset.step='2'; this.src='images/curro-halala.png'; } else { this.style.display='none'; }" />
     </div>
+    <nav class="site-nav" aria-label="Primary">
+        <a href="#tournamentList" class="active">Home</a>
+        <a href="#tournaments-section">Tournaments</a>
+        <a href="#feed-fixtures-home">Live Feed</a>
+        <a href="#matchups-section">Matchups</a>
+        <a href="#news-section">News</a>
+        <a href="#sponsors-section">Sponsors</a>
+    </nav>
     <div class="header-actions">
         <a href="edit.html" class="watch-live-btn manager-btn" aria-label="Manager Login">
             <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
@@ -1993,30 +2092,32 @@
 </header>
 
 <div id="tournamentList">
-    <div class="sasfa-hero">
-        <div class="sasfa-hero-content">
-            <h1>National Finals Today</h1>
-            <p>The National Finals start today. Follow live scores, track every fixture, and keep the championship picture in view as the tournament unfolds.</p>
+    <div class="hero-spotlight-row" style="padding: 20px 20px 0;">
+        <div class="sasfa-hero" style="border-radius: 10px; padding: 44px 32px;">
+            <div class="sasfa-hero-content" style="text-align: left; margin: 0;">
+                <h1 style="margin-bottom: 10px;">National Finals 2026 | The Road to Glory</h1>
+                <p style="max-width: 640px;">Day 1 live feed, player profiles, and complete tournament coverage.</p>
+            </div>
         </div>
-    </div>
-    <div class="homepage-spotlight">
         <div id="nationalFinalsSpotlight" class="spotlight-panel">
             <div class="placeholder-text" style="padding: 20px; background: transparent; border-color: rgba(255,255,255,0.12); color: rgba(255,255,255,0.86);">Loading National Finals spotlight...</div>
         </div>
     </div>
     <div class="main-container">
-        <div class="section-title" style="margin-top: 0;">Active Tournaments</div>
+        <div class="section-title" id="tournaments-section" style="margin-top: 0;">Active Tournaments</div>
         <div class="tournament-grid">
-            <div class="tournament-card" onclick="openNationalFinals()">
-                <h3>Halala Cup 2026</h3>
-                <p>National Finals hub for live scores, fixtures, and results starting today.</p>
+            <div class="tournament-card" id="halalaBoysCard" onclick="openNationalFinals()">
+                <div class="card-badge badge-upcoming" id="halalaBoysBadge">Loading</div>
+                <h3>🏆 Halala Cup 2026</h3>
+                <p class="card-meta" id="halalaBoysMeta">Loading current fixtures…</p>
                 <div style="margin-top: 16px;">
                     <span style="background: var(--lime); color: var(--navy); padding: 4px 10px; border-radius: 2px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase;">National Finals</span>
                 </div>
             </div>
-            <div class="tournament-card" style="border-left-color: #FF7A29;" onclick="window.location.href='girls-index.html'">
-                <h3>Halala Cup Girls</h3>
-                <p>Girls National Finals hub for live scores, fixtures, and results.</p>
+            <div class="tournament-card" id="halalaGirlsCard" style="border-left-color: #FF7A29;" onclick="window.location.href='girls-index.html'">
+                <div class="card-badge badge-upcoming" id="halalaGirlsBadge">Loading</div>
+                <h3>🏆 Halala Cup Girls</h3>
+                <p class="card-meta" id="halalaGirlsMeta">Loading current fixtures…</p>
                 <div style="margin-top: 16px;">
                     <span style="background: #FF7A29; color: var(--navy); padding: 4px 10px; border-radius: 2px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase;">Girls Division</span>
                 </div>
@@ -2027,15 +2128,15 @@
             </div>
         </div>
 
-        <div class="section-title" style="margin-top: 48px;">National Finals Live Feed</div>
+        <div class="section-title" style="margin-top: 48px;" id="feed-fixtures-home">National Finals Live Feed</div>
         <div id="homepageHighlightsGrid" style="margin-top: 20px;">
             <div class="placeholder-text" style="padding: 20px;">Loading finals highlights...</div>
         </div>
 
-        <div class="section-title" style="margin-top: 48px;">National Finals Matchups</div>
+        <div class="section-title" style="margin-top: 48px;" id="matchups-section">National Finals Matchups</div>
         <div id="playoffsPreviewGrid" class="tournament-grid"></div>
 
-        <div class="section-title" style="margin-top: 48px;">About SASFA</div>
+        <div class="section-title" style="margin-top: 48px;" id="news-section">About SASFA</div>
         <div class="sasfa-about-grid">
             <div class="about-card">
                 <h3>Our Mission</h3>
@@ -3838,7 +3939,77 @@ function compareTeams(a, b, matches) {
     return a.name.localeCompare(b.name);
 }
 
+let girlsHomeData = null;
+
+function loadGirlsHomeData() {
+    return fetch('/api/get-girls-data')
+        .then(res => res.json())
+        .then(data => {
+            girlsHomeData = (data && typeof data === 'object' && Object.keys(data).length > 0) ? data : null;
+        })
+        .catch(() => { girlsHomeData = null; })
+        .finally(() => renderHomeTournamentCards());
+}
+
+function buildHomeCardSummary(regionData) {
+    if (!regionData || !Array.isArray(regionData.matches) || regionData.matches.length === 0) {
+        return { badgeText: 'Coming Soon', badgeClass: 'badge-upcoming', meta: 'Fixtures will be published soon.' };
+    }
+    const matches = resolveNationalFinalsPlaceholders(regionData);
+    const getStatus = m => String(m?.st || '').trim().toUpperCase();
+    const live = matches.filter(m => getStatus(m) === 'LIVE');
+    const upcoming = matches.filter(m => getStatus(m) === 'UPCOMING');
+    const finished = matches.filter(m => getStatus(m) === 'FINAL');
+
+    if (live.length > 0) {
+        const m = live[0];
+        return {
+            badgeText: 'Live Now',
+            badgeClass: 'badge-live',
+            meta: `${m.type ? escapeHtml(m.type) + ': ' : ''}${escapeHtml(m.t1 || 'TBD')} ${m.s1 != null ? m.s1 : 0}-${m.s2 != null ? m.s2 : 0} ${escapeHtml(m.t2 || 'TBD')}`
+        };
+    }
+    if (upcoming.length > 0) {
+        const m = upcoming[0];
+        return {
+            badgeText: 'Upcoming',
+            badgeClass: 'badge-upcoming',
+            meta: `${m.type ? escapeHtml(m.type) + ': ' : ''}${escapeHtml(m.t1 || 'TBD')} vs ${escapeHtml(m.t2 || 'TBD')} | ${escapeHtml(m.d || 'TBD')} ${escapeHtml(m.t || '')}`.trim()
+        };
+    }
+    if (finished.length > 0) {
+        const m = finished[finished.length - 1];
+        return {
+            badgeText: 'Completed',
+            badgeClass: 'badge-upcoming',
+            meta: `Latest result: ${escapeHtml(m.t1 || 'TBD')} ${m.s1 != null ? m.s1 : 0}-${m.s2 != null ? m.s2 : 0} ${escapeHtml(m.t2 || 'TBD')}`
+        };
+    }
+    return { badgeText: 'Upcoming', badgeClass: 'badge-upcoming', meta: 'Fixtures will be published soon.' };
+}
+
+function renderHomeTournamentCards() {
+    const boysBadge = document.getElementById('halalaBoysBadge');
+    const boysMeta = document.getElementById('halalaBoysMeta');
+    if (boysBadge && boysMeta) {
+        const summary = buildHomeCardSummary(tournamentData?.['National Finals']);
+        boysBadge.textContent = summary.badgeText;
+        boysBadge.className = `card-badge ${summary.badgeClass}`;
+        boysMeta.innerHTML = summary.meta;
+    }
+
+    const girlsBadge = document.getElementById('halalaGirlsBadge');
+    const girlsMeta = document.getElementById('halalaGirlsMeta');
+    if (girlsBadge && girlsMeta) {
+        const summary = buildHomeCardSummary(girlsHomeData?.['National Finals']);
+        girlsBadge.textContent = summary.badgeText;
+        girlsBadge.className = `card-badge ${summary.badgeClass}`;
+        girlsMeta.innerHTML = summary.meta;
+    }
+}
+
 function renderHomePreviews() {
+    renderHomeTournamentCards();
     const gridEl = document.getElementById('playoffsPreviewGrid');
     const highlightsEl = document.getElementById('homepageHighlightsGrid');
     const spotlightEl = document.getElementById('nationalFinalsSpotlight');
@@ -3859,15 +4030,13 @@ function renderHomePreviews() {
     if (spotlightEl) {
         spotlightEl.innerHTML = `
             <div class="spotlight-panel">
-                <div class="spotlight-kicker">National Finals start today</div>
+                <div class="spotlight-kicker">National Finals Spotlight</div>
                 <div class="spotlight-grid">
                     <div class="spotlight-copy">
-                        <h2>Follow the championship from the first whistle.</h2>
-                        <p>${nationalLive.length ? `${nationalLive.length} match${nationalLive.length === 1 ? '' : 'es'} are live right now.` : 'Track every fixture, live score, and result from the National Finals hub as the tournament opens.'}</p>
+                        <h2>${nationalLive.length ? 'Live right now' : 'Follow the championship'}</h2>
+                        <p>${nationalLive.length ? `${nationalLive.length} match${nationalLive.length === 1 ? '' : 'es'} are live right now.` : 'Track every fixture, live score, and result from the National Finals hub.'}</p>
                         <div class="spotlight-actions">
                             <button type="button" class="spotlight-primary" onclick="openNationalFinals()">Open Finals</button>
-                            <a class="spotlight-secondary" href="#feed-fixtures">View Fixtures</a>
-                            <a class="spotlight-secondary" href="#feed-results">View Results</a>
                         </div>
                         ${nextNationalMatch ? `
                             <div class="spotlight-next">
@@ -4112,7 +4281,9 @@ function initializeApp() {
     applyRouting(); 
     renderCurrentView();
     loadData(false); // Fetch silently in the background
+    loadGirlsHomeData();
     setInterval(() => loadData(false), 60000); // And continue to silently check every 60 seconds.
+    setInterval(() => loadGirlsHomeData(), 60000);
 }
 
 initializeApp();
