@@ -1026,6 +1026,73 @@
         }
     };
 
+    // Canonical knockout fixtures (M25-M48) — used to auto-heal National Finals matches if any go missing.
+    const NATIONAL_KNOCKOUT_TEMPLATE = [
+        { d: "Saturday 15 August", t: "14:00", t1: "3rd Pool A", t2: "4th Pool B", s1: null, s2: null, st: "UPCOMING", type: "Plate Quarter-final M25" },
+        { d: "Saturday 15 August", t: "14:00", t1: "4th Pool A", t2: "3rd Pool B", s1: null, s2: null, st: "UPCOMING", type: "Plate Quarter-final M26" },
+        { d: "Saturday 15 August", t: "14:00", t1: "3rd Pool C", t2: "4th Pool D", s1: null, s2: null, st: "UPCOMING", type: "Plate Quarter-final M27" },
+        { d: "Saturday 15 August", t: "14:00", t1: "4th Pool C", t2: "3rd Pool D", s1: null, s2: null, st: "UPCOMING", type: "Plate Quarter-final M28" },
+        { d: "Saturday 15 August", t: "15:30", t1: "1st Pool A", t2: "2nd Pool B", s1: null, s2: null, st: "UPCOMING", type: "Cup Quarter-final M29" },
+        { d: "Saturday 15 August", t: "15:30", t1: "2nd Pool A", t2: "1st Pool B", s1: null, s2: null, st: "UPCOMING", type: "Cup Quarter-final M30" },
+        { d: "Saturday 15 August", t: "15:30", t1: "1st Pool C", t2: "2nd Pool D", s1: null, s2: null, st: "UPCOMING", type: "Cup Quarter-final M31" },
+        { d: "Saturday 15 August", t: "15:30", t1: "2nd Pool C", t2: "1st Pool D", s1: null, s2: null, st: "UPCOMING", type: "Cup Quarter-final M32" },
+        { d: "Sunday 16 August", t: "08:00", t1: "Winner M25", t2: "Winner M28", s1: null, s2: null, st: "UPCOMING", type: "Plate Semi-final M33" },
+        { d: "Sunday 16 August", t: "08:00", t1: "Winner M26", t2: "Winner M27", s1: null, s2: null, st: "UPCOMING", type: "Plate Semi-final M34" },
+        { d: "Sunday 16 August", t: "08:00", t1: "Loser M25", t2: "Loser M28", s1: null, s2: null, st: "UPCOMING", type: "Plate Semi-final M35" },
+        { d: "Sunday 16 August", t: "08:00", t1: "Loser M26", t2: "Loser M27", s1: null, s2: null, st: "UPCOMING", type: "Plate Semi-final M36" },
+        { d: "Sunday 16 August", t: "09:30", t1: "Winner M29", t2: "Winner M32", s1: null, s2: null, st: "UPCOMING", type: "Cup Semi-final M37" },
+        { d: "Sunday 16 August", t: "09:30", t1: "Winner M30", t2: "Winner M31", s1: null, s2: null, st: "UPCOMING", type: "Cup Semi-final M38" },
+        { d: "Sunday 16 August", t: "09:30", t1: "Loser M29", t2: "Loser M32", s1: null, s2: null, st: "UPCOMING", type: "Cup Semi-final M39" },
+        { d: "Sunday 16 August", t: "09:30", t1: "Loser M30", t2: "Loser M31", s1: null, s2: null, st: "UPCOMING", type: "Cup Semi-final M40" },
+        { d: "Sunday 16 August", t: "11:00", t1: "Winner M33", t2: "Winner M34", s1: null, s2: null, st: "UPCOMING", type: "Plate Play-off M41 (9/10)" },
+        { d: "Sunday 16 August", t: "11:00", t1: "Loser M33", t2: "Loser M34", s1: null, s2: null, st: "UPCOMING", type: "Plate Play-off M42 (11/12)" },
+        { d: "Sunday 16 August", t: "11:00", t1: "Winner M35", t2: "Winner M36", s1: null, s2: null, st: "UPCOMING", type: "Plate Play-off M43 (13/14)" },
+        { d: "Sunday 16 August", t: "11:00", t1: "Loser M35", t2: "Loser M36", s1: null, s2: null, st: "UPCOMING", type: "Plate Play-off M44 (15/16)" },
+        { d: "Sunday 16 August", t: "12:30", t1: "Loser M37", t2: "Loser M38", s1: null, s2: null, st: "UPCOMING", type: "Cup Play-off M45 (3/4)" },
+        { d: "Sunday 16 August", t: "12:30", t1: "Winner M39", t2: "Winner M40", s1: null, s2: null, st: "UPCOMING", type: "Cup Play-off M46 (5/6)" },
+        { d: "Sunday 16 August", t: "12:30", t1: "Loser M39", t2: "Loser M40", s1: null, s2: null, st: "UPCOMING", type: "Cup Play-off M47 (7/8)" },
+        { d: "Sunday 16 August", t: "14:00", t1: "Winner M37", t2: "Winner M38", s1: null, s2: null, st: "UPCOMING", type: "Final Cup M48 (1/2)" }
+    ];
+
+    // Re-inserts any missing knockout fixture (matched by its "type" label) so quarter/semi/play-off/final always exist.
+    function ensureNationalKnockoutFixtures(nationalData) {
+        if (!nationalData) return;
+        if (!Array.isArray(nationalData.matches)) nationalData.matches = [];
+        const existingTypes = new Set(
+            nationalData.matches.map(match => String(match?.type || '').trim().toLowerCase()).filter(Boolean)
+        );
+        NATIONAL_KNOCKOUT_TEMPLATE.forEach(template => {
+            const key = String(template.type).trim().toLowerCase();
+            if (!existingTypes.has(key)) {
+                nationalData.matches.push({ ...template });
+                existingTypes.add(key);
+            }
+        });
+    }
+
+    function mergeNationalFinalsMatches(defaultMatches, savedMatches) {
+        const savedByType = new Map();
+        (savedMatches || []).forEach(match => {
+            const key = String(match?.type || '').trim().toLowerCase();
+            if (key) savedByType.set(key, { ...match });
+        });
+
+        const merged = (defaultMatches || []).map(defaultMatch => {
+            const key = String(defaultMatch?.type || '').trim().toLowerCase();
+            if (!key || !savedByType.has(key)) return { ...defaultMatch };
+            return { ...defaultMatch, ...savedByType.get(key) };
+        });
+
+        (savedMatches || []).forEach(match => {
+            const key = String(match?.type || '').trim().toLowerCase();
+            if (!key) return;
+            const exists = merged.some(item => String(item?.type || '').trim().toLowerCase() === key);
+            if (!exists) merged.push({ ...match });
+        });
+
+        return merged;
+    }
+
     let tournamentData = JSON.parse(JSON.stringify(DEFAULT_TOURNAMENT_DATA));
     let activeRegion = Object.keys(tournamentData).filter(r => r !== "National Finals")[0];
     let activePlayoffRegion = activeRegion;
@@ -1586,10 +1653,20 @@
         Object.keys(savedData).forEach(region => {
             if (tournamentData[region]) {
                 if (Array.isArray(savedData[region].matches)) {
-                    tournamentData[region].matches = savedData[region].matches.map(match => ({ ...match }));
+                    if (region === 'National Finals') {
+                        tournamentData[region].matches = mergeNationalFinalsMatches(
+                            tournamentData[region].matches,
+                            savedData[region].matches
+                        );
+                    } else {
+                        tournamentData[region].matches = savedData[region].matches.map(match => ({ ...match }));
+                    }
                 }
                 if (Array.isArray(savedData[region].playoffs)) {
                     tournamentData[region].playoffs = savedData[region].playoffs.map(match => ({ ...match }));
+                }
+                if (region === 'National Finals' && savedData[region].pools && typeof savedData[region].pools === 'object') {
+                    tournamentData[region].pools = JSON.parse(JSON.stringify(savedData[region].pools));
                 }
                 if (tournamentData[region].pools && tournamentData[region].matches) {
                     tournamentData[region].playoffs = tournamentData[region].playoffs || generateDefaultPlayoffFixtures(tournamentData[region]);
@@ -1597,6 +1674,8 @@
                 updatePlayoffsFromStandings(tournamentData[region]);
             }
         });
+
+        ensureNationalKnockoutFixtures(tournamentData['National Finals']);
     }
 
     function loadSavedData() {
@@ -2164,6 +2243,7 @@
         populateQualifiedTeamsList();
         const nationalData = tournamentData["National Finals"];
         if (!nationalData) return;
+        ensureNationalKnockoutFixtures(nationalData);
         nationalData.matches = resolveNationalFinalsFixtures(nationalData);
         const matches = nationalData.matches || [];
         renderNationalStageTabs();
