@@ -2138,8 +2138,8 @@
             <div class="placeholder-text" style="padding: 20px;">Loading finals highlights...</div>
         </div>
 
-        <div class="section-title" style="margin-top: 48px;" id="matchups-section">National Finals Matchups</div>
-        <div id="playoffsPreviewGrid" class="tournament-grid"></div>
+        <div class="section-title" style="margin-top: 48px;" id="matchups-section">Fixtures, Results &amp; Upcoming</div>
+        <div id="playoffsPreviewGrid"></div>
 
         <div class="section-title" style="margin-top: 48px;" id="news-section">About SASFA</div>
         <div class="sasfa-about-grid">
@@ -4032,23 +4032,40 @@ function renderHomePreviews() {
     const nationalFinal = nationalMatches.filter(match => getStatus(match) === 'FINAL');
     const nextNationalMatch = nationalLive[0] || nationalUpcoming[0] || nationalFinal[0] || null;
 
+    const getNationalFinalsChampion = regionData => {
+        if (!regionData || !Array.isArray(regionData.matches)) return null;
+        const resolved = resolveNationalFinalsPlaceholders(regionData);
+        const finalMatch = resolved.find(m => /final cup/i.test(String(m?.type || '')));
+        if (!finalMatch || getStatus(finalMatch) !== 'FINAL') return null;
+        const outcome = getResolvedMatchOutcome(finalMatch);
+        return outcome ? outcome.winner : null;
+    };
+    const boysChampion = getNationalFinalsChampion(tournamentData?.['National Finals']);
+    const girlsChampion = getNationalFinalsChampion(girlsHomeData?.['National Finals']);
+    const bothChampionsDecided = Boolean(boysChampion && girlsChampion);
+
     if (spotlightEl) {
         spotlightEl.innerHTML = `
             <div class="spotlight-panel">
                 <div class="spotlight-kicker">National Finals Spotlight</div>
                 <div class="spotlight-grid">
                     <div class="spotlight-copy">
-                        <h2>${nationalLive.length ? 'Live right now' : 'Follow the championship'}</h2>
-                        <p>${nationalLive.length ? `${nationalLive.length} match${nationalLive.length === 1 ? '' : 'es'} are live right now.` : 'Track every fixture, live score, and result from the National Finals hub.'}</p>
+                        <h2>${bothChampionsDecided ? 'Champions crowned' : (nationalLive.length ? 'Live right now' : 'Follow the championship')}</h2>
+                        <p>${bothChampionsDecided ? 'The 2026 National Finals are complete. Congratulations to our champions!' : (nationalLive.length ? `${nationalLive.length} match${nationalLive.length === 1 ? '' : 'es'} are live right now.` : 'Track every fixture, live score, and result from the National Finals hub.')}</p>
                         <div class="spotlight-actions">
                             <button type="button" class="spotlight-primary" onclick="openNationalFinals()">Open Finals</button>
                         </div>
-                        ${nextNationalMatch ? `
+                        ${bothChampionsDecided ? `
+                            <div class="spotlight-next">
+                                <div class="next-label">🏆 Champions</div>
+                                <div class="next-match">Boys: ${escapeHtml(boysChampion)}</div>
+                                <div class="next-match" style="margin-top: 4px;">Girls: ${escapeHtml(girlsChampion)}</div>
+                            </div>` : (nextNationalMatch ? `
                             <div class="spotlight-next">
                                 <div class="next-label">Next / Live Match</div>
                                 <div class="next-match">${escapeHtml(nextNationalMatch.t1 || 'Team 1')} ${nextNationalMatch.s1 != null && nextNationalMatch.s2 != null ? `${nextNationalMatch.s1} - ${nextNationalMatch.s2}` : 'vs'} ${escapeHtml(nextNationalMatch.t2 || 'Team 2')}</div>
                                 <div class="next-meta">${escapeHtml(nextNationalMatch.d || 'TBD')} • ${escapeHtml(nextNationalMatch.t || 'TBD')} • ${escapeHtml(nextNationalMatch.type || 'National Finals')}</div>
-                            </div>` : ''}
+                            </div>` : '')}
                     </div>
                     <div>
                         <div class="spotlight-stats">
@@ -4083,67 +4100,32 @@ function renderHomePreviews() {
         }
     }
 
-    function getHomePreviewMatches(regionData) {
-        if (!regionData) return [];
-        const playoffMatches = resolvePlayoffPlaceholders(regionData.playoffs || []);
-        const nextPlayoffMatches = playoffMatches
-            .filter(m => ['LIVE', 'UPCOMING', 'FINAL'].includes(String(m.st || '').trim().toUpperCase()))
-            .sort((a, b) => {
-                const order = { LIVE: 0, UPCOMING: 1, FINAL: 2 };
-                const aStatus = String(a.st || '').trim().toUpperCase();
-                const bStatus = String(b.st || '').trim().toUpperCase();
-                return (order[aStatus] || 3) - (order[bStatus] || 3);
-            });
-        if (nextPlayoffMatches.length > 0) {
-            return nextPlayoffMatches.slice(0, 2);
-        }
-        if (playoffMatches.length > 0) {
-            return playoffMatches.slice(-2);
-        }
-        return [];
+    if (gridEl) {
+        const girlsFinals = girlsHomeData?.['National Finals'];
+        const girlsMatches = (girlsFinals && Array.isArray(girlsFinals.matches))
+            ? resolveNationalFinalsPlaceholders(girlsFinals).map(match => ({ ...match, region: 'Halala Cup Girls' }))
+            : [];
+        const boysMatchesLabeled = nationalMatches.map(match => ({ ...match, region: 'Halala Cup 2026' }));
+        const allFixtures = [...boysMatchesLabeled, ...girlsMatches];
+
+        const liveFixtures = allFixtures.filter(m => getStatus(m) === 'LIVE');
+        const upcomingFixtures = allFixtures.filter(m => getStatus(m) === 'UPCOMING').slice(0, 6);
+        const resultFixtures = allFixtures.filter(m => getStatus(m) === 'FINAL').slice(-6).reverse();
+
+        const buildFixtureGroup = (title, matches) => {
+            if (!matches.length) return '';
+            return `<div class="section-title" style="margin-top: 24px; font-size: 1rem;">${title}</div>
+                <div class="tournament-grid">${matches.map(m => renderMatch(m)).join('')}</div>`;
+        };
+
+        const boardHtml = [
+            buildFixtureGroup('Live', liveFixtures),
+            buildFixtureGroup('Upcoming', upcomingFixtures),
+            buildFixtureGroup('Results', resultFixtures)
+        ].filter(Boolean).join('');
+
+        gridEl.innerHTML = boardHtml || '<div class="placeholder-text" style="padding: 20px;">No fixtures published yet.</div>';
     }
-
-    if (!gridEl || !tournamentData) return;
-
-    let html = '';
-    for (const regionName of Object.keys(tournamentData)) {
-        const regionData = tournamentData[regionName];
-        if (regionName !== 'National Finals' || !regionData.pools || !regionData.pools['Pool A'] || !regionData.pools['Pool B']) continue;
-
-        const poolsForDisplay = JSON.parse(JSON.stringify(regionData.pools));
-        calculateStandings(poolsForDisplay, regionData.matches, ['FINAL', 'LIVE']);
-        const poolA = poolsForDisplay['Pool A'].sort((a, b) => compareTeams(a, b, regionData.matches));
-        const poolB = poolsForDisplay['Pool B'].sort((a, b) => compareTeams(a, b, regionData.matches));
-
-        const previewMatches = getHomePreviewMatches(regionData);
-        const t1 = previewMatches[0]?.t1 || (poolA[0] ? poolA[0].name : 'TBD');
-        const t2 = previewMatches[0]?.t2 || (poolB[1] ? poolB[1].name : 'TBD');
-        const t3 = previewMatches[1]?.t1 || (poolA[1] ? poolA[1].name : 'TBD');
-        const t4 = previewMatches[1]?.t2 || (poolB[0] ? poolB[0].name : 'TBD');
-
-        const statusTag = `<span style="font-size: 0.65rem; background: var(--lime); padding: 4px 8px; border-radius: 2px; color: var(--navy); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.04em;">Live Finals</span>`;
-
-        html += `
-        <div class="tournament-card" style="cursor: default; padding: 20px; border-left-color: var(--lime);">
-            <div style="font-size: 0.95rem; font-weight: 800; color: var(--navy); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
-                <span>National Finals</span>
-                ${statusTag}
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; background: var(--bg); padding: 10px 12px; border-radius: 2px; border: 1px solid var(--frosted-border);">
-                    <span style="font-weight: 700; color: var(--text-main); flex: 1; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${t1}">${t1}</span>
-                    <span style="color: var(--text-muted); font-weight: 800; font-size: 0.65rem; margin: 0 10px;">VS</span>
-                    <span style="font-weight: 700; color: var(--text-main); flex: 1; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${t2}">${t2}</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; background: var(--bg); padding: 10px 12px; border-radius: 2px; border: 1px solid var(--frosted-border);">
-                    <span style="font-weight: 700; color: var(--text-main); flex: 1; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${t3}">${t3}</span>
-                    <span style="color: var(--text-muted); font-weight: 800; font-size: 0.65rem; margin: 0 10px;">VS</span>
-                    <span style="font-weight: 700; color: var(--text-main); flex: 1; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${t4}">${t4}</span>
-                </div>
-            </div>
-        </div>`;
-    }
-    gridEl.innerHTML = html;
 }
 
 function calculateStandings(pools, matches, statusesToInclude = ['FINAL']) {
