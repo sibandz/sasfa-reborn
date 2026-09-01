@@ -2627,7 +2627,7 @@
     };
 
 let tournamentData = JSON.parse(JSON.stringify(DEFAULT_TOURNAMENT_DATA));
-let activeTournament = sessionStorage.getItem('activeTournament') || 'halala';
+let activeTournament = sessionStorage.getItem('activeTournament') || null;
 let activeRegion = sessionStorage.getItem('activeRegion') || 'National Finals';
 let activePhase = sessionStorage.getItem('activePhase') || 'finals';
 let activeFinalsStage = sessionStorage.getItem('activeFinalsStage') || 'quarterfinal';
