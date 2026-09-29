@@ -4020,19 +4020,26 @@ function renderHomePreviews() {
     const spotlightEl = document.getElementById('nationalFinalsSpotlight');
 
     const getStatus = match => String(match?.st || '').trim().toUpperCase();
-    const getNationalFinalsMatches = () => {
-        const finals = tournamentData?.['National Finals'];
-        if (!finals || !Array.isArray(finals.matches)) return [];
-        return resolveNationalFinalsPlaceholders(finals).map(match => ({ ...match, region: 'Halala Cup 2026' }));
-    };
-    const getGirlsFinalsMatches = () => {
-        const finals = girlsHomeData?.['National Finals'];
-        if (!finals || !Array.isArray(finals.matches)) return [];
-        return resolveNationalFinalsPlaceholders(finals).map(match => ({ ...match, region: 'Halala Cup Girls' }));
+    const collectFixturesFromDataset = dataset => {
+        if (!dataset || typeof dataset !== 'object') return [];
+
+        const fixtures = [];
+        Object.entries(dataset).forEach(([regionName, regionData]) => {
+            if (!regionData || typeof regionData !== 'object') return;
+            const regionMatches = Array.isArray(regionData.matches) ? regionData.matches : [];
+            const regionPlayoffs = Array.isArray(regionData.playoffs) ? regionData.playoffs : [];
+            const resolvedMatches = [...regionMatches, ...regionPlayoffs].map(match => ({
+                ...match,
+                region: match.region || regionName
+            }));
+            fixtures.push(...resolvedMatches);
+        });
+
+        return fixtures;
     };
 
-    const boysMatches = getNationalFinalsMatches();
-    const girlsMatches = getGirlsFinalsMatches();
+    const boysMatches = collectFixturesFromDataset(tournamentData);
+    const girlsMatches = collectFixturesFromDataset(girlsHomeData);
     const allFixtures = [...boysMatches, ...girlsMatches];
     const allLive = allFixtures.filter(m => getStatus(m) === 'LIVE');
     const allUpcoming = allFixtures.filter(m => getStatus(m) === 'UPCOMING');
