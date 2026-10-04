@@ -3953,7 +3953,10 @@ function loadGirlsHomeData() {
             girlsHomeData = (data && typeof data === 'object' && Object.keys(data).length > 0) ? data : null;
         })
         .catch(() => { girlsHomeData = null; })
-        .finally(() => renderHomeTournamentCards());
+        .finally(() => {
+            renderHomeTournamentCards();
+            if (activeTournament !== 'halala' && activeTournament !== 'gdl') renderHomePreviews();
+        });
 }
 
 function buildHomeCardSummary(regionData) {
@@ -4106,7 +4109,7 @@ function renderHomePreviews() {
                 return 0;
             });
 
-            const topMatches = liveMatches.slice(0, 3);
+            const topMatches = liveMatches;
             highlightsEl.innerHTML = `<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">` +
                 topMatches.map(m => renderMatch(m)).join('') +
                 `</div>`;
